@@ -33,4 +33,24 @@ public class StatisticheBase {
     public int calcolaOverall() {
         return (this.attacco + this.difesa + this.agilita) / 3;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj)
+            return true;
+        if(!(obj instanceof StatisticheBase))
+            return false;
+        StatisticheBase other = (StatisticheBase) obj;
+        return (this.attacco == other.attacco) && (this.difesa == other.difesa)
+                && (this.agilita == other.agilita);
+    }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Integer.hashCode(this.attacco);
+        result = prime * result + Integer.hashCode(this.difesa);
+        result = prime * result + Integer.hashCode(this.agilita);
+        return result;
+    }
 }

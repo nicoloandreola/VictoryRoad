@@ -37,11 +37,12 @@ public class RisorseMatch {
     }
 
     public boolean haStamina(int quantita) {
-        return quantita >= 0 && stamina >= quantita;
+        this.verificaQuantita(quantita);
+        return this.stamina >= quantita;
     }
 
-    public boolean haEsauritoLaResistenza() {
-        return resistenza == 0;
+    public boolean haResistenza() {
+        return !(resistenza == 0);
     }
 
     private void verificaQuantita(int quantita) {

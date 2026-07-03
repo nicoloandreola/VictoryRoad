@@ -1,13 +1,16 @@
 package it.unicam.cs.mpgc.rpg129542.model;
 
+import lombok.Getter;
+
+@Getter
 public class GestoreStatistiche {
-    private final StatisticheBase statistiche;
+    private StatisticheBase statisticheBase;
     private ModificatoreStatistiche modificatoreAttivo;
 
-    public GestoreStatistiche(StatisticheBase statistiche) {
-        if(statistiche == null)
+    public GestoreStatistiche(StatisticheBase statisticheBase) {
+        if(statisticheBase == null)
             throw new IllegalArgumentException("Statistiche non possono essere nulle!");
-        this.statistiche = statistiche;
+        this.statisticheBase = statisticheBase;
     }
 
     /**
@@ -38,28 +41,43 @@ public class GestoreStatistiche {
      */
     public StatisticheBase getStatisticheEffettive() {
         if (modificatoreAttivo == null) {
-            return this.statistiche;
+            return this.statisticheBase;
         }
-        return modificatoreAttivo.applica(this.statistiche);
+        return modificatoreAttivo.applica(this.statisticheBase);
     }
 
     /**
      * Migliora PERMANENTEMENTE le statistiche di base del personaggio quando sale di livello.
-     * Per farlo crea una nuova istanza della classe Statistiche base
+     * Per farlo crea una nuova istanza della classe {@link StatisticheBase} con le statistiche
+     * incrementate e la assegna alla variabile di istanza {@link #statisticheBase}.
      *
      * @param upgradeAttacco Valore che va incrementato alla statistica di attacco
      * @param upgradeDifesa Valore che va incrementato alla statistica di difesa
      * @param upgradeAgilita Valore che va incrementato alla statistica di agilità
      *
-     * @return Le nuove statistiche aggiornate
-     *
      * @throws IllegalArgumentException Se un valore passato è minore di 0
      */
-    public StatisticheBase miglioraStatistiche(int upgradeAttacco, int upgradeDifesa, int upgradeAgilita) {
+    public void miglioraStatistiche(int upgradeAttacco, int upgradeDifesa, int upgradeAgilita) {
         if (upgradeAttacco < 0 || upgradeDifesa < 0 || upgradeAgilita < 0)
             throw new IllegalArgumentException("I miglioramenti non possono essere negativi!");
-        return new StatisticheBase(this.statistiche.getAttacco() + upgradeAttacco,
-                this.statistiche.getDifesa() + upgradeDifesa,
-                this.statistiche.getAgilita() + upgradeAgilita);
+        this.statisticheBase = new StatisticheBase(
+                this.statisticheBase.getAttacco() + upgradeAttacco,
+                this.statisticheBase.getDifesa() + upgradeDifesa,
+                this.statisticheBase.getAgilita() + upgradeAgilita);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this)
+            return true;
+        if(!(obj instanceof GestoreStatistiche))
+            return false;
+        GestoreStatistiche other = (GestoreStatistiche) obj;
+        return this.statisticheBase.equals(other.statisticheBase);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.statisticheBase.hashCode();
     }
 }
