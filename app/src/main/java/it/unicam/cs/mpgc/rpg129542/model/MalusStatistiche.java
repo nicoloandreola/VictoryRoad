@@ -71,7 +71,8 @@ public class MalusStatistiche implements ModificatoreStatistiche{
     }
 
     /**
-     * Applica i malus alle statistiche ricevute.
+     * Applica i malus alle statistiche ricevute sottraendo i valori alle
+     * statistiche e garantendo che il risultato non sia inferiore a uno.
      *
      * @param stats statistiche originali
      *
@@ -85,14 +86,6 @@ public class MalusStatistiche implements ModificatoreStatistiche{
         return new StatisticheBase(nuovoAttacco, nuovaDifesa, nuovaAgilita);
     }
 
-    /**
-     * Sottrae il valore del malus garantendo che il risultato non sia inferiore a uno.
-     *
-     * @param valoreStatistica valore originale
-     * @param malus quantità da sottrarre
-     *
-     * @return valore ridotto, con minimo pari a uno
-     */
     private int verificaMalus(int valoreStatistica, int malus) {
         return Math.max(1, valoreStatistica - malus);
     }

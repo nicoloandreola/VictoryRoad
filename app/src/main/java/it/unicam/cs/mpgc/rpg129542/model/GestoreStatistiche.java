@@ -2,11 +2,27 @@ package it.unicam.cs.mpgc.rpg129542.model;
 
 import lombok.Getter;
 
+/**
+ * Gestisce le statistiche di base di un personaggio, permettendo sia di migliorarle
+ * permanentemente quando si raggiunge un nuovo livello, sia di modificarle
+ * temporaneamente applicando un oggetto di tipo {@link ModificatoreStatistiche}.
+ *
+ * Ogni {@link Personaggio} utilizza un'istanza di questa classe
+ *
+ * @author Nicolò Andreola
+ */
+
 @Getter
 public class GestoreStatistiche {
     private StatisticheBase statisticheBase;
     private ModificatoreStatistiche modificatoreAttivo;
 
+    /**
+     * Crea un gestore per le statistiche partendo da un istanza di {@link StatisticheBase}.
+     *
+     * @param statisticheBase statistiche di base iniziali
+     * @throws IllegalArgumentException se le statistiche sono nulle
+     */
     public GestoreStatistiche(StatisticheBase statisticheBase) {
         if(statisticheBase == null)
             throw new IllegalArgumentException("Statistiche non possono essere nulle!");
@@ -64,20 +80,5 @@ public class GestoreStatistiche {
                 this.statisticheBase.getAttacco() + upgradeAttacco,
                 this.statisticheBase.getDifesa() + upgradeDifesa,
                 this.statisticheBase.getAgilita() + upgradeAgilita);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == this)
-            return true;
-        if(!(obj instanceof GestoreStatistiche))
-            return false;
-        GestoreStatistiche other = (GestoreStatistiche) obj;
-        return this.statisticheBase.equals(other.statisticheBase);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.statisticheBase.hashCode();
     }
 }

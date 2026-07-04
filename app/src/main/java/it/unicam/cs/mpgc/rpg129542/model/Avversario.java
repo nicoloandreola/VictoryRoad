@@ -3,15 +3,39 @@ package it.unicam.cs.mpgc.rpg129542.model;
 import java.util.Set;
 
 /**
- * Rappresenta un personaggio affrontato dal protagonista.
- * Le responsabilità specifiche dell'avversario verranno aggiunte quando
- * saranno definite le relative regole di dominio.
+ * Rappresenta un personaggio affrontato dal protagonista,
+ * controllato dal gioco ed estende {@link Personaggio}.
+ *
+ * @author Nicolò Andreola
  */
-public final class Avversario extends Personaggio {
+
+public class Avversario extends Personaggio {
+
+    /**
+     * Crea un avversario con una tecnica speciale iniziale.
+     *
+     * @param nome nome dell'avversario
+     * @param statisticheBase statistiche permanenti iniziali
+     * @param tecnicaIniziale prima tecnica posseduta
+     *
+     * @throws IllegalArgumentException se uno dei parametri non rispetta
+     *         i vincoli definiti da {@link Personaggio}
+     */
 
     public Avversario(String nome, StatisticheBase statisticheBase, TecnicaSpeciale tecnicaIniziale) {
         super(nome, statisticheBase, tecnicaIniziale);
     }
+
+    /**
+     * Crea un avversario con un insieme di tecniche speciali.
+     *
+     * @param nome nome dell'avversario
+     * @param statisticheBase statistiche permanenti iniziali
+     * @param tecnicheSpeciali tecniche possedute dall'avversario
+     *
+     * @throws IllegalArgumentException se uno dei parametri non rispetta
+     *         i vincoli definiti da {@link Personaggio}
+     */
 
     public Avversario(String nome, StatisticheBase statisticheBase,
                       Set<TecnicaSpeciale> tecnicheSpeciali) {
