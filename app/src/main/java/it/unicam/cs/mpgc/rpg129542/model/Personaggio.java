@@ -11,16 +11,16 @@ import java.util.Set;
  * astratta, non contiene logica specifica del protagonista o dell'avversario.
  *
  * Contiene solo le informazioni comuni a protagonisti e avversari:
- * nome, overall, statistiche, risorse di match e tecniche speciali.
+ * nome, id, statistiche, risorse di match e tecniche speciali.
  *
  * @author Nicolò Andreola
  */
-
+@Getter
 public abstract class Personaggio {
 
-    @Getter
+
     private final String nome;
-    private int overall;
+    private final String id;
     private final GestoreStatistiche gestoreStatistiche;
     private Set<TecnicaSpeciale> tecnicheSpeciali;
     private RisorseMatch risorseMatch;
@@ -29,7 +29,12 @@ public abstract class Personaggio {
      * Crea un personaggio con una singola tecnica speciale iniziale
      * (ogni protagonista all'inizio ha una sola tecnica speciale).
      *
+     * Il costruttore è {@code protected} perché una tecnica speciale
+     * deve essere istanziata attraverso una sottoclasse concreta, come
+     * {@link TecnicaOffensiva} o {@link TecnicaDifensiva}.
+     *
      * @param nome nome del personaggio
+     * @param id identificatore univoco del personaggio
      * @param statisticheBase statistiche di base iniziali
      * @param tecnicaIniziale prima tecnica posseduta dal personaggio
      *
@@ -37,12 +42,12 @@ public abstract class Personaggio {
      *
      * @throws IllegalArgumentException se il nome è vuoto
      */
-    public Personaggio(@NonNull String nome, @NonNull StatisticheBase statisticheBase, @NonNull TecnicaSpeciale tecnicaIniziale) {
+    protected Personaggio(@NonNull String nome, @NonNull String id, @NonNull StatisticheBase statisticheBase, @NonNull TecnicaSpeciale tecnicaIniziale) {
         if (nome.isBlank())
             throw new IllegalArgumentException("Nome del personaggio non può essere vuoto!");
         this.nome = nome;
+        this.id = id;
         this.gestoreStatistiche = new GestoreStatistiche(statisticheBase);
-        this.overall = this.getOverall();
         this.tecnicheSpeciali = new HashSet<>();
         this.tecnicheSpeciali.add(tecnicaIniziale);
         this.risorseMatch = new RisorseMatch();
@@ -53,21 +58,25 @@ public abstract class Personaggio {
      * (gli avversari invece possono aver sin da subito più tecniche).
      *
      * @param nome nome del personaggio
+     * @param id identificatore univoco del personaggio
      * @param statisticheBase statistiche permanenti iniziali
      * @param tecnicheSpeciali tecniche inizialmente possedute
      *
-     * @throws NullPointerException se uno tra i parametri è nullo
+     * @throws NullPointerException se uno tra i parametri è nullo o se il set
+     *                              passato contiene elementi nulli
      *
      * @throws IllegalArgumentException se il nome o il set delle tecniche è vuoto
      */
-    public Personaggio(@NonNull String nome, @NonNull StatisticheBase statisticheBase, @NonNull Set<TecnicaSpeciale> tecnicheSpeciali) {
+    public Personaggio(@NonNull String nome, @NonNull String id, @NonNull StatisticheBase statisticheBase, @NonNull Set<TecnicaSpeciale> tecnicheSpeciali) {
         if (nome.isBlank())
             throw new IllegalArgumentException("Nome del personaggio non può essere vuoto!");
         if (tecnicheSpeciali.isEmpty())
             throw new IllegalArgumentException("Il personaggio deve avere almeno una tecnica speciale!");
+        if (tecnicheSpeciali.contains(null))
+            throw new NullPointerException("Le tecniche non possono contenere valori nulli!");
         this.nome = nome;
+        this.id = id;
         this.gestoreStatistiche = new GestoreStatistiche(statisticheBase);
-        this.overall = this.getOverall();
         this.tecnicheSpeciali = new HashSet<>(tecnicheSpeciali);
         this.risorseMatch = new RisorseMatch();
     }
@@ -129,11 +138,25 @@ public abstract class Personaggio {
     }
 
     /**
-     * Confronta due personaggi in base al loro nome e al loro overall:
-     * lo stato modificabile, come statistiche, risorse e tecniche, non
-     * contribuisce all'identità del personaggio.
+     * Verifica se il personaggio possiede una determinata tecnica.
+     *
+     * @param tecnica tecnica da cercare
+     * @return {@code true} se la tecnica è già presente nel set del
+     *          personaggio, {@code false} altrimenti
+     *
+     * @throws NullPointerException se la tecnica passata è nulla
+     */
+
+    public boolean possiedeTecnica(@NonNull TecnicaSpeciale tecnica) {
+        return this.tecnicheSpeciali.contains(tecnica);
+    }
+
+    /**
+     * Confronta due personaggi basandosi esclusivamente sul loro id (campo
+     * utilizzato proprio per definire UNIVOCAMENTE un’istanza di questa classe)
      *
      * @param obj oggetto da confrontare
+     *
      * @return {@code true} se i personaggi hanno lo stesso nome e lo stesso overall
      */
     @Override
@@ -143,16 +166,12 @@ public abstract class Personaggio {
         if (!(obj instanceof Personaggio))
             return false;
         Personaggio other = (Personaggio) obj;
-        return this.nome.equals(other.nome) && this.overall == other.overall;
+        return this.id.equals(other.id);
     }
 
     @Override
     public int hashCode() {
-        int prime = 31;
-        int result = 1;
-        result = prime * result + this.nome.hashCode();
-        result = prime * result + Integer.hashCode(this.overall);
-        return result;
+        return this.id.hashCode();
     }
 
 }

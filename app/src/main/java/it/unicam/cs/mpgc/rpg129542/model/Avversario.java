@@ -15,6 +15,7 @@ public class Avversario extends Personaggio {
      * Crea un avversario con una tecnica speciale iniziale.
      *
      * @param nome nome dell'avversario
+     * @param id identificatore univoco dell'avversario
      * @param statisticheBase statistiche permanenti iniziali
      * @param tecnicaIniziale prima tecnica posseduta
      *
@@ -22,14 +23,15 @@ public class Avversario extends Personaggio {
      *         i vincoli definiti da {@link Personaggio}
      */
 
-    public Avversario(String nome, StatisticheBase statisticheBase, TecnicaSpeciale tecnicaIniziale) {
-        super(nome, statisticheBase, tecnicaIniziale);
+    public Avversario(String nome, String id, StatisticheBase statisticheBase, TecnicaSpeciale tecnicaIniziale) {
+        super(nome, id, statisticheBase, tecnicaIniziale);
     }
 
     /**
      * Crea un avversario con un insieme di tecniche speciali.
      *
      * @param nome nome dell'avversario
+     * @param id identificatore univoco dell'avversario
      * @param statisticheBase statistiche permanenti iniziali
      * @param tecnicheSpeciali tecniche possedute dall'avversario
      *
@@ -37,8 +39,7 @@ public class Avversario extends Personaggio {
      *         i vincoli definiti da {@link Personaggio}
      */
 
-    public Avversario(String nome, StatisticheBase statisticheBase,
-                      Set<TecnicaSpeciale> tecnicheSpeciali) {
-        super(nome, statisticheBase, tecnicheSpeciali);
+    public Avversario(String nome, String id, StatisticheBase statisticheBase, Set<TecnicaSpeciale> tecnicheSpeciali) {
+        super(nome, id, statisticheBase, tecnicheSpeciali);
     }
 }
