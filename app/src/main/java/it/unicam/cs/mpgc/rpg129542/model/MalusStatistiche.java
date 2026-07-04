@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg129542.model;
 
+import lombok.NonNull;
+
 /**
  * Implementa l'interfaccia {@link ModificatoreStatistiche} e rappresenta un
  * modificatore che decrementa temporaneamente di una certa quantità una o più statistiche.
@@ -17,11 +19,11 @@ public class MalusStatistiche implements ModificatoreStatistiche{
     /**
      * Costruisce un modificatore che decrementa tutte le statistiche di base.
      *
-     * @param malusAttacco incremento dell'attacco
-     * @param malusDifesa incremento della difesa
-     * @param malusAgilita incremento dell'agilità
+     * @param malusAttacco riduzione dell'attacco
+     * @param malusDifesa riduzione della difesa
+     * @param malusAgilita riduzione dell'agilità
      *
-     * @throws IllegalArgumentException se almeno un bonus è negativo
+     * @throws IllegalArgumentException se almeno un malus è negativo
      */
     public MalusStatistiche(int malusAttacco, int malusDifesa, int malusAgilita) {
         if (malusAttacco < 0 || malusDifesa < 0 || malusAgilita < 0)
@@ -79,7 +81,7 @@ public class MalusStatistiche implements ModificatoreStatistiche{
      * @return nuove statistiche ridotte, con valore minimo pari a {@code 1}
      */
     @Override
-    public StatisticheBase applica(StatisticheBase stats) {
+    public StatisticheBase applica(@NonNull StatisticheBase stats) {
         int nuovoAttacco = this.verificaMalus(stats.getAttacco(), this.malusAttacco);
         int nuovaDifesa = this.verificaMalus(stats.getDifesa(), this.malusDifesa);
         int nuovaAgilita = this.verificaMalus(stats.getAgilita(), this.malusAgilita);

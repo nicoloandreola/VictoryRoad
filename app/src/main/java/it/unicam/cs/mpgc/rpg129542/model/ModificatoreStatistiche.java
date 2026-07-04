@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg129542.model;
 
+import lombok.NonNull;
+
 /**
  * Interfaccia che definisce il contratto da rispettare per l'implementazione
  * di un oggetto che modifica le statistiche di base TEMPORANEAMENTE durante un match.
@@ -18,5 +20,5 @@ public interface ModificatoreStatistiche {
      * @param stats statistiche sulle quali applicare il modificatore
      * @return nuova istanza contenente le statistiche modificate
      */
-    StatisticheBase applica(StatisticheBase stats);
+    StatisticheBase applica(@NonNull StatisticheBase stats);
 }

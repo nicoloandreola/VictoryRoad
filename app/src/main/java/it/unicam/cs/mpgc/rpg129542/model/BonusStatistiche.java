@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg129542.model;
 
+import lombok.NonNull;
+
 /**
  * Implementa l'interfaccia {@link ModificatoreStatistiche} e rappresenta un
  * modificatore che incrementa temporaneamente di una certa quantità una o più statistiche.
@@ -80,7 +82,7 @@ public class BonusStatistiche implements ModificatoreStatistiche{
      *
      */
     @Override
-    public StatisticheBase applica(StatisticheBase stats) {
+    public StatisticheBase applica(@NonNull StatisticheBase stats) {
         int nuovoAttacco = stats.getAttacco() + this.bonusAttacco;
         int nuovaDifesa = stats.getDifesa() + this.bonusDifesa;
         int nuovaAgilita = stats.getAgilita() + this.bonusAgilita;
