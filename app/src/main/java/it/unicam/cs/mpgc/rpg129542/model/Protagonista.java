@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg129542.model;
 
+import lombok.NonNull;
+
 /**
  * Rappresenta il personaggio controllato dal giocatore ed estende {@link Personaggio}
  *
@@ -27,11 +29,10 @@ public class Protagonista extends Personaggio {
      * @param tecnica tecnica da cercare
      * @return {@code true} se la tecnica è posseduta, {@code false} altrimenti
      *
-     * @throws IllegalArgumentException se la tecnica passata è nulla
+     * @throws NullPointerException se la tecnica passata è nulla
      */
-    public boolean possiedeTecnica(TecnicaSpeciale tecnica) {
-        if (tecnica == null)
-            throw new IllegalArgumentException("La tecnica non può essere nulla!");
+
+    public boolean possiedeTecnica(@NonNull TecnicaSpeciale tecnica) {
         return getTecnicheSpeciali().contains(tecnica);
     }
 

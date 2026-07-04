@@ -1,13 +1,14 @@
 package it.unicam.cs.mpgc.rpg129542.model;
 
 import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * Gestisce le statistiche di base di un personaggio, permettendo sia di migliorarle
  * permanentemente quando si raggiunge un nuovo livello, sia di modificarle
  * temporaneamente applicando un oggetto di tipo {@link ModificatoreStatistiche}.
  *
- * Ogni {@link Personaggio} utilizza un'istanza di questa classe
+ * Ogni {@link Personaggio} utilizza un'istanza di questa classe.
  *
  * @author Nicolò Andreola
  */
@@ -21,11 +22,10 @@ public class GestoreStatistiche {
      * Crea un gestore per le statistiche partendo da un istanza di {@link StatisticheBase}.
      *
      * @param statisticheBase statistiche di base iniziali
-     * @throws IllegalArgumentException se le statistiche sono nulle
+     *
+     * @throws NullPointerException se le statistiche sono nulle
      */
-    public GestoreStatistiche(StatisticheBase statisticheBase) {
-        if(statisticheBase == null)
-            throw new IllegalArgumentException("Statistiche non possono essere nulle!");
+    public GestoreStatistiche(@NonNull StatisticheBase statisticheBase) {
         this.statisticheBase = statisticheBase;
     }
 
@@ -34,10 +34,10 @@ public class GestoreStatistiche {
      *
      * @param modificatore Qualsiasi oggetto che implementa l'interfaccia {@link ModificatoreStatistiche}
      *                     che determina come modificare le statistiche
+     *
+     * @throws NullPointerException se il modificatore passato à nullo
      */
-    public void applicaModificatore(ModificatoreStatistiche modificatore) {
-        if(modificatore == null)
-            throw new IllegalArgumentException("Modificatore non può essere nullo!");
+    public void applicaModificatore(@NonNull ModificatoreStatistiche modificatore) {
         this.modificatoreAttivo = modificatore;
     }
 

@@ -1,36 +1,33 @@
 package it.unicam.cs.mpgc.rpg129542.model;
 
 import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * Rappresenta una tecnica speciale utilizzabile durante un match.
- *
+ * <p>
  * Una tecnica può essere offensiva o difensiva, ha una potenza e richiede
  * un certo costo in stamina per essere utilizzata.
  *
  * @author Nicolò Andreola
  */
 @Getter
-public class TecnicaSpeciale {
-
+public abstract class TecnicaSpeciale {
     private final String nome;
-    private String descrizione;
+    private final String descrizione;
     private final TipoTecnica tipo;
-    private int potenza;
-    private int costoStamina;
+    private final int potenza;
+    private final int costoStamina;
 
-    public TecnicaSpeciale(String nome, String descrizione, TipoTecnica tipo, int potenza, int costoStamina) {
-        if (nome == null || nome.isBlank())
+    public TecnicaSpeciale (@NonNull String nome, @NonNull String descrizione, @NonNull TipoTecnica tipo, int potenza, int costoStamina){
+        if (nome.isBlank())
             throw new IllegalArgumentException("Il nome della tecnica non può essere vuoto!");
-        if (descrizione == null || descrizione.isBlank())
+        if (descrizione.isBlank())
             throw new IllegalArgumentException("La descrizione tecnica non può essere vuota!");
-        if (tipo == null)
-            throw new IllegalArgumentException("Il tipo della tecnica non può essere nullo!");
         if (potenza <= 0)
             throw new IllegalArgumentException("La potenza della tecnica deve essere positiva!");
         if (costoStamina < 0)
             throw new IllegalArgumentException("Il costo in stamina non può essere negativo!");
-
         this.nome = nome;
         this.descrizione = descrizione;
         this.tipo = tipo;
@@ -38,12 +35,11 @@ public class TecnicaSpeciale {
         this.costoStamina = costoStamina;
     }
 
-    public boolean isAvailable(RisorseMatch risorseMatch) {
-        if (risorseMatch == null)
-            throw new IllegalArgumentException("Risorse match non possono essere nulle!");
-
-        return risorseMatch.haStamina(this.costoStamina);
+    public boolean isAvailable(@NonNull Personaggio personaggio) {
+        return personaggio.getStamina() >= this.costoStamina;
     }
+
+    public abstract void effettoTecnica();
 
     @Override
     public boolean equals(Object obj) {

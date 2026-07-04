@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg129542.model;
 
 import lombok.Getter;
+import lombok.NonNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,16 +33,13 @@ public abstract class Personaggio {
      * @param statisticheBase statistiche di base iniziali
      * @param tecnicaIniziale prima tecnica posseduta dal personaggio
      *
-     * @throws IllegalArgumentException se il nome è nullo o vuoto, se le
-     *         statistiche sono nulle oppure se la tecnica è nulla (in questo
-     *         ultimo caso ci pensa il metodo add di {@link HashSet} a
-     *         lanciarla, quindi non occorre fare nessun controllo ulteriore)
+     * @throws NullPointerException se uno tra i parametri è nullo
+     *
+     * @throws IllegalArgumentException se il nome è vuoto
      */
-    public Personaggio(String nome, StatisticheBase statisticheBase, TecnicaSpeciale tecnicaIniziale) {
-        if (nome == null || nome.isBlank())
+    public Personaggio(@NonNull String nome, @NonNull StatisticheBase statisticheBase, @NonNull TecnicaSpeciale tecnicaIniziale) {
+        if (nome.isBlank())
             throw new IllegalArgumentException("Nome del personaggio non può essere vuoto!");
-        if (statisticheBase == null)
-            throw new IllegalArgumentException("Statistiche base non possono essere nulle!");
         this.nome = nome;
         this.gestoreStatistiche = new GestoreStatistiche(statisticheBase);
         this.overall = this.getOverall();
@@ -58,18 +56,15 @@ public abstract class Personaggio {
      * @param statisticheBase statistiche permanenti iniziali
      * @param tecnicheSpeciali tecniche inizialmente possedute
      *
-     * @throws IllegalArgumentException se il nome è nullo o vuoto,
-     *         se le statistiche sono nulle oppure se l'insieme delle tecniche
-     *         è nullo, vuoto o contiene elementi nulli
+     * @throws NullPointerException se uno tra i parametri è nullo
+     *
+     * @throws IllegalArgumentException se il nome o il set delle tecniche è vuoto
      */
-    public Personaggio(String nome, StatisticheBase statisticheBase, Set<TecnicaSpeciale> tecnicheSpeciali) {
-        if (nome == null || nome.isBlank())
+    public Personaggio(@NonNull String nome, @NonNull StatisticheBase statisticheBase, @NonNull Set<TecnicaSpeciale> tecnicheSpeciali) {
+        if (nome.isBlank())
             throw new IllegalArgumentException("Nome del personaggio non può essere vuoto!");
-        if (statisticheBase == null)
-            throw new IllegalArgumentException("Statistiche base non possono essere nulle!");
-        if (tecnicheSpeciali == null || tecnicheSpeciali.isEmpty())
+        if (tecnicheSpeciali.isEmpty())
             throw new IllegalArgumentException("Il personaggio deve avere almeno una tecnica speciale!");
-
         this.nome = nome;
         this.gestoreStatistiche = new GestoreStatistiche(statisticheBase);
         this.overall = this.getOverall();
