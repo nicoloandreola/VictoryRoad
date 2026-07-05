@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -130,6 +131,21 @@ public abstract class Personaggio {
      */
     public Set<TecnicaSpeciale> getTecnicheSpeciali() {
         return Set.copyOf(this.tecnicheSpeciali);
+    }
+
+    /**
+     * Restituisce una lista contenente tutte le tecniche speciali di un certo tipo
+     * attraverso l'utilizzo di uno stream
+     *
+     * @param tipo oggetto di tipo {@link TipoTecnica} che specifica la categoria
+     *             delle tecniche desiderate
+     * @return {@link List} contenente tutte le tecniche del tipo passato
+     */
+
+    public List<TecnicaSpeciale> getTecnichePerTipo(@NonNull TipoTecnica tipo) {
+        return this.tecnicheSpeciali.stream()
+                .filter(tecnica -> tecnica.getTipo() == tipo)
+                .toList();
     }
 
     /**

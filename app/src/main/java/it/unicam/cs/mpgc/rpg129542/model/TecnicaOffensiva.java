@@ -2,6 +2,8 @@ package it.unicam.cs.mpgc.rpg129542.model;
 
 import lombok.NonNull;
 
+import java.util.List;
+
 /**
  * Rappresenta una tecnica speciale offensiva.
  *
@@ -54,5 +56,18 @@ public class TecnicaOffensiva extends TecnicaSpeciale {
     public int calcolaEffetto(@NonNull Personaggio personaggio) {
         int attaccoAttuale = personaggio.getStatisticheEffettive().getAttacco();
         return attaccoAttuale + this.getPotenza();
+    }
+
+    /**
+     * Restituisce tutte le tecniche offensive possedute da un certo personaggio
+     *
+     * @param personaggio personaggio da cui "estrarre" le tecniche
+     *
+     * @throws NullPointerException se il personaggio passato è nullo
+     *
+     * @return {@link List} contenente tutte le tecniche offensive del personaggio
+     */
+    public List<TecnicaSpeciale> getTecnicheDiSupporto(@NonNull Personaggio personaggio) {
+        return personaggio.getTecnichePerTipo(TipoTecnica.OFFENSIVA);
     }
 }

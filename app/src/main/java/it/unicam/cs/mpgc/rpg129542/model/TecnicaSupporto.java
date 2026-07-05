@@ -2,6 +2,8 @@ package it.unicam.cs.mpgc.rpg129542.model;
 
 import lombok.NonNull;
 
+import java.util.List;
+
 /**
  * Rappresenta una tecnica speciale che permette di recuperare parte
  * della resistenza durante una partita.
@@ -54,5 +56,18 @@ public class TecnicaSupporto extends TecnicaSpeciale {
     @Override
     public int calcolaEffetto(@NonNull Personaggio personaggio) {
         return Math.min(personaggio.getResistenza() + getPotenza(), RisorseMatch.RESISTENZA_MASSIMA);
+    }
+
+    /**
+     * Restituisce tutte le tecniche di supporto possedute da un certo personaggio
+     *
+     * @param personaggio personaggio da cui "estrarre" le tecniche
+     *
+     * @throws NullPointerException se il personaggio passato è nullo
+     *
+     * @return {@link List} contenente tutte le tecniche di supporto del personaggio
+     */
+    public List<TecnicaSpeciale> getTecnicheDiSupporto(@NonNull Personaggio personaggio) {
+        return personaggio.getTecnichePerTipo(TipoTecnica.SUPPORTO);
     }
 }
