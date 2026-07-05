@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg129542.model;
 
+import lombok.NonNull;
+
 /**
  * Rappresenta una tecnica speciale difensiva.
  *
@@ -44,12 +46,13 @@ public class TecnicaDifensiva extends TecnicaSpeciale {
      * Calcola l'efficacia sommando la potenza della tecnica
      * alla difesa effettiva del personaggio che la utilizza.
      *
-     * @param statistiche statistiche effettive dell'utilizzatore
+     * @param personaggio personaggio su cui viene usata la tecnica
      *
      * @return difesa effettiva più potenza della tecnica
      */
     @Override
-    public int calcolaEffetto(StatisticheBase statistiche) {
-        return statistiche.getDifesa() + getPotenza();
+    public int calcolaEffetto(@NonNull Personaggio personaggio) {
+        int difesaAttuale = personaggio.getStatisticheEffettive().getDifesa();
+        return difesaAttuale + getPotenza();
     }
 }

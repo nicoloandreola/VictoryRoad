@@ -62,7 +62,7 @@ public abstract class TecnicaSpeciale {
      * Il tipo non è ricevuto dal costruttore, ma viene determinato
      * direttamente dalla sottoclasse. Questo impedisce la creazione di
      * combinazioni incoerenti, come una {@link TecnicaOffensiva}
-     * classificata come {@link TipoTecnica#DIFENSIVA}.</p>
+     * classificata come {@link TipoTecnica#DIFENSIVA}.
      *
      * @return tipo della tecnica
      */
@@ -84,16 +84,20 @@ public abstract class TecnicaSpeciale {
     /**
      * Descrive la logica di una tecnica speciale e restituisce il suo effetto.
      *
+     * Il metodo è definito {@code protected} per evitare che possa essere
+     * chiamato direttamente senza consumare stamina
+     *
      * @return valore di efficacia prodotto dalla tecnica
      *
+     * @throws NullPointerException se il personaggio passato è nullo
      */
-    public abstract int calcolaEffetto(StatisticheBase statisticheBase);
+    protected abstract int calcolaEffetto(@NonNull Personaggio personaggio);
 
     /**
      * Permette di utilizzare la tecnica verificando preventivamente che
      * il personaggio disponga della stamina necessaria: se la tecnica è
      * disponibile, consuma la stamina richiesta e poi calcola il suo
-     * effetto con {@link #calcolaEffetto(StatisticheBase)}.
+     * effetto con {@link #calcolaEffetto(Personaggio)}.
      *
      * @param personaggio personaggio che usa la tecnica
      *
@@ -107,8 +111,9 @@ public abstract class TecnicaSpeciale {
 
         if (!isAvailable(personaggio))
             throw new IllegalStateException("Stamina insufficiente per utilizzare la tecnica!");
+        int effetto = calcolaEffetto(personaggio);
         personaggio.getRisorseMatch().consumaStamina(this.costoStamina);
-        return calcolaEffetto(personaggio.getStatisticheEffettive());
+        return effetto;
     }
 
     /**

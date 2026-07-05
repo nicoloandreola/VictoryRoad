@@ -3,56 +3,56 @@ package it.unicam.cs.mpgc.rpg129542.model;
 import lombok.NonNull;
 
 /**
- * Rappresenta una tecnica speciale offensiva.
+ * Rappresenta una tecnica speciale che permette di recuperare parte
+ * della resistenza durante una partita.
  *
  * L'efficacia viene calcolata sommando la potenza della tecnica
- * al valore di attacco effettivo dell'utilizzatore, quindi la logica
+ * al valore di resistenza attuale del personaggio, quindi la logica
  * implementata da questa classe si può esprimere con la formula:
  *
- * <strong> effetto = attacco effettivo + potenza </strong>
- *
+ * <strong> effetto = resistenza effettiva + potenza </strong>
  *
  * @author Nicolò Andreola
  */
-public class TecnicaOffensiva extends TecnicaSpeciale {
 
+public class TecnicaSupporto extends TecnicaSpeciale {
     /**
-     * Costruisce una tecnica speciale offensiva.
+     * Costruisce una tecnica speciale di supporto.
      *
      * @param nome nome identificativo della tecnica
      * @param descrizione descrizione dell'effetto
-     * @param potenza valore aggiunto all'attacco dell'utilizzatore
+     * @param potenza valore aggiunto alla resistenza del personaggio
      * @param costoStamina stamina necessaria per utilizzare la tecnica
      *
      * @throws NullPointerException se nome o descrizione sono nulli
      * @throws IllegalArgumentException se i parametri non rispettano
      *                                  i vincoli di {@link TecnicaSpeciale}
      */
-    public TecnicaOffensiva(String nome, String descrizione, int potenza, int costoStamina) {
+    public TecnicaSupporto(String nome, String descrizione, int potenza, int costoStamina) {
         super(nome, descrizione, potenza, costoStamina);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @return sempre {@link TipoTecnica#OFFENSIVA}
+     * @return sempre {@link TipoTecnica#SUPPORTO}
      */
     @Override
     public TipoTecnica getTipo() {
-        return TipoTecnica.OFFENSIVA;
+        return TipoTecnica.SUPPORTO;
     }
 
     /**
      * Calcola l'efficacia sommando la potenza della tecnica
-     * all'attacco effettivo del personaggio che la utilizza.
+     * alla resistenza effettiva del personaggio che la utilizza.
      *
      * @param personaggio personaggio su cui viene usata la tecnica
      *
-     * @return attacco effettivo più potenza della tecnica
+     * @return nuovo valore della resistenza aumentato, sempre entro
+     *         il limite massimo stabilito da {@link RisorseMatch#RESISTENZA_MASSIMA}
      */
     @Override
     public int calcolaEffetto(@NonNull Personaggio personaggio) {
-        int attaccoAttuale = personaggio.getStatisticheEffettive().getAttacco();
-        return attaccoAttuale + this.getPotenza();
+        return Math.min(personaggio.getResistenza() + getPotenza(), RisorseMatch.RESISTENZA_MASSIMA);
     }
 }

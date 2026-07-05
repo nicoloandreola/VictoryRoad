@@ -11,5 +11,5 @@ package it.unicam.cs.mpgc.rpg129542.model;
  * @author Nicolò Andreola
  */
 public enum TipoTecnica {
-    OFFENSIVA, DIFENSIVA
+    OFFENSIVA, DIFENSIVA, SUPPORTO
 }
