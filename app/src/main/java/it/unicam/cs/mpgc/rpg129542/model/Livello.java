@@ -1,0 +1,168 @@
+package it.unicam.cs.mpgc.rpg129542.model;
+
+import lombok.Getter;
+import lombok.NonNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
+/**
+ * Rappresenta un livello di gioco composto da un campo e dagli avversari che il
+ * protagonista può affrontare.
+ *
+ * Per ogni avversario il livello conserva uno {@link StatoAvversario}, che
+ * descrive se deve ancora essere affrontato, se è stato selezionato oppure se è
+ * già stato sconfitto: per farlo utilizza una {@link Map} che associa
+ * a ogni avversario (keys) il suo stato (values)
+ *
+ * Il livello è considerato completato non appena almeno uno dei suoi avversari risulta
+ * sconfitto (non è necessario sconfiggerli tutti per passare al successivo)
+ *
+ * @author Nicolò Andreola
+ */
+
+public class Livello {
+    @Getter
+    private final int numero;
+    @Getter
+    private final Campo campo;
+    private final Map<Avversario, StatoAvversario> avversari;
+
+    /**
+     * Crea un livello con un campo e due avversari inizialmente nello stato
+     * {@link StatoAvversario#DA_SCONFIGGERE}.
+     *
+     * @param numero numero identificativo del livello
+     * @param campo campo nel quale si svolgono i match
+     * @param avversario1 primo avversario del livello
+     * @param avversario2 secondo avversario del livello
+     *
+     * @throws NullPointerException se uno dei parametri è {@code null}
+     *
+     * @throws IllegalArgumentException se {@code numero} è negativo
+     */
+    public Livello(int numero, @NonNull Campo campo, @NonNull Avversario avversario1, @NonNull Avversario avversario2) {
+        if (numero < 0)
+            throw new IllegalArgumentException("Livello non può essere etichettato con un numero negativo!");
+        this.numero = numero;
+        this.campo = campo;
+        this.avversari = new HashMap<>();
+        this.aggiungiAvversario(avversario1);
+        this.aggiungiAvversario(avversario2);
+    }
+
+    /**
+     * Inserisce un avversario nel livello assegnandogli lo stato iniziale
+     * {@link StatoAvversario#DA_SCONFIGGERE}.
+     *
+     * Poiché gli avversari sono usati come chiavi della mappa, se
+     * l'avversario è già presente il suo stato corrente viene sostituito con
+     * {@code DA_SCONFIGGERE}, in accordo con il metodo {@link Map#put(Object, Object)}.
+     *
+     * @param avversario avversario da aggiungere
+     *
+     * @throws NullPointerException se {@code avversario} è {@code null}
+     */
+    public void aggiungiAvversario(@NonNull Avversario avversario) {
+        this.avversari.put(avversario, StatoAvversario.DA_SCONFIGGERE);
+    }
+
+    /**
+     * Restituisce lo stato attuale di un avversario all'interno del livello.
+     *
+     * @param avversario avversario del quale ottenere lo stato
+     *
+     * @return stato corrente dell'avversario nel livello
+     *
+     * @throws NullPointerException se {@code avversario} è {@code null}
+     *
+     * @throws IllegalArgumentException se l'avversario non appartiene al livello
+     *
+     */
+    public StatoAvversario getStatoAvversario(@NonNull Avversario avversario) {
+        StatoAvversario stato = this.avversari.get(avversario);
+        if(stato == null)
+            throw new IllegalArgumentException("L'avversario non appartiene a questo livello!");
+        return stato;
+    }
+
+    /**
+     * Permette di selezionare l'avversario che il protagonista intende affrontare.
+     *
+     * Un avversario già sconfitto non può essere selezionato nuovamente.
+     * L'eventuale avversario selezionato in precedenza deve tornare nello stato
+     * {@link StatoAvversario#DA_SCONFIGGERE}, così che nel livello sia presente
+     * al massimo un avversario selezionato.
+     *
+     * @param avversario avversario da selezionare
+     *
+     * @throws NullPointerException se {@code avversario} è {@code null}
+     *
+     * @throws IllegalArgumentException se l'avversario non appartiene al livello
+     *
+     * @throws IllegalStateException se l'avversario è già stato sconfitto
+     */
+    public void selezionaAvversario(@NonNull Avversario avversario) {
+        StatoAvversario stato = this.avversari.get(avversario);
+        if (stato == null)
+            throw new IllegalArgumentException("L'avversario non appartiene al livello");
+        if (stato == StatoAvversario.SCONFITTO)
+            throw new IllegalStateException("Questo avversario è gia stato sconfitto");
+
+        // Deseleziona un eventuale avversario selezionato precedentemente
+        for (Avversario a : this.avversari.keySet()) {
+            if(this.getStatoAvversario(a) == StatoAvversario.SELEZIONATO)
+                this.avversari.put(a, StatoAvversario.DA_SCONFIGGERE);
+        }
+        this.avversari.put(avversario, StatoAvversario.SELEZIONATO);
+    }
+
+    /**
+     * Cerca e restituisce l'avversario attualmente selezionato nel livello.
+     *
+     * @return l'avversario selezionato
+     *
+     * @throws IllegalStateException se nessun avversario è attualmente selezionato
+     */
+    public Avversario getAvversarioSelezionato() {
+        return this.avversari.entrySet().stream()
+                .filter(entry -> entry.getValue() == StatoAvversario.SELEZIONATO)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Nessun avversario selezionato!"));
+    }
+
+    /**
+     * Registra la vittoria del protagonista contro l'avversario selezionato,
+     * modificandone lo stato in {@link StatoAvversario#SCONFITTO}.
+     *
+     * @param avversario avversario contro il quale è stata ottenuta la vittoria
+     *
+     * @throws NullPointerException se {@code avversario} è {@code null}
+     *
+     * @throws IllegalArgumentException se l'avversario non è quello attualmente
+     *                                  selezionato (ciò comprende anche il caso
+     *                                  in cui non appartenga al livello)
+     */
+    public void registraVittoria(@NonNull Avversario avversario) {
+        if (this.avversari.get(avversario) != StatoAvversario.SELEZIONATO)
+            throw new IllegalArgumentException("L'avversario non è quello attualmente selezionato");
+        this.avversari.put(avversario, StatoAvversario.SCONFITTO);
+    }
+
+    /**
+     * Verifica se il livello è stato completato.
+     *
+     * Un livello è completato quando almeno uno dei suoi avversari si trova
+     * nello stato {@link StatoAvversario#SCONFITTO}; non è quindi necessario
+     * sconfiggere tutti gli avversari presenti.
+     *
+     * @return {@code true} se almeno un avversario è stato sconfitto,
+     *         {@code false} altrimenti
+     */
+    public boolean isCompletato() {
+        return this.avversari.containsValue(StatoAvversario.SCONFITTO);
+    }
+
+}
