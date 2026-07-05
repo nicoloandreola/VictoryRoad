@@ -29,9 +29,9 @@ public abstract class Personaggio {
      * Crea un personaggio con una singola tecnica speciale iniziale
      * (ogni protagonista all'inizio ha una sola tecnica speciale).
      *
-     * Il costruttore è {@code protected} perché una tecnica speciale
-     * deve essere istanziata attraverso una sottoclasse concreta, come
-     * {@link TecnicaOffensiva} o {@link TecnicaDifensiva}.
+     * Il costruttore è {@code protected} perché un {@link Personaggio}
+     * deve essere istanziato attraverso una sottoclasse concreta, come
+     * {@link Protagonista} o {@link Avversario}.
      *
      * @param nome nome del personaggio
      * @param id identificatore univoco del personaggio
@@ -40,11 +40,10 @@ public abstract class Personaggio {
      *
      * @throws NullPointerException se uno tra i parametri è nullo
      *
-     * @throws IllegalArgumentException se il nome è vuoto
+     * @throws IllegalArgumentException se il nome o l'id è vuoto
      */
     protected Personaggio(@NonNull String nome, @NonNull String id, @NonNull StatisticheBase statisticheBase, @NonNull TecnicaSpeciale tecnicaIniziale) {
-        if (nome.isBlank())
-            throw new IllegalArgumentException("Nome del personaggio non può essere vuoto!");
+        this.verificaNomeAndId(nome, id);
         this.nome = nome;
         this.id = id;
         this.gestoreStatistiche = new GestoreStatistiche(statisticheBase);
@@ -65,15 +64,11 @@ public abstract class Personaggio {
      * @throws NullPointerException se uno tra i parametri è nullo o se il set
      *                              passato contiene elementi nulli
      *
-     * @throws IllegalArgumentException se il nome o il set delle tecniche è vuoto
+     * @throws IllegalArgumentException se il nome, l'id o il set delle tecniche è vuoto
      */
     public Personaggio(@NonNull String nome, @NonNull String id, @NonNull StatisticheBase statisticheBase, @NonNull Set<TecnicaSpeciale> tecnicheSpeciali) {
-        if (nome.isBlank())
-            throw new IllegalArgumentException("Nome del personaggio non può essere vuoto!");
-        if (tecnicheSpeciali.isEmpty())
-            throw new IllegalArgumentException("Il personaggio deve avere almeno una tecnica speciale!");
-        if (tecnicheSpeciali.contains(null))
-            throw new NullPointerException("Le tecniche non possono contenere valori nulli!");
+        this.verificaNomeAndId(nome, id);
+        this.verificaSetTecniche(tecnicheSpeciali);
         this.nome = nome;
         this.id = id;
         this.gestoreStatistiche = new GestoreStatistiche(statisticheBase);
@@ -138,6 +133,18 @@ public abstract class Personaggio {
     }
 
     /**
+     * Ripristina le risorse del personaggio semplicemente riassegnando al
+     * campo {@link #risorseMatch }una nuova istanza della classe {@link RisorseMatch}.
+     *
+     * Deve essere usato all'inizio di un nuovo match o dopo un gol,
+     * quando stamina e resistenza devono tornare ai valori massimi.
+     *
+     */
+    public void ripristinaRisorseMatch() {
+        this.risorseMatch = new RisorseMatch();
+    }
+
+    /**
      * Verifica se il personaggio possiede una determinata tecnica.
      *
      * @param tecnica tecnica da cercare
@@ -149,6 +156,18 @@ public abstract class Personaggio {
 
     public boolean possiedeTecnica(@NonNull TecnicaSpeciale tecnica) {
         return this.tecnicheSpeciali.contains(tecnica);
+    }
+
+    /**
+     * Aggiunge una nuova tecnica speciale se il personaggio non la ha già.
+     *
+     * @param tecnica tecnica da aggiungere
+     * @return {@code true} se la tecnica non è già presente nel set del
+     *          personaggio, {@code false} altrimenti
+     *
+     * @throws NullPointerException se la tecnica passata è nulla
+     */    protected final boolean aggiungiTecnica(@NonNull TecnicaSpeciale tecnica) {
+        return this.tecnicheSpeciali.add(tecnica);
     }
 
     /**
@@ -172,6 +191,20 @@ public abstract class Personaggio {
     @Override
     public int hashCode() {
         return this.id.hashCode();
+    }
+
+    private void verificaNomeAndId(String nome, String id) {
+        if (nome.isBlank())
+            throw new IllegalArgumentException("Nome del personaggio non può essere vuoto!");
+        if (id.isBlank())
+            throw new IllegalArgumentException("ID del personaggio non può essere vuoto!");
+    }
+
+    private void verificaSetTecniche(Set<TecnicaSpeciale> tecnicheSpeciali) {
+        if (tecnicheSpeciali.isEmpty())
+            throw new IllegalArgumentException("Il personaggio deve avere almeno una tecnica speciale!");
+        if (tecnicheSpeciali.contains(null))
+            throw new NullPointerException("Le tecniche non possono contenere valori nulli!");
     }
 
 }

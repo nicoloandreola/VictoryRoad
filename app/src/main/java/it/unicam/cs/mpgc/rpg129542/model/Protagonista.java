@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg129542.model;
 
-import lombok.Getter;
 import lombok.NonNull;
 
 /**
@@ -30,14 +29,14 @@ public class Protagonista extends Personaggio {
      * ogni volta che ne "impara" una (cioè dopo ogni vittoria)
      *
      * @param tecnica nuova tecnica da aggiungere
-     * @return {@code true} se la tecnica è già presente nel set del
-     *          personaggio, {@code false} altrimenti
+     * @return {@code true} se la tecnica non è già presente nel set del
+     *          personaggio e viene aggiunta correttamente, {@code false} altrimenti
      *
      * @throws NullPointerException se la tecnica passata è nulla
      */
 
-    public boolean aggiungiTecnica(@NonNull TecnicaSpeciale tecnica) {
-        return this.getTecnicheSpeciali().add(tecnica);
+    public boolean imparaTecnica(@NonNull TecnicaSpeciale tecnica) {
+        return aggiungiTecnica(tecnica);
     }
 
     /**
