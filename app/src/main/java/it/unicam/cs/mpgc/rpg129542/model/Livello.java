@@ -165,4 +165,33 @@ public class Livello {
         return this.avversari.containsValue(StatoAvversario.SCONFITTO);
     }
 
+    /**
+     * Confronta 2 livelli basandosi esclusivamente sul loro numero
+     *
+     * @param obj oggetto da confrontare
+     *
+     * @return {@code true} se i due livelli hanno lo stesso numero,
+     *         {@code false} altrimenti
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Livello))
+            return false;
+
+        Livello other = (Livello) obj;
+        return this.numero == other.numero;
+    }
+
+    /**
+     * Calcola l'hashcode del livello partendo dal suo numero
+     *
+     * @return hashcode del livello
+     */
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(this.numero);
+    }
+
 }
