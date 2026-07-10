@@ -1,5 +1,9 @@
-package it.unicam.cs.mpgc.rpg129542.model;
+package it.unicam.cs.mpgc.rpg129542.model.match;
 
+import it.unicam.cs.mpgc.rpg129542.model.personaggio.Avversario;
+import it.unicam.cs.mpgc.rpg129542.model.personaggio.Personaggio;
+import it.unicam.cs.mpgc.rpg129542.model.personaggio.Protagonista;
+import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
 import lombok.Getter;
 import lombok.NonNull;
 

@@ -1,5 +1,6 @@
-package it.unicam.cs.mpgc.rpg129542.model;
+package it.unicam.cs.mpgc.rpg129542.model.tecniche;
 
+import it.unicam.cs.mpgc.rpg129542.model.personaggio.Personaggio;
 import lombok.Getter;
 import lombok.NonNull;
 

@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg129542.model;
+package it.unicam.cs.mpgc.rpg129542.model.match;
 
 /**
  * Rappresenta lo stato generale di un match.

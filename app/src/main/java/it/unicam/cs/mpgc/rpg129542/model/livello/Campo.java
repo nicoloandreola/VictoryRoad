@@ -1,5 +1,8 @@
-package it.unicam.cs.mpgc.rpg129542.model;
+package it.unicam.cs.mpgc.rpg129542.model.livello;
 
+import it.unicam.cs.mpgc.rpg129542.model.stats.GestoreStatistiche;
+import it.unicam.cs.mpgc.rpg129542.model.stats.ModificatoreStatistiche;
+import it.unicam.cs.mpgc.rpg129542.model.stats.StatisticheBase;
 import lombok.Getter;
 import lombok.NonNull;
 

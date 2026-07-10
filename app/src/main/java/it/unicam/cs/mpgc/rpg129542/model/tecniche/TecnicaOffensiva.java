@@ -1,73 +1,74 @@
-package it.unicam.cs.mpgc.rpg129542.model;
+package it.unicam.cs.mpgc.rpg129542.model.tecniche;
 
+import it.unicam.cs.mpgc.rpg129542.model.personaggio.Personaggio;
 import lombok.NonNull;
 
 import java.util.List;
 
 /**
- * Rappresenta una tecnica speciale difensiva.
+ * Rappresenta una tecnica speciale offensiva.
  *
  * L'efficacia viene calcolata sommando la potenza della tecnica
- * al valore di difesa effettivo dell'utilizzatore, quindi la logica
+ * al valore di attacco effettivo dell'utilizzatore, quindi la logica
  * implementata da questa classe si può esprimere con la formula:
  *
- * <strong> effetto = difesa effettivo + potenza </strong>
+ * <strong> effetto = attacco effettivo + potenza </strong>
  *
  *
  * @author Nicolò Andreola
  */
-public class TecnicaDifensiva extends TecnicaSpeciale {
+public class TecnicaOffensiva extends TecnicaSpeciale {
 
     /**
-     * Costruisce una tecnica speciale difensiva.
+     * Costruisce una tecnica speciale offensiva.
      *
      * @param nome nome identificativo della tecnica
      * @param descrizione descrizione dell'effetto
-     * @param potenza valore aggiunto alla difesa dell'utilizzatore
+     * @param potenza valore aggiunto all'attacco dell'utilizzatore
      * @param costoStamina stamina necessaria per utilizzare la tecnica
      *
      * @throws NullPointerException se nome o descrizione sono nulli
      * @throws IllegalArgumentException se i parametri non rispettano
      *                                  i vincoli di {@link TecnicaSpeciale}
      */
-    public TecnicaDifensiva(String nome, String descrizione, int potenza, int costoStamina) {
+    public TecnicaOffensiva(String nome, String descrizione, int potenza, int costoStamina) {
         super(nome, descrizione, potenza, costoStamina);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @return sempre {@link TipoTecnica#DIFENSIVA}
+     * @return sempre {@link TipoTecnica#OFFENSIVA}
      */
     @Override
     public TipoTecnica getTipo() {
-        return TipoTecnica.DIFENSIVA;
+        return TipoTecnica.OFFENSIVA;
     }
 
     /**
      * Calcola l'efficacia sommando la potenza della tecnica
-     * alla difesa effettiva del personaggio che la utilizza.
+     * all'attacco effettivo del personaggio che la utilizza.
      *
      * @param personaggio personaggio su cui viene usata la tecnica
      *
-     * @return difesa effettiva più potenza della tecnica
+     * @return attacco effettivo più potenza della tecnica
      */
     @Override
     public int calcolaEffetto(@NonNull Personaggio personaggio) {
-        int difesaAttuale = personaggio.getStatisticheEffettive().getDifesa();
-        return difesaAttuale + getPotenza();
+        int attaccoAttuale = personaggio.getStatisticheEffettive().getAttacco();
+        return attaccoAttuale + this.getPotenza();
     }
 
     /**
-     * Restituisce tutte le tecniche difensive possedute da un certo personaggio
+     * Restituisce tutte le tecniche offensive possedute da un certo personaggio
      *
      * @param personaggio personaggio da cui "estrarre" le tecniche
      *
      * @throws NullPointerException se il personaggio passato è nullo
      *
-     * @return {@link List} contenente tutte le tecniche difensive del personaggio
+     * @return {@link List} contenente tutte le tecniche offensive del personaggio
      */
     public List<TecnicaSpeciale> getTecnicheDiSupporto(@NonNull Personaggio personaggio) {
-        return personaggio.getTecnichePerTipo(TipoTecnica.DIFENSIVA);
+        return personaggio.getTecnichePerTipo(TipoTecnica.OFFENSIVA);
     }
 }

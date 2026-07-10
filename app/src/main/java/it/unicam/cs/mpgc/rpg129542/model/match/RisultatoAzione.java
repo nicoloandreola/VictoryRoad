@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg129542.model;
+package it.unicam.cs.mpgc.rpg129542.model.match;
 
 import lombok.Getter;
 import lombok.NonNull;

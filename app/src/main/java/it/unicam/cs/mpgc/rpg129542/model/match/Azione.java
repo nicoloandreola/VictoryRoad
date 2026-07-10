@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg129542.model;
+package it.unicam.cs.mpgc.rpg129542.model.match;
 
 /**
  * Rappresenta le azioni che un personaggio può eseguire durante il proprio turno:

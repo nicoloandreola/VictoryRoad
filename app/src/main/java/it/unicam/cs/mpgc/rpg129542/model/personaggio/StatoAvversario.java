@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg129542.model;
+package it.unicam.cs.mpgc.rpg129542.model.personaggio;
 
 /**
  * Enumerazione che classifica i possibili stati in cui si può trovare un avversario: <br>

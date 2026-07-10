@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg129542.model;
+package it.unicam.cs.mpgc.rpg129542.model.tecniche;
 
 /**
  * Enumerazione che classifica le tecniche speciali in base al loro tipo.
