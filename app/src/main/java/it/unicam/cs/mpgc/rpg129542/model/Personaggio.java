@@ -161,6 +161,63 @@ public abstract class Personaggio {
     }
 
     /**
+     * Consuma una quantità di stamina del personaggio.
+     *
+     * La validazione della quantità e il limite minimo della stamina sono delegati
+     * a {@link RisorseMatch#consumaStamina(int)}.
+     *
+     * @param quantita quantità di stamina da consumare
+     *
+     * @throws IllegalArgumentException se la quantità non è valida
+     */
+    public void consumaStamina(int quantita) {
+        this.risorseMatch.consumaStamina(quantita);
+    }
+
+    /**
+     * Riduce la resistenza del personaggio in seguito a un danno subito.
+     *
+     * La validazione della quantità e il limite minimo della resistenza sono
+     * delegati a {@link RisorseMatch#riduciResistenza(int)}.
+     *
+     * @param quantita quantità di danno da applicare alla resistenza
+     *
+     * @throws IllegalArgumentException se la quantità non è valida
+     */
+    public void subisciDanno(int quantita) {
+        this.risorseMatch.riduciResistenza(quantita);
+    }
+
+    /**
+     * Recupera una quantità di resistenza del personaggio.
+     *
+     * La validazione della quantità e il limite massimo della resistenza sono
+     * delegati a {@link RisorseMatch#recuperaResistenza(int)}.
+     *
+     * @param quantita quantità di resistenza da recuperare
+     *
+     * @throws IllegalArgumentException se la quantità non è valida
+     */
+    public void recuperaResistenza(int quantita) {
+        this.risorseMatch.recuperaResistenza(quantita);
+    }
+
+    /**
+     * Recupera una quantità di stamina del personaggio.
+     *
+     * La validazione della quantità e il limite massimo della stamina sono
+     * delegati a {@link RisorseMatch#recuperaStamina(int)}.
+     *
+     * @param quantita quantità di stamina da recuperare
+     *
+     * @throws IllegalArgumentException se la quantità non è valida
+     */
+    public void recuperaStamina(int quantita) {
+        this.risorseMatch.recuperaStamina(quantita);
+    }
+
+
+    /**
      * Verifica se il personaggio possiede una determinata tecnica.
      *
      * @param tecnica tecnica da cercare
@@ -192,7 +249,7 @@ public abstract class Personaggio {
      *
      * @param obj oggetto da confrontare
      *
-     * @return {@code true} se i personaggi hanno lo stesso nome e lo stesso overall
+     * @return {@code true} se i personaggi hanno lo stesso id
      */
     @Override
     public boolean equals(Object obj) {
@@ -204,6 +261,12 @@ public abstract class Personaggio {
         return this.id.equals(other.id);
     }
 
+    /**
+     * Restituisce il codice hash del personaggio calcolato a partire
+     * dal suo identificatore univoco.
+     *
+     * @return hash code basato sull'id del personaggio
+     */
     @Override
     public int hashCode() {
         return this.id.hashCode();
