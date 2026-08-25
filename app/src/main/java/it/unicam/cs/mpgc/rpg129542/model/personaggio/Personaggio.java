@@ -22,8 +22,6 @@ import java.util.Set;
  */
 @Getter
 public abstract class Personaggio {
-
-
     private final String nome;
     private final String id;
     private final GestoreStatistiche gestoreStatistiche;
@@ -61,6 +59,10 @@ public abstract class Personaggio {
      * Crea un personaggio con un insieme di tecniche speciali
      * (gli avversari invece possono aver sin da subito più tecniche).
      *
+     * Il costruttore è {@code protected} perché un {@link Personaggio}
+     * deve essere istanziato attraverso una sottoclasse concreta, come
+     * {@link Protagonista} o {@link Avversario}.
+     *
      * @param nome nome del personaggio
      * @param id identificatore univoco del personaggio
      * @param statisticheBase statistiche permanenti iniziali
@@ -71,7 +73,7 @@ public abstract class Personaggio {
      *
      * @throws IllegalArgumentException se il nome, l'id o il set delle tecniche è vuoto
      */
-    public Personaggio(@NonNull String nome, @NonNull String id, @NonNull StatisticheBase statisticheBase, @NonNull Set<TecnicaSpeciale> tecnicheSpeciali) {
+    protected Personaggio(@NonNull String nome, @NonNull String id, @NonNull StatisticheBase statisticheBase, @NonNull Set<TecnicaSpeciale> tecnicheSpeciali) {
         this.verificaNomeAndId(nome, id);
         this.verificaSetTecniche(tecnicheSpeciali);
         this.nome = nome;
@@ -238,12 +240,18 @@ public abstract class Personaggio {
     /**
      * Aggiunge una nuova tecnica speciale se il personaggio non la ha già.
      *
+     * Con questo metodo, la classe mette a disposizione delle sue sottoclassi
+     * il meccanismo generico per aggiungere una tecnica, ma decide che non deve
+     * essere direttamente parte dell'API pubblica di tutti i personaggi, per questo
+     * il metodo è {@code protected}
+     *
      * @param tecnica tecnica da aggiungere
      * @return {@code true} se la tecnica non è già presente nel set del
      *          personaggio, {@code false} altrimenti
      *
      * @throws NullPointerException se la tecnica passata è nulla
-     */    protected final boolean aggiungiTecnica(@NonNull TecnicaSpeciale tecnica) {
+     */
+    protected final boolean aggiungiTecnica(@NonNull TecnicaSpeciale tecnica) {
         return this.tecnicheSpeciali.add(tecnica);
     }
 
