@@ -1,12 +1,13 @@
 package it.unicam.cs.mpgc.rpg129542.model.tecniche;
 
+import it.unicam.cs.mpgc.rpg129542.model.azioni.DifesaAttaccoDiretto;
+import it.unicam.cs.mpgc.rpg129542.model.azioni.DifesaDribbling;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Personaggio;
 import lombok.NonNull;
 
-import java.util.List;
-
 /**
- * Rappresenta una tecnica speciale difensiva.
+ * Rappresenta una tecnica speciale difensiva utilizzabile sia come
+ * {@link DifesaAttaccoDiretto} che come {@link DifesaDribbling}.
  *
  * L'efficacia viene calcolata sommando la potenza della tecnica
  * al valore di difesa effettivo dell'utilizzatore, quindi la logica
@@ -17,7 +18,8 @@ import java.util.List;
  *
  * @author Nicolò Andreola
  */
-public class TecnicaDifensiva extends TecnicaSpeciale {
+public class TecnicaDifensiva extends TecnicaSpeciale
+        implements DifesaAttaccoDiretto, DifesaDribbling {
 
     /**
      * Costruisce una tecnica speciale difensiva.
@@ -54,21 +56,26 @@ public class TecnicaDifensiva extends TecnicaSpeciale {
      * @return difesa effettiva più potenza della tecnica
      */
     @Override
-    public int calcolaEffetto(@NonNull Personaggio personaggio) {
+    protected int calcolaEffetto(@NonNull Personaggio personaggio) {
         int difesaAttuale = personaggio.getStatisticheEffettive().getDifesa();
         return difesaAttuale + getPotenza();
     }
 
     /**
-     * Restituisce tutte le tecniche difensive possedute da un certo personaggio
+     * Utilizza la tecnica e restituisce il valore difensivo prodotto.
+     * L'utilizzo e il conseguente consumo di stamina sono delegati
+     * al metodo {@link #usa(Personaggio)} della super-classe.
      *
-     * @param personaggio personaggio da cui "estrarre" le tecniche
+     * @param difensore personaggio che utilizza la tecnica
      *
-     * @throws NullPointerException se il personaggio passato è nullo
+     * @return valore difensivo prodotto dalla tecnica
      *
-     * @return {@link List} contenente tutte le tecniche difensive del personaggio
+     * @throws NullPointerException se il difensore è {@code null}
+     * @throws IllegalStateException se il personaggio non possiede la tecnica o non
+     *                               dispone della stamina necessaria per usarla
      */
-    public List<TecnicaSpeciale> getTecnicheDiSupporto(@NonNull Personaggio personaggio) {
-        return personaggio.getTecnichePerTipo(TipoTecnica.DIFENSIVA);
+    @Override
+    public int esegui(@NonNull Personaggio difensore) {
+        return this.usa(difensore);
     }
 }

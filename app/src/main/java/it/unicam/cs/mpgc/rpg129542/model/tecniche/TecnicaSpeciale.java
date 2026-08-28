@@ -70,33 +70,9 @@ public abstract class TecnicaSpeciale {
     public abstract TipoTecnica getTipo();
 
     /**
-     * Verifica se il personaggio possiede stamina sufficiente per utilizzare la tecnica.
-     *
-     * @param personaggio personaggio che intende usare la tecnica
-     * @return {@code true} se la stamina disponibile è maggiore o uguale
-     *         al costo della tecnica, {@code false} altrimenti
-     *
-     * @throws NullPointerException se il personaggio passato è nullo
-     */
-    public boolean isAvailable(@NonNull Personaggio personaggio) {
-        return personaggio.getStamina() >= this.costoStamina;
-    }
-
-    /**
-     * Descrive la logica di una tecnica speciale e restituisce il suo effetto.
-     *
-     * Il metodo è definito {@code protected} per evitare che possa essere
-     * chiamato direttamente senza consumare stamina
-     *
-     * @return valore di efficacia prodotto dalla tecnica
-     *
-     * @throws NullPointerException se il personaggio passato è nullo
-     */
-    protected abstract int calcolaEffetto(@NonNull Personaggio personaggio);
-
-    /**
-     * Permette di utilizzare la tecnica verificando preventivamente che
-     * il personaggio disponga della stamina necessaria: se la tecnica è
+     * Permette di utilizzare la tecnica verificando preventivamente che, prima
+     * il personaggio la possieda effettivamente tra quelle imparate, e poi
+     * disponga della stamina necessaria per usarla: se la tecnica è
      * disponibile, consuma la stamina richiesta e poi calcola il suo
      * effetto con {@link #calcolaEffetto(Personaggio)}.
      *
@@ -106,16 +82,45 @@ public abstract class TecnicaSpeciale {
      *
      * @throws NullPointerException se l'utilizzatore è nullo
      *
-     * @throws IllegalStateException se la stamina disponibile è insufficiente
+     * @throws IllegalStateException se il personaggio non possiede la tecnica o
+     *                              se la stamina disponibile è minore di quella richiesta
      */
     public int usa(@NonNull Personaggio personaggio) {
-
-        if (!isAvailable(personaggio))
+        if (!personaggio.possiedeTecnica(this))
+            throw new IllegalStateException("Il personaggio non possiede questa tecnica!");
+        if (!isDisponibile(personaggio))
             throw new IllegalStateException("Stamina insufficiente per utilizzare la tecnica!");
         int effetto = calcolaEffetto(personaggio);
-        personaggio.getRisorseMatch().consumaStamina(this.costoStamina);
+        personaggio.consumaStamina(this.costoStamina);
         return effetto;
     }
+
+    /**
+     * Verifica se il personaggio possiede stamina sufficiente per utilizzare la tecnica.
+     *
+     * @param personaggio personaggio che intende usare la tecnica
+     * @return {@code true} se la stamina disponibile è maggiore o uguale
+     *         al costo della tecnica, {@code false} altrimenti
+     *
+     * @throws NullPointerException se il personaggio passato è nullo
+     */
+    public boolean isDisponibile(@NonNull Personaggio personaggio) {
+        return personaggio.getStamina() >= this.costoStamina;
+    }
+
+    /**
+     * Descrive la logica di una tecnica speciale e restituisce il suo effetto.
+     *
+     * Il metodo è definito {@code protected} per evitare che possa essere
+     * chiamato direttamente senza consumare stamina
+     *
+     * @param personaggio personaggio su cui applicare l'effetto
+     *
+     * @return valore di efficacia prodotto dalla tecnica
+     *
+     * @throws NullPointerException se il personaggio passato è nullo
+     */
+    protected abstract int calcolaEffetto(@NonNull Personaggio personaggio);
 
     /**
      * Confronta due tecniche in base al loro tipo e al nome: due tecniche con lo stesso
@@ -123,7 +128,7 @@ public abstract class TecnicaSpeciale {
      *
      * @param obj oggetto da confrontare
      *
-     * @return {@code true} se le tecniche hanno la stessa classe concreta e lo stesso nome
+     * @return {@code true} se le tecniche hanno lo stessto {@link TipoTecnica} e lo stesso nome
      */
     @Override
     public boolean equals(Object obj) {

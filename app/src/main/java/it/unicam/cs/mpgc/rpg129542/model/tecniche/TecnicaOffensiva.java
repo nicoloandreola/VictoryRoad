@@ -1,12 +1,16 @@
 package it.unicam.cs.mpgc.rpg129542.model.tecniche;
 
+import it.unicam.cs.mpgc.rpg129542.model.azioni.AzioneAttaccante;
+import it.unicam.cs.mpgc.rpg129542.model.azioni.AzioneDifensore;
+import it.unicam.cs.mpgc.rpg129542.model.azioni.DifesaAttaccoDiretto;
+import it.unicam.cs.mpgc.rpg129542.model.match.EsitoTurno;
+import it.unicam.cs.mpgc.rpg129542.model.match.LogicaMatch;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Personaggio;
 import lombok.NonNull;
 
-import java.util.List;
-
 /**
- * Rappresenta una tecnica speciale offensiva.
+ * Rappresenta una tecnica speciale offensiva utilizzabile
+ * direttamente come {@link AzioneAttaccante}.
  *
  * L'efficacia viene calcolata sommando la potenza della tecnica
  * al valore di attacco effettivo dell'utilizzatore, quindi la logica
@@ -17,7 +21,7 @@ import java.util.List;
  *
  * @author Nicolò Andreola
  */
-public class TecnicaOffensiva extends TecnicaSpeciale {
+public class TecnicaOffensiva extends TecnicaSpeciale implements AzioneAttaccante {
 
     /**
      * Costruisce una tecnica speciale offensiva.
@@ -54,21 +58,37 @@ public class TecnicaOffensiva extends TecnicaSpeciale {
      * @return attacco effettivo più potenza della tecnica
      */
     @Override
-    public int calcolaEffetto(@NonNull Personaggio personaggio) {
+    protected int calcolaEffetto(@NonNull Personaggio personaggio) {
         int attaccoAttuale = personaggio.getStatisticheEffettive().getAttacco();
         return attaccoAttuale + this.getPotenza();
     }
 
     /**
-     * Restituisce tutte le tecniche offensive possedute da un certo personaggio
+     * Utilizza la tecnica come azione offensiva del turno.
+     * L'utilizzo e il conseguente consumo di stamina sono delegati
+     * al metodo {@link #usa(Personaggio)} della super-classe.
      *
-     * @param personaggio personaggio da cui "estrarre" le tecniche
+     * @param attaccante  personaggio che utilizza la tecnica
+     * @param difensore   personaggio che difende
+     * @param difesa      risposta scelta dal difensore
+     * @param logicaMatch logica utilizzata per risolvere l'attacco
      *
-     * @throws NullPointerException se il personaggio passato è nullo
+     * @return esito prodotto dal confronto tra attacco e difesa
      *
-     * @return {@link List} contenente tutte le tecniche offensive del personaggio
+     * @throws NullPointerException     se uno dei parametri, eccetto "difesa" è {@code null}
+     *
+     * @throws IllegalArgumentException se la risposta scelta non implementa {@link DifesaAttaccoDiretto}
+     *
+     * @throws IllegalStateException se il personaggio non possiede la tecnica o non
+     *                                   dispone della stamina necessaria per usarla
      */
-    public List<TecnicaSpeciale> getTecnicheDiSupporto(@NonNull Personaggio personaggio) {
-        return personaggio.getTecnichePerTipo(TipoTecnica.OFFENSIVA);
+    @Override
+    public EsitoTurno esegui(@NonNull Personaggio attaccante, @NonNull Personaggio difensore,
+                             AzioneDifensore difesa, @NonNull LogicaMatch logicaMatch) {
+        if (!(difesa instanceof DifesaAttaccoDiretto risposta))
+            throw new IllegalArgumentException("Risposta non valida contro una tecnica offensiva!");
+        int valoreAttacco = this.usa(attaccante);
+        int valoreDifesa = risposta.esegui(difensore);
+        return logicaMatch.risolviAttaccoDiretto(difensore, valoreAttacco, valoreDifesa);
     }
 }
