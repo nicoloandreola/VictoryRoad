@@ -42,11 +42,14 @@ public class Livello {
      *
      * @throws NullPointerException se uno dei parametri è {@code null}
      *
-     * @throws IllegalArgumentException se {@code numero} è negativo
+     * @throws IllegalArgumentException se {@code numero} è negativo o se
+     *                                  i due avversari sono uguali
      */
     public Livello(int numero, @NonNull Campo campo, @NonNull Avversario avversario1, @NonNull Avversario avversario2) {
         if (numero < 0)
             throw new IllegalArgumentException("Livello non può essere etichettato con un numero negativo!");
+        if (avversario1.equals(avversario2))
+            throw new IllegalArgumentException("I due avversari del livello devono essere differenti!");
         this.numero = numero;
         this.campo = campo;
         this.avversari = new HashMap<>();

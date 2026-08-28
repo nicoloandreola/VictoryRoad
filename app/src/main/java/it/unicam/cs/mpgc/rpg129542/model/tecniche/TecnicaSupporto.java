@@ -77,9 +77,9 @@ public class TecnicaSupporto extends TecnicaSpeciale
      *
      * @return {@link EsitoTurno#STAMINA_RECUPERATA}
      *
-     * @throws NullPointerException se uno dei parametri è {@code null}
-     * @throws IllegalArgumentException se viene fornita una risposta diversa
-     *                                  da {@code null}
+     * @throws NullPointerException se uno dei parametri, eccetto "difesa" è {@code null}
+     *
+     * @throws IllegalArgumentException se viene fornita una risposta diversa da {@code null}
      */
     @Override
     public EsitoTurno esegui(@NonNull Personaggio attaccante, @NonNull Personaggio difensore,

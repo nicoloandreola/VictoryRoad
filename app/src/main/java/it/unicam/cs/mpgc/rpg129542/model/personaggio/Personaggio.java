@@ -20,12 +20,14 @@ import java.util.Set;
  *
  * @author Nicolò Andreola
  */
-@Getter
 public abstract class Personaggio {
+    @Getter
     private final String nome;
+    @Getter
     private final String id;
+    @Getter
     private final GestoreStatistiche gestoreStatistiche;
-    private Set<TecnicaSpeciale> tecnicheSpeciali;
+    private final Set<TecnicaSpeciale> tecnicheSpeciali;
     private RisorseMatch risorseMatch;
 
     /**
@@ -46,7 +48,7 @@ public abstract class Personaggio {
      * @throws IllegalArgumentException se il nome o l'id è vuoto
      */
     protected Personaggio(@NonNull String nome, @NonNull String id, @NonNull StatisticheBase statisticheBase, @NonNull TecnicaSpeciale tecnicaIniziale) {
-        this.verificaNomeAndId(nome, id);
+        this.verificaNomeEId(nome, id);
         this.nome = nome;
         this.id = id;
         this.gestoreStatistiche = new GestoreStatistiche(statisticheBase);
@@ -74,7 +76,7 @@ public abstract class Personaggio {
      * @throws IllegalArgumentException se il nome, l'id o il set delle tecniche è vuoto
      */
     protected Personaggio(@NonNull String nome, @NonNull String id, @NonNull StatisticheBase statisticheBase, @NonNull Set<TecnicaSpeciale> tecnicheSpeciali) {
-        this.verificaNomeAndId(nome, id);
+        this.verificaNomeEId(nome, id);
         this.verificaSetTecniche(tecnicheSpeciali);
         this.nome = nome;
         this.id = id;
@@ -284,7 +286,7 @@ public abstract class Personaggio {
         return this.id.hashCode();
     }
 
-    private void verificaNomeAndId(String nome, String id) {
+    private void verificaNomeEId(String nome, String id) {
         if (nome.isBlank())
             throw new IllegalArgumentException("Nome del personaggio non può essere vuoto!");
         if (id.isBlank())

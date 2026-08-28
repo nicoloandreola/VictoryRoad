@@ -128,7 +128,7 @@ public abstract class TecnicaSpeciale {
      *
      * @param obj oggetto da confrontare
      *
-     * @return {@code true} se le tecniche hanno lo stessto {@link TipoTecnica} e lo stesso nome
+     * @return {@code true} se le tecniche hanno lo stesso {@link TipoTecnica} e lo stesso nome
      */
     @Override
     public boolean equals(Object obj) {
