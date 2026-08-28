@@ -1,61 +1,56 @@
 package it.unicam.cs.mpgc.rpg129542.model.match;
 
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Personaggio;
-import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
 import lombok.NonNull;
 
 /**
- * Definisce il contratto per la logica utilizzata nella risoluzione
- * dei turni di un {@link Match}.
+ * Definisce il contratto della logica utilizzata per risolvere
+ * i confronti tra le azioni eseguite durante un {@link Match}.
  *
- * Una implementazione di questa interfaccia stabilisce quali risposte
- * difensive siano compatibili con ciascuna azione dell'attaccante e
- * determina l'esito prodotto dalla combinazione delle azioni scelte.
+ * L'interfaccia si occupa esclusivamente della risoluzione degli effetti
+ * delle azioni, ricevendo i valori già calcolati dalle relative
+ * implementazioni e determinando il conseguente {@link EsitoTurno}.
  *
- * La separazione tra questa interfaccia e {@link Match} permette
- * di modificare o sostituire le regole di combattimento senza modificare
- * la classe che coordina lo svolgimento della partita.
+ * La separazione tra questa interfaccia e {@link Match} permette di
+ * mantenere distinta la logica di risoluzione delle azioni dalla gestione
+ * dello stato complessivo della partita (come punteggio, possesso e
+ * conclusione del match) e di modificare o sostituire le regole di
+ * un duello senza modificare la classe che coordina una partita.
+ *
+ * Inoltre, differenti implementazioni dell'interfaccia possono definire
+ * regole o formule alternative senza richiedere modifiche alla classe
+ * {@link Match} o alle singole azioni.
  *
  * @author Nicolò Andreola
  */
 public interface LogicaMatch {
 
     /**
-     * Risolve un turno sulla base delle azioni scelte dall'attaccante
-     * e dal difensore.
+     * Risolve un attacco diretto confrontando il valore offensivo
+     * dell'attaccante con quello difensivo prodotto dal difensore.
      *
-     * Le tecniche possono essere {@code null} quando nel turno in
-     * considerazione non vengono utilizzate.
+     * Se l'attacco supera la difesa, viene applicato il relativo danno
+     * alla resistenza del difensore e viene determinato l'esito conseguente.
      *
-     * @param attaccante personaggio che possiede il turno offensivo
-     * @param attacco azione scelta dall'attaccante
-     * @param difensore personaggio che risponde all'azione offensiva
-     * @param difesa risposta scelta dal difensore
-     * @param tecnicaAttaccante eventuale tecnica scelta dall'attaccante
-     * @param tecnicaDifensore eventuale tecnica scelta dal difensore
+     * @param difensore personaggio che subisce l'attacco
+     * @param valoreAttacco valore offensivo prodotto dall'azione dell'attaccante
+     * @param valoreDifesa valore prodotto dalla risposta difensiva
      *
-     * @return {@link EsitoTurno} prodotto dalla risoluzione del turno
+     * @return esito prodotto dalla risoluzione dell'attacco
      *
-     * @throws NullPointerException se attaccante, difensore,
-     *         attacco o difesa sono {@code null}
-     * @throws IllegalArgumentException se le azioni scelte non sono
-     *         compatibili o una tecnica non appartiene al tipo richiesto
+     * @throws NullPointerException se il difensore è {@code null}
      */
-    EsitoTurno risolviAzione(@NonNull Personaggio attaccante, @NonNull AzioneAttaccante attacco,
-                             @NonNull Personaggio difensore, @NonNull AzioneDifensore difesa,
-                             TecnicaSpeciale tecnicaAttaccante, TecnicaSpeciale tecnicaDifensore);
+    EsitoTurno risolviAttaccoDiretto(@NonNull Personaggio difensore, int valoreAttacco, int valoreDifesa);
 
     /**
-     * Verifica se una determinata risposta del difensore è compatibile
-     * con l'azione scelta dall'attaccante.
+     * Risolve un tentativo di dribbling confrontando il valore
+     * dell'azione dell'attaccante con quello della risposta del difensore.
      *
-     * @param attacco azione scelta dall'attaccante
-     * @param difesa risposta scelta dal difensore
+     * @param valoreDribbling valore prodotto dal dribbling dell'attaccante
+     * @param valoreContrasto valore prodotto dalla risposta del difensore
      *
-     * @return {@code true} se la risposta è ammessa per l'attacco specificato,
-     *         {@code false} altrimenti
-     *
-     * @throws NullPointerException se uno dei parametri è {@code null}
+     * @return {@link EsitoTurno#DRIBBLING_RIUSCITO} se il dribbling supera
+     *         la risposta difensiva, {@link EsitoTurno#PALLA_PERSA} altrimenti
      */
-    boolean isRispostaValida(@NonNull AzioneAttaccante attacco, @NonNull AzioneDifensore difesa);
+    EsitoTurno risolviDribbling(int valoreDribbling, int valoreContrasto);
 }

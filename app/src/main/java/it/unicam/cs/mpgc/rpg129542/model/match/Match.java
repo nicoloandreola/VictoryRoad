@@ -1,9 +1,10 @@
 package it.unicam.cs.mpgc.rpg129542.model.match;
 
+import it.unicam.cs.mpgc.rpg129542.model.azioni.AzioneAttaccante;
+import it.unicam.cs.mpgc.rpg129542.model.azioni.AzioneDifensore;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Avversario;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Personaggio;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Protagonista;
-import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -57,14 +58,14 @@ public class Match {
         this.golProtagonista = 0;
         this.golAvversario = 0;
         this.logicaMatch = logicaMatch;
-        this.attaccanteCorrente = sorteggiaPersonaggioIniziale();
+        this.attaccanteCorrente = sorteggiaAttaccanteIniziale();
 
         this.protagonista.ripristinaRisorseMatch();
         this.avversario.ripristinaRisorseMatch();
     }
 
     // Sorteggia casualmente il personaggio che eseguirà la prima azione offensiva del match.
-    private Personaggio sorteggiaPersonaggioIniziale() {
+    private Personaggio sorteggiaAttaccanteIniziale() {
         Random random = new Random();
         boolean testa = random.nextBoolean();
         return testa ? this.protagonista : this.avversario;
@@ -84,27 +85,20 @@ public class Match {
      *
      * @param attacco azione scelta dall'attaccante
      * @param difesa risposta scelta dal difensore
-     * @param tecnicaAttaccante eventuale tecnica utilizzata dall'attaccante
-     * @param tecnicaDifensore eventuale tecnica utilizzata dal difensore
      *
      * @return {@link EsitoTurno} prodotto dal turno
      *
-     * @throws NullPointerException se attacco o difesa sono {@code null}
+     * @throws NullPointerException se l'azione di attacco è {@code null}
+     *
      * @throws IllegalStateException se il match è già concluso
-     * @throws IllegalArgumentException se viene selezionata una tecnica
-     *         non posseduta dal personaggio o se la combinazione di azioni
-     *         non è valida
+     *
+     * @throws IllegalArgumentException se viene selezionata una tecnica non
+     *         posseduta dal personaggio o se la combinazione di azioni non è valida
      */
-    public EsitoTurno giocaTurno(@NonNull AzioneAttaccante attacco, @NonNull AzioneDifensore difesa,
-                                 TecnicaSpeciale tecnicaAttaccante, TecnicaSpeciale tecnicaDifensore) {
+    public EsitoTurno giocaTurno(@NonNull AzioneAttaccante attacco, AzioneDifensore difesa) {
         if(this.isConcluso())
             throw new IllegalStateException("Uno dei 2 giocatori ha già vinto!");
-        if(tecnicaAttaccante != null)
-            this.verificaTecnicaPosseduta(this.attaccanteCorrente, tecnicaAttaccante);
-        if(tecnicaDifensore != null)
-            this.verificaTecnicaPosseduta(this.getDifensoreCorrente(), tecnicaDifensore);
-        EsitoTurno esito = this.logicaMatch.risolviAzione(this.attaccanteCorrente, attacco,
-                this.getDifensoreCorrente(), difesa, tecnicaAttaccante, tecnicaDifensore);
+        EsitoTurno esito = attacco.esegui(this.attaccanteCorrente, this.getDifensoreCorrente(), difesa, this.logicaMatch);
         this.gestisciEsito(esito);
         return esito;
     }
@@ -174,10 +168,5 @@ public class Match {
     private void ripristinaRisorse() {
         this.protagonista.ripristinaRisorseMatch();
         this.avversario.ripristinaRisorseMatch();
-    }
-
-    private void verificaTecnicaPosseduta(Personaggio personaggio, TecnicaSpeciale tecnica) {
-        if (!personaggio.possiedeTecnica(tecnica))
-            throw new IllegalArgumentException("Il personaggio non possiede questa tecnica!");
     }
 }
