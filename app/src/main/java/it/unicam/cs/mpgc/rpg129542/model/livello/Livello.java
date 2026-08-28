@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg129542.model.livello;
 
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Avversario;
-import it.unicam.cs.mpgc.rpg129542.model.personaggio.StatoAvversario;
 import lombok.Getter;
 import lombok.NonNull;
 

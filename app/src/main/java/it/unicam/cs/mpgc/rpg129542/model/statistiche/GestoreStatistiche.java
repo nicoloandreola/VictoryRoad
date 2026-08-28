@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg129542.model.stats;
+package it.unicam.cs.mpgc.rpg129542.model.statistiche;
 
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Personaggio;
 import lombok.Getter;

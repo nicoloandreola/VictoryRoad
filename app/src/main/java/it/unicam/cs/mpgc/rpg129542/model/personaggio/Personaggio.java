@@ -1,7 +1,7 @@
 package it.unicam.cs.mpgc.rpg129542.model.personaggio;
 
-import it.unicam.cs.mpgc.rpg129542.model.stats.GestoreStatistiche;
-import it.unicam.cs.mpgc.rpg129542.model.stats.StatisticheBase;
+import it.unicam.cs.mpgc.rpg129542.model.statistiche.GestoreStatistiche;
+import it.unicam.cs.mpgc.rpg129542.model.statistiche.StatisticheBase;
 import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
 import it.unicam.cs.mpgc.rpg129542.model.tecniche.TipoTecnica;
 import lombok.Getter;
