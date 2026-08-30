@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tecniche>
+
+    <!-- Tecniche offensive: tecniche di tiro -->
+    <tecnica id="tornado_fuoco" tipo="OFFENSIVA">
+        <nome>Tornado di Fuoco</nome>
+        <potenza>10</potenza>
+        <costoStamina>15</costoStamina>
+    </tecnica>
+
+    <tecnica id="freccia_saettante" tipo="OFFENSIVA">
+        <nome>Freccia Saettante</nome>
+        <potenza>12</potenza>
+        <costoStamina>18</costoStamina>
+    </tecnica>
+
+    <tecnica id="pinguino_imperatore_1" tipo="OFFENSIVA">
+        <nome>Pinguino Imperatore N°1</nome>
+        <potenza>15</potenza>
+        <costoStamina>22</costoStamina>
+    </tecnica>
+
+    <tecnica id="colpo_supremo" tipo="OFFENSIVA">
+        <nome>Colpo Supremo</nome>
+        <potenza>16</potenza>
+        <costoStamina>23</costoStamina>
+    </tecnica>
+
+    <tecnica id="meteora_dirompente" tipo="OFFENSIVA">
+        <nome>Meteora Dirompente</nome>
+        <potenza>20</potenza>
+        <costoStamina>28</costoStamina>
+    </tecnica>
+
+    <tecnica id="scarica_stellare" tipo="OFFENSIVA">
+        <nome>Scarica Stellare</nome>
+        <potenza>27</potenza>
+        <costoStamina>38</costoStamina>
+    </tecnica>
+
+    <tecnica id="furia_vento" tipo="OFFENSIVA">
+        <nome>Furia del Vento</nome>
+        <potenza>9</potenza>
+        <costoStamina>14</costoStamina>
+    </tecnica>
+
+    <tecnica id="stoccata_micidiale" tipo="OFFENSIVA">
+        <nome>Stoccata Micidiale</nome>
+        <potenza>11</potenza>
+        <costoStamina>16</costoStamina>
+    </tecnica>
+
+    <tecnica id="rovesciata_micidiale" tipo="OFFENSIVA">
+        <nome>Rovesciata Micidiale</nome>
+        <potenza>15</potenza>
+        <costoStamina>22</costoStamina>
+    </tecnica>
+
+    <tecnica id="pinguino_imperatore_7" tipo="OFFENSIVA">
+        <nome>Pinguino Imperatore N°7</nome>
+        <potenza>18</potenza>
+        <costoStamina>26</costoStamina>
+    </tecnica>
+
+    <tecnica id="angelo_perduto" tipo="OFFENSIVA">
+        <nome>Angelo Perduto</nome>
+        <potenza>24</potenza>
+        <costoStamina>34</costoStamina>
+    </tecnica>
+
+    <tecnica id="vento_supremo" tipo="OFFENSIVA">
+        <nome>Vento Supremo</nome>
+        <potenza>28</potenza>
+        <costoStamina>39</costoStamina>
+    </tecnica>
+
+    <tecnica id="uragano_bianco" tipo="OFFENSIVA">
+        <nome>Uragano Bianco</nome>
+        <potenza>29</potenza>
+        <costoStamina>40</costoStamina>
+    </tecnica>
+
+    <tecnica id="tiro_portentoso" tipo="OFFENSIVA">
+        <nome>Tiro Portentoso</nome>
+        <potenza>31</potenza>
+        <costoStamina>42</costoStamina>
+    </tecnica>
+
+
+    <!-- Tecniche difensive: tecniche di parata/blocco -->
+    <tecnica id="mano_luce" tipo="DIFENSIVA">
+        <nome>Mano di Luce</nome>
+        <potenza>8</potenza>
+        <costoStamina>12</costoStamina>
+    </tecnica>
+
+    <tecnica id="mano_colosso" tipo="DIFENSIVA">
+        <nome>Mano del Colosso</nome>
+        <potenza>15</potenza>
+        <costoStamina>22</costoStamina>
+    </tecnica>
+
+    <tecnica id="mano_insuperabile" tipo="DIFENSIVA">
+        <nome>Mano Insuperabile</nome>
+        <potenza>20</potenza>
+        <costoStamina>28</costoStamina>
+    </tecnica>
+
+    <tecnica id="martello_colosso" tipo="DIFENSIVA">
+        <nome>Martello del Colosso</nome>
+        <potenza>22</potenza>
+        <costoStamina>31</costoStamina>
+    </tecnica>
+
+    <tecnica id="scudo_energia" tipo="DIFENSIVA">
+        <nome>Scudo di Energia</nome>
+        <potenza>24</potenza>
+        <costoStamina>34</costoStamina>
+    </tecnica>
+
+    <tecnica id="parata_suprema" tipo="DIFENSIVA">
+        <nome>Parata Suprema</nome>
+        <potenza>30</potenza>
+        <costoStamina>42</costoStamina>
+    </tecnica>
+
+    <tecnica id="parata_ardente" tipo="DIFENSIVA">
+        <nome>Parata Ardente</nome>
+        <potenza>10</potenza>
+        <costoStamina>15</costoStamina>
+    </tecnica>
+
+    <tecnica id="barriera_monolitica" tipo="DIFENSIVA">
+        <nome>Barriera Monolitica</nome>
+        <potenza>17</potenza>
+        <costoStamina>24</costoStamina>
+    </tecnica>
+
+    <tecnica id="barriera_cristallina" tipo="DIFENSIVA">
+        <nome>Barriera Cristallina</nome>
+        <potenza>21</potenza>
+        <costoStamina>30</costoStamina>
+    </tecnica>
+
+    <tecnica id="muro_roccia" tipo="DIFENSIVA">
+        <nome>Muro di Roccia</nome>
+        <potenza>13</potenza>
+        <costoStamina>18</costoStamina>
+    </tecnica>
+
+
+    <!-- Tecniche di supporto: tecniche di recupero stamina.
+    Il costo non viene salvato perché TecnicaSupporto lo fissa a 0 -->
+    <tecnica id="giro_vento" tipo="SUPPORTO">
+        <nome>Giro di Vento</nome>
+        <potenza>12</potenza>
+    </tecnica>
+
+    <tecnica id="turbina_rotante" tipo="SUPPORTO">
+        <nome>Turbina Rotante</nome>
+        <potenza>14</potenza>
+    </tecnica>
+
+    <tecnica id="illusion_dribbling" tipo="SUPPORTO">
+        <nome>Illusion Dribbling</nome>
+        <potenza>16</potenza>
+    </tecnica>
+
+    <tecnica id="toccata_fuga" tipo="SUPPORTO">
+        <nome>Toccata e Fuga</nome>
+        <potenza>18</potenza>
+    </tecnica>
+
+    <tecnica id="ritmo_travolgente" tipo="SUPPORTO">
+        <nome>Ritmo Travolgente</nome>
+        <potenza>20</potenza>
+    </tecnica>
+
+    <tecnica id="teletrasporto" tipo="SUPPORTO">
+        <nome>Teletrasporto</nome>
+        <potenza>22</potenza>
+    </tecnica>
+
+    <tecnica id="galleria_vento" tipo="SUPPORTO">
+        <nome>Galleria del Vento</nome>
+        <potenza>25</potenza>
+    </tecnica>
+
+    <tecnica id="z_zag" tipo="SUPPORTO">
+        <nome>Z Zag</nome>
+        <potenza>28</potenza>
+    </tecnica>
+
+</tecniche>

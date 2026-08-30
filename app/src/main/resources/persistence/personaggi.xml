@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<personaggi>
+
+    <protagonisti>
+
+        <protagonista id="P1">
+            <nome>Axel Blaze</nome>
+            <statistiche>
+                <attacco>38</attacco>
+                <difesa>30</difesa>
+                <agilita>34</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="tornado_fuoco"/>
+            </tecniche>
+        </protagonista>
+
+        <protagonista id="P2">
+            <nome>Arion Sherwind</nome>
+            <statistiche>
+                <attacco>33</attacco>
+                <difesa>31</difesa>
+                <agilita>39</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="giro_vento"/>
+            </tecniche>
+        </protagonista>
+
+        <protagonista id="P3">
+            <nome>Mark Evans</nome>
+            <statistiche>
+                <attacco>30</attacco>
+                <difesa>40</difesa>
+                <agilita>32</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="mano_luce"/>
+            </tecniche>
+        </protagonista>
+
+    </protagonisti>
+
+    <avversari>
+
+        <!-- Livello 1 -->
+        <avversario id="A1">
+            <nome>Jack Wallside</nome>
+            <statistiche>
+                <attacco>30</attacco>
+                <difesa>35</difesa>
+                <agilita>27</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="muro_roccia"/>
+                <tecnicaRef ref="turbina_rotante"/>
+            </tecniche>
+        </avversario>
+
+        <avversario id="A2">
+            <nome>Kevin Dragonfly</nome>
+            <statistiche>
+                <attacco>35</attacco>
+                <difesa>28</difesa>
+                <agilita>32</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="furia_vento"/>
+                <tecnicaRef ref="parata_ardente"/>
+            </tecniche>
+        </avversario>
+
+        <!-- Livello 2 -->
+        <avversario id="A3">
+            <nome>Nathan Swift</nome>
+            <statistiche>
+                <attacco>34</attacco>
+                <difesa>32</difesa>
+                <agilita>39</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="freccia_saettante"/>
+                <tecnicaRef ref="turbina_rotante"/>
+            </tecniche>
+        </avversario>
+
+        <avversario id="A4">
+            <nome>Jude Sharp</nome>
+            <statistiche>
+                <attacco>37</attacco>
+                <difesa>35</difesa>
+                <agilita>36</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="pinguino_imperatore_1"/>
+                <tecnicaRef ref="illusion_dribbling"/>
+            </tecniche>
+        </avversario>
+
+        <!-- Livello 3 -->
+        <avversario id="A5">
+            <nome>Byron Love</nome>
+            <statistiche>
+                <attacco>41</attacco>
+                <difesa>35</difesa>
+                <agilita>40</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="colpo_supremo"/>
+                <tecnicaRef ref="muro_roccia"/>
+                <tecnicaRef ref="toccata_fuga"/>
+            </tecniche>
+        </avversario>
+
+        <avversario id="A6">
+            <nome>Shawn Froste</nome>
+            <statistiche>
+                <attacco>40</attacco>
+                <difesa>40</difesa>
+                <agilita>39</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="rovesciata_micidiale"/>
+                <tecnicaRef ref="barriera_monolitica"/>
+                <tecnicaRef ref="illusion_dribbling"/>
+            </tecniche>
+        </avversario>
+
+        <!-- Livello 4 -->
+        <avversario id="A7">
+            <nome>Paolo Bianchi</nome>
+            <statistiche>
+                <attacco>44</attacco>
+                <difesa>41</difesa>
+                <agilita>43</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="pinguino_imperatore_7"/>
+                <tecnicaRef ref="mano_colosso"/>
+                <tecnicaRef ref="ritmo_travolgente"/>
+            </tecniche>
+        </avversario>
+
+        <avversario id="A8">
+            <nome>Xavier Foster</nome>
+            <statistiche>
+                <attacco>46</attacco>
+                <difesa>41</difesa>
+                <agilita>44</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="meteora_dirompente"/>
+                <tecnicaRef ref="mano_insuperabile"/>
+                <tecnicaRef ref="teletrasporto"/>
+            </tecniche>
+        </avversario>
+
+        <!-- Livello 5 -->
+        <avversario id="A9">
+            <nome>Riccardo Di Rigo</nome>
+            <statistiche>
+                <attacco>47</attacco>
+                <difesa>48</difesa>
+                <agilita>49</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="pinguino_imperatore_7"/>
+                <tecnicaRef ref="scudo_energia"/>
+                <tecnicaRef ref="galleria_vento"/>
+                <tecnicaRef ref="teletrasporto"/>
+            </tecniche>
+        </avversario>
+
+        <avversario id="A10">
+            <nome>Victor Blade</nome>
+            <statistiche>
+                <attacco>52</attacco>
+                <difesa>44</difesa>
+                <agilita>49</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="angelo_perduto"/>
+                <tecnicaRef ref="pinguino_imperatore_7"/>
+                <tecnicaRef ref="barriera_cristallina"/>
+                <tecnicaRef ref="ritmo_travolgente"/>
+            </tecniche>
+        </avversario>
+
+        <!-- Livello 6 -->
+        <avversario id="A11">
+            <nome>Sol Daystar</nome>
+            <statistiche>
+                <attacco>54</attacco>
+                <difesa>49</difesa>
+                <agilita>53</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="scarica_stellare"/>
+                <tecnicaRef ref="vento_supremo"/>
+                <tecnicaRef ref="scudo_energia"/>
+                <tecnicaRef ref="galleria_vento"/>
+            </tecniche>
+        </avversario>
+
+        <avversario id="A12">
+            <nome>Beta</nome>
+            <statistiche>
+                <attacco>53</attacco>
+                <difesa>53</difesa>
+                <agilita>52</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="uragano_bianco"/>
+                <tecnicaRef ref="mano_insuperabile"/>
+                <tecnicaRef ref="z_zag"/>
+                <tecnicaRef ref="martello_colosso"/>
+            </tecniche>
+        </avversario>
+
+        <!-- Livello 7 -->
+        <avversario id="A13">
+            <nome>Bailong</nome>
+            <statistiche>
+                <attacco>58</attacco>
+                <difesa>54</difesa>
+                <agilita>59</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="uragano_bianco"/>
+                <tecnicaRef ref="vento_supremo"/>
+                <tecnicaRef ref="parata_suprema"/>
+                <tecnicaRef ref="z_zag"/>
+                <tecnicaRef ref="galleria_vento"/>
+            </tecniche>
+        </avversario>
+
+        <avversario id="A14">
+            <nome>Zanark Avalonic</nome>
+            <statistiche>
+                <attacco>61</attacco>
+                <difesa>59</difesa>
+                <agilita>56</agilita>
+            </statistiche>
+            <tecniche>
+                <tecnicaRef ref="tiro_portentoso"/>
+                <tecnicaRef ref="scarica_stellare"/>
+                <tecnicaRef ref="parata_suprema"/>
+                <tecnicaRef ref="martello_colosso"/>
+                <tecnicaRef ref="z_zag"/>
+            </tecniche>
+        </avversario>
+
+    </avversari>
+
+</personaggi>

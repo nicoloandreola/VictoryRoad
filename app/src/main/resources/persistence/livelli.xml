@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<livelli>
+
+    <livello numero="1">
+        <campo>
+            <nome>Mercurio</nome>
+            <descrizione>Un campo roccioso e leggero, dove la bassa gravità favorisce i movimenti rapidi.</descrizione>
+            <modificatore tipo="BONUS">
+                <attacco>0</attacco>
+                <difesa>0</difesa>
+                <agilita>5</agilita>
+            </modificatore>
+        </campo>
+        <avversari>
+            <avversarioRef ref="A1"/>
+            <avversarioRef ref="A2"/>
+        </avversari>
+    </livello>
+
+    <livello numero="2">
+        <campo>
+            <nome>Venere</nome>
+            <descrizione>L'atmosfera densa e soffocante rende più difficile vedere dove si trova il pallone.</descrizione>
+            <modificatore tipo="MALUS">
+                <attacco>6</attacco>
+                <difesa>6</difesa>
+                <agilita>2</agilita>
+            </modificatore>
+        </campo>
+        <avversari>
+            <avversarioRef ref="A3"/>
+            <avversarioRef ref="A4"/>
+        </avversari>
+    </livello>
+
+    <livello numero="3">
+        <campo>
+            <nome>Marte</nome>
+            <descrizione>Il terreno rosso e ostile incoraggia un gioco aggressivo e aumenta l'efficacia degli attacchi.</descrizione>
+            <modificatore tipo="BONUS">
+                <attacco>5</attacco>
+                <difesa>0</difesa>
+                <agilita>0</agilita>
+            </modificatore>
+        </campo>
+        <avversari>
+            <avversarioRef ref="A5"/>
+            <avversarioRef ref="A6"/>
+        </avversari>
+    </livello>
+
+    <livello numero="4">
+        <campo>
+            <nome>Giove</nome>
+            <descrizione>L'enorme gravità del pianeta appesantisce ogni movimento e penalizza l'agilità.</descrizione>
+            <modificatore tipo="MALUS">
+                <attacco>0</attacco>
+                <difesa>0</difesa>
+                <agilita>8</agilita>
+            </modificatore>
+        </campo>
+        <avversari>
+            <avversarioRef ref="A7"/>
+            <avversarioRef ref="A8"/>
+        </avversari>
+    </livello>
+
+    <livello numero="5">
+        <campo>
+            <nome>Saturno</nome>
+            <descrizione>L'energia sprigionata dagli anelli crea una barriera naturale che favorisce la difesa.</descrizione>
+            <modificatore tipo="BONUS">
+                <attacco>0</attacco>
+                <difesa>4</difesa>
+                <agilita>0</agilita>
+            </modificatore>
+        </campo>
+        <avversari>
+            <avversarioRef ref="A9"/>
+            <avversarioRef ref="A10"/>
+        </avversari>
+    </livello>
+
+    <livello numero="6">
+        <campo>
+            <nome>Urano</nome>
+            <descrizione>Il gelo estremo indebolisce i colpi e rende più difficili i cambi di direzione.</descrizione>
+            <modificatore tipo="MALUS">
+                <attacco>4</attacco>
+                <difesa>4</difesa>
+                <agilita>9</agilita>
+            </modificatore>
+        </campo>
+        <avversari>
+            <avversarioRef ref="A11"/>
+            <avversarioRef ref="A12"/>
+        </avversari>
+    </livello>
+
+    <livello numero="7">
+        <campo>
+            <nome>Nettuno</nome>
+            <descrizione>Le tempeste del pianeta rendono difficilissimo ogni tipo di azione.</descrizione>
+            <modificatore tipo="MALUS">
+                <attacco>9</attacco>
+                <difesa>9</difesa>
+                <agilita>9</agilita>
+            </modificatore>
+        </campo>
+        <avversari>
+            <avversarioRef ref="A13"/>
+            <avversarioRef ref="A14"/>
+        </avversari>
+    </livello>
+
+</livelli>
