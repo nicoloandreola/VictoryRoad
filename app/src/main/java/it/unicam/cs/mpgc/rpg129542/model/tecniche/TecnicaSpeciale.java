@@ -7,9 +7,9 @@ import lombok.NonNull;
 /**
  * Rappresenta una tecnica speciale utilizzabile da un {@link Personaggio} durante un match.
  *
- * Poiché implementa solo la logica comune, cioè la definizione, la disponibilità e il suo
- * costo, questa classe è astratta e non può essere istanziata direttamente: sono le sottoclassi
- * a definire il tipo della tecnica e la sua logica, ovvero il modo in cui viene usata e i suoi effetti
+ * Poiché implementa solo la logica comune, cioè il nome, la potenza e il suo costo, questa
+ * classe è astratta e non può essere istanziata direttamente: sono le sottoclassi a definire
+ * il tipo della tecnica e la sua logica, ovvero il modo in cui viene usata e i suoi effetti
  *
  * Le istanze sono immutabili: dopo la costruzione, le caratteristiche
  * della tecnica non possono essere modificate.
@@ -18,8 +18,8 @@ import lombok.NonNull;
  */
 @Getter
 public abstract class TecnicaSpeciale {
+    private final String id;
     private final String nome;
-    private final String descrizione;
     private final int potenza;
     private final int costoStamina;
 
@@ -30,8 +30,8 @@ public abstract class TecnicaSpeciale {
      * deve essere istanziata attraverso una sottoclasse concreta, come
      * {@link TecnicaOffensiva} o {@link TecnicaDifensiva}.
      *
-     * @param nome nome identificativo della tecnica
-     * @param descrizione descrizione dell'effetto della tecnica
+     * @param nome nome della tecnica
+     * @param id identificativo univoco della tecnica
      * @param potenza valore aggiunto alla statistica utilizzata
      * @param costoStamina stamina necessaria per utilizzare la tecnica
      *
@@ -42,17 +42,17 @@ public abstract class TecnicaSpeciale {
      *                                  se il costo in stamina è negativo
      */
 
-    protected TecnicaSpeciale (@NonNull String nome, @NonNull String descrizione, int potenza, int costoStamina){
+    protected TecnicaSpeciale (@NonNull String nome, @NonNull String id, int potenza, int costoStamina){
+        if (id.isBlank())
+            throw new IllegalArgumentException("L'identificativo della tecnica non può essere vuota!");
         if (nome.isBlank())
             throw new IllegalArgumentException("Il nome della tecnica non può essere vuoto!");
-        if (descrizione.isBlank())
-            throw new IllegalArgumentException("La descrizione tecnica non può essere vuota!");
         if (potenza <= 0)
             throw new IllegalArgumentException("La potenza della tecnica deve essere positiva!");
         if (costoStamina < 0)
             throw new IllegalArgumentException("Il costo in stamina non può essere negativo!");
+        this.id = id;
         this.nome = nome;
-        this.descrizione = descrizione;
         this.potenza = potenza;
         this.costoStamina = costoStamina;
     }
@@ -123,12 +123,11 @@ public abstract class TecnicaSpeciale {
     protected abstract int calcolaEffetto(@NonNull Personaggio personaggio);
 
     /**
-     * Confronta due tecniche in base al loro tipo e al nome: due tecniche con lo stesso
-     * nome ma appartenenti a categorie differenti non sono considerate uguali.
+     * Confronta due tecniche in base al loro identificativo.
      *
      * @param obj oggetto da confrontare
      *
-     * @return {@code true} se le tecniche hanno lo stesso {@link TipoTecnica} e lo stesso nome
+     * @return {@code true} se le tecniche hanno lo stesso {@link #id} e lo stesso nome
      */
     @Override
     public boolean equals(Object obj) {
@@ -137,16 +136,12 @@ public abstract class TecnicaSpeciale {
         if (!(obj instanceof TecnicaSpeciale))
             return false;
         TecnicaSpeciale other = (TecnicaSpeciale) obj;
-        return this.nome.equals(other.nome) && this.getTipo() == other.getTipo();
+        return this.id.equals(other.id);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + this.nome.hashCode();
-        result = prime * result + this.getTipo().hashCode();
-        return result;
+        return this.id.hashCode();
     }
 
     @Override
@@ -154,7 +149,7 @@ public abstract class TecnicaSpeciale {
         StringBuilder s = new StringBuilder();
         return s.append("Nome: ").append(this.nome).append("\n")
                 .append("Tipo: ").append(this.getTipo()).append("\n")
-                .append("Descrizione: ").append(this.descrizione).append("\n")
+                .append("ID: ").append(this.id).append("\n")
                 .append("Potenza = ").append(this.potenza).append("\n")
                 .append("Costo = ").append(this.costoStamina).toString();
     }

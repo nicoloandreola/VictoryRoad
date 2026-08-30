@@ -33,15 +33,16 @@ public class TecnicaSupporto extends TecnicaSpeciale
      * Costruisce una tecnica speciale di supporto.
      *
      * @param nome nome identificativo della tecnica
-     * @param descrizione descrizione dell'effetto
+     * @param id id della tecnica
      * @param potenza valore aggiunto alla stamina del personaggio
      *
-     * @throws NullPointerException se nome o descrizione sono nulli
+     * @throws NullPointerException se nome o id sono nulli
+     *
      * @throws IllegalArgumentException se i parametri non rispettano
      *                                  i vincoli di {@link TecnicaSpeciale}
      */
-    public TecnicaSupporto(String nome, String descrizione, int potenza) {
-        super(nome, descrizione, potenza, 0);
+    public TecnicaSupporto(String nome, String id, int potenza) {
+        super(nome, id, potenza, 0);
     }
 
     /**

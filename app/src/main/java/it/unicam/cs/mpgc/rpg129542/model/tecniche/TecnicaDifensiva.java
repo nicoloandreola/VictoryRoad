@@ -25,16 +25,17 @@ public class TecnicaDifensiva extends TecnicaSpeciale
      * Costruisce una tecnica speciale difensiva.
      *
      * @param nome nome identificativo della tecnica
-     * @param descrizione descrizione dell'effetto
+     * @param id id della tecnica
      * @param potenza valore aggiunto alla difesa dell'utilizzatore
      * @param costoStamina stamina necessaria per utilizzare la tecnica
      *
-     * @throws NullPointerException se nome o descrizione sono nulli
+     * @throws NullPointerException se nome o id sono nulli
+     *
      * @throws IllegalArgumentException se i parametri non rispettano
      *                                  i vincoli di {@link TecnicaSpeciale}
      */
-    public TecnicaDifensiva(String nome, String descrizione, int potenza, int costoStamina) {
-        super(nome, descrizione, potenza, costoStamina);
+    public TecnicaDifensiva(String nome, String id, int potenza, int costoStamina) {
+        super(nome, id, potenza, costoStamina);
     }
 
     /**

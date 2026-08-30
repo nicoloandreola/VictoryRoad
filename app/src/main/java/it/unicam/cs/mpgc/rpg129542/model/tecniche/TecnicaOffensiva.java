@@ -27,16 +27,17 @@ public class TecnicaOffensiva extends TecnicaSpeciale implements AzioneAttaccant
      * Costruisce una tecnica speciale offensiva.
      *
      * @param nome nome identificativo della tecnica
-     * @param descrizione descrizione dell'effetto
+     * @param id id della tecnica
      * @param potenza valore aggiunto all'attacco dell'utilizzatore
      * @param costoStamina stamina necessaria per utilizzare la tecnica
      *
-     * @throws NullPointerException se nome o descrizione sono nulli
+     * @throws NullPointerException se nome o id sono nulli
+     *
      * @throws IllegalArgumentException se i parametri non rispettano
      *                                  i vincoli di {@link TecnicaSpeciale}
      */
-    public TecnicaOffensiva(String nome, String descrizione, int potenza, int costoStamina) {
-        super(nome, descrizione, potenza, costoStamina);
+    public TecnicaOffensiva(String nome, String id, int potenza, int costoStamina) {
+        super(nome, id, potenza, costoStamina);
     }
 
     /**
