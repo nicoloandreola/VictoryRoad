@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg129542.persistence;
 
+import lombok.NonNull;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -22,6 +23,7 @@ import java.io.IOException;
  * documenti XML tramite le API DOM e XPath.
  *
  * @author Lorenzo Rossi
+ * @author Nicolò Andreola
  */
 
 public class DOMUtils {
@@ -31,7 +33,9 @@ public class DOMUtils {
      * DOM {@code Document}.
      *
      * @param path Il percorso del file XML da caricare.
-     * @return Un {@code Document} che rappresenta il contenuto XML analizzato (parsato).
+     *
+     * @return documento DOM ottenuto dal parsing del contenuto XML.
+     *
      * @throws ParserConfigurationException Se non è possibile creare un {@code DocumentBuilder}
      *         che soddisfi la configurazione richiesta.
      *
@@ -46,7 +50,9 @@ public class DOMUtils {
     }
 
     /**
-     * Scrive un oggetto DOM {@code Document} su un file XML al percorso specificato.
+     * Scrive il contenuto di un documento DOM su un file XML al percorso specificato.
+     * Il documento viene formattato utilizzando l'indentazione per rendere
+     * più leggibile il contenuto prodotto.
      *
      * @param dom Il {@code Document} che rappresenta la struttura DOM da scrivere su file.
      * @param path Il percorso del file in cui scrivere il contenuto XML.
@@ -59,7 +65,6 @@ public class DOMUtils {
 
         // Impostazioni per rendere l'XML leggibile (indentazione)
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        //transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
         DOMSource source = new DOMSource(dom);
         StreamResult result = new StreamResult(new File(path));
@@ -99,9 +104,9 @@ public class DOMUtils {
      * Esegue una query XPath sul {@code Node} DOM specificato e restituisce i nodi
      * corrispondenti come {@code NodeList}.
      *
-     * @param n Il {@code Node} su cui valutare la query XPath. Non deve essere {@code null}.
-     * @param xPathQuery La stringa della query XPath usata per selezionare i nodi. Non deve
-     *                    essere {@code null}.
+     * @param n Il {@code Node} su cui valutare la query XPath.
+     * @param xPathQuery La stringa della query XPath usata per selezionare i nodi.
+     *
      * @return Una {@code NodeList} contenente i nodi che corrispondono alla query XPath
      *         specificata, oppure {@code null} se il nodo in input o la query sono {@code null}.
      *
@@ -119,9 +124,10 @@ public class DOMUtils {
 
     /**
      * Cerca, tramite XPath, un elemento figlio con il tag specificato e ne restituisce
-     * il contenuto testuale.
+     * il contenuto testuale. Il parametro {@code tag} può rappresentare sia il nome di un
+     * figlio direttamente, che un percorso relativo
      *
-     * @param elemento L'elemento XML in cui cercare il figlio. Non deve essere {@code null}.
+     * @param elemento L'elemento XML in cui cercare il figlio.
      * @param tag Il percorso XPath relativo del figlio da cercare.
      *
      * @return Il contenuto testuale del primo figlio corrispondente al tag specificato.
@@ -129,8 +135,10 @@ public class DOMUtils {
      * @throws XPathExpressionException Se si verifica un errore durante la valutazione della query XPath.
      *
      * @throws IllegalArgumentException Se non viene trovato nessun figlio corrispondente al tag specificato.
+     *
+     * @throws NullPointerException se {@code elemento} è {@code null}
      */
-    public static String readTextNode(Element elemento, String tag) throws XPathExpressionException {
+    public static String readTextNode(@NonNull Element elemento, String tag) throws XPathExpressionException {
         NodeList nodi = DOMUtils.executeQuery(elemento, "./" + tag);
         if (nodi.getLength() == 0)
             throw new IllegalArgumentException("Elemento XML mancante: " + tag);

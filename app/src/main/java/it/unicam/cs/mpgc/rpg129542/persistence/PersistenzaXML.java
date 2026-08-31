@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg129542.persistence;
 
-import it.unicam.cs.mpgc.rpg129542.model.livello.Campo;
 import it.unicam.cs.mpgc.rpg129542.model.livello.Livello;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Avversario;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Protagonista;
@@ -30,9 +29,17 @@ import java.util.Set;
  *
  * Per l'analisi dei documenti XML utilizza la classe {@link DOMUtils},
  * che mette a disposizione operazioni basate sulle API DOM e XPath.
- * In questo modo questa classe mantiene la responsabilità di tradurre
- * i dati XML negli oggetti del model, delegando le operazioni generiche
- * sui documenti alla relativa classe di utilità.
+ *
+ * La trasformazione dei singoli elementi XML negli oggetti del model è invece
+ * affidata ai deserializzatori specifici {@link DeserializzatoreTecnicheXML},
+ * {@link DeserializzatorePersonaggiXML} e {@link DeserializzatoreLivelliXML}.
+ * In questo modo la classe mantiene principalmente la responsabilità di
+ * coordinare le diverse operazioni necessarie alla persistenza, senza
+ * conoscere i dettagli di costruzione di ogni oggetto del dominio.
+ *
+ * Infine, le tecniche speciali già caricate vengono salvate in {@link #tecnicheCache},
+ * poiché sono utilizzate come riferimenti durante la costruzione dei personaggi:
+ * in questo modo si evita di rifare il parsing di tecniche.xml ogni volta.
  *
  * @author Nicolò Andreola
  */
@@ -46,6 +53,8 @@ public class PersistenzaXML implements Persistenza {
     private static final String FILE_PERSONAGGI = "persistence/personaggi.xml";
     private static final String FILE_LIVELLI = "persistence/livelli.xml";
 
+    private Set<TecnicaSpeciale> tecnicheCache;
+
     /**
      * {@inheritDoc}
      *
@@ -55,26 +64,40 @@ public class PersistenzaXML implements Persistenza {
      *
      * @return insieme delle tecniche speciali definite nella configurazione
      *
-     * @throws IOException se la risorsa non viene trovata oppure si verifica
-     *                     un errore durante la lettura, il parsing o la
-     *                     conversione dei dati XML
+     * @throws IOException se la risorsa non viene trovata oppure si verifica un errore
+     *                      durante la lettura, il parsing o la conversione dei dati XML
      */
     @Override
     public Set<TecnicaSpeciale> caricaTecniche() throws IOException {
+        if (this.tecnicheCache != null)
+            return this.tecnicheCache;
         try {
             Document document = this.caricaDocumento(FILE_TECNICHE);
             NodeList nodiTecniche = DOMUtils.executeQuery(document, "/tecniche/tecnica");
             Set<TecnicaSpeciale> tecniche = new HashSet<>();
             for (int i = 0; i < nodiTecniche.getLength(); i++) {
                 Element elemento = (Element) nodiTecniche.item(i);
-                tecniche.add(this.creaTecnica(elemento));
+                tecniche.add(DeserializzatoreTecnicheXML.creaTecnica(elemento));
             }
+            this.tecnicheCache = tecniche;
             return tecniche;
-        } catch (ParserConfigurationException | SAXException | XPathExpressionException e) {
+        } catch (ParserConfigurationException | SAXException | XPathExpressionException | IllegalArgumentException e) {
             throw new IOException("Errore durante il caricamento delle tecniche", e);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * I protagonisti vengono caricati dal relativo file XML e costruiti tramite
+     * {@link DeserializzatorePersonaggiXML}. I riferimenti alle tecniche speciali
+     * possedute vengono risolti utilizzando l'insieme restituito da {@link #caricaTecniche()}.
+     *
+     * @return lista dei protagonisti definiti nella configurazione
+     *
+     * @throws IOException se la risorsa non viene trovata oppure si verifica un errore
+     *                      durante la lettura, il parsing o la conversione dei dati XML
+     */
     @Override
     public List<Protagonista> caricaProtagonisti() throws IOException {
         try {
@@ -84,14 +107,27 @@ public class PersistenzaXML implements Persistenza {
             List<Protagonista> protagonisti = new ArrayList<>();
             for (int i = 0; i < nodiProtagonisti.getLength(); i++) {
                 Element elemento = (Element) nodiProtagonisti.item(i);
-                protagonisti.add(this.creaProtagonista(elemento, tecniche));
+                protagonisti.add(DeserializzatorePersonaggiXML.creaProtagonista(elemento, tecniche));
             }
             return protagonisti;
-        } catch (ParserConfigurationException | SAXException | XPathExpressionException e) {
+        } catch (ParserConfigurationException | SAXException | XPathExpressionException | IllegalArgumentException e) {
             throw new IOException("Errore durante il caricamento dei protagonisti", e);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * I livelli vengono caricati dal relativo file XML e costruiti tramite
+     * {@link DeserializzatoreLivelliXML}. Prima della loro creazione vengono
+     * caricati gli avversari definiti nella configurazione, necessari per
+     * risolvere i riferimenti presenti all'interno di ciascun livello.
+     *
+     * @return lista dei livelli definiti nella configurazione
+     *
+     * @throws IOException se la risorsa non viene trovata oppure si verifica un errore
+     *                      durante la lettura, il parsing o la conversione dei dati XML
+     */
     @Override
     public List<Livello> caricaLivelli() throws IOException {
         try {
@@ -101,10 +137,10 @@ public class PersistenzaXML implements Persistenza {
             List<Livello> livelli = new ArrayList<>();
             for (int i = 0; i < nodiLivelli.getLength(); i++) {
                 Element elemento = (Element) nodiLivelli.item(i);
-                livelli.add(this.creaLivello(elemento, avversari));
+                livelli.add(DeserializzatoreLivelliXML.creaLivello(elemento, avversari));
             }
             return livelli;
-        } catch (ParserConfigurationException | SAXException | XPathExpressionException e) {
+        } catch (ParserConfigurationException | SAXException | XPathExpressionException | IllegalArgumentException e) {
             throw new IOException("Errore durante il caricamento dei livelli", e);
         }
     }
@@ -141,6 +177,20 @@ public class PersistenzaXML implements Persistenza {
         return false;
     }
 
+    // Permette a caricaLivelli() di caricare gli avversari definiti in personaggi.xml
+    private List<Avversario> caricaAvversari()
+            throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+        Document document = this.caricaDocumento(FILE_PERSONAGGI);
+        NodeList nodiAvversari = DOMUtils.executeQuery(document, "/personaggi/avversari/avversario");
+        Set<TecnicaSpeciale> tecniche = this.caricaTecniche();
+        List<Avversario> avversari = new ArrayList<>();
+        for (int i = 0; i < nodiAvversari.getLength(); i++) {
+            Element elemento = (Element) nodiAvversari.item(i);
+            avversari.add(DeserializzatorePersonaggiXML.creaAvversario(elemento, tecniche));
+        }
+        return avversari;
+    }
+
     private Document caricaDocumento(String file)
             throws IOException, ParserConfigurationException, SAXException {
         // Utilizzo il metodo getResource() e non getResourceAsStream() solo perché il metodo
@@ -151,148 +201,5 @@ public class PersistenzaXML implements Persistenza {
         // Trasformo l'URL in String per passarlo al metodo della classe DOMUtils
         String percorso = risorsa.toExternalForm();
         return DOMUtils.loadDomDocument(percorso);
-    }
-
-    // Costruisce l'istanza concreta di una tecnica basandosi
-    // sull'attributo "tipo" del nodo <tecnica> del file XML
-    private TecnicaSpeciale creaTecnica(Element elemento) throws XPathExpressionException{
-        String id = elemento.getAttribute("id");
-        TipoTecnica tipo = TipoTecnica.valueOf(elemento.getAttribute("tipo"));
-        String nome = DOMUtils.readTextNode(elemento, "nome");
-        int potenza = Integer.parseInt(DOMUtils.readTextNode(elemento, "potenza"));
-
-        return switch (tipo) {
-            case OFFENSIVA -> new TecnicaOffensiva(nome, id, potenza,
-                    Integer.parseInt(DOMUtils.readTextNode(elemento, "costoStamina")));
-
-            case DIFENSIVA -> new TecnicaDifensiva(nome, id, potenza,
-                    Integer.parseInt(DOMUtils.readTextNode(elemento, "costoStamina")));
-
-            case SUPPORTO -> new TecnicaSupporto(nome, id, potenza);
-        };
-    }
-
-    private Protagonista creaProtagonista(Element elemento, Set<TecnicaSpeciale> tecniche)
-            throws XPathExpressionException {
-        String id = elemento.getAttribute("id");
-        String nome = DOMUtils.readTextNode(elemento, "nome");
-        StatisticheBase statistiche = this.creaStatistiche(elemento);
-        Element tecnicaRef = (Element) DOMUtils.executeQuery(elemento, "./tecniche/tecnicaRef").item(0);
-        String idTecnica = tecnicaRef.getAttribute("ref");
-        TecnicaSpeciale tecnica = this.trovaTecnica(tecniche, idTecnica);
-        return new Protagonista(nome, id, statistiche, tecnica);
-    }
-
-    private StatisticheBase creaStatistiche(Element elemento) throws XPathExpressionException{
-        int attacco = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/attacco"));
-        int difesa = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/difesa"));
-        int agilita = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/agilita"));
-        return new StatisticheBase(attacco, difesa, agilita);
-    }
-
-    private List<Avversario> caricaAvversari()
-            throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        Document document = this.caricaDocumento(FILE_PERSONAGGI);
-        NodeList nodiAvversari = DOMUtils.executeQuery(document, "/personaggi/avversari/avversario");
-        Set<TecnicaSpeciale> tecniche = this.caricaTecniche();
-        List<Avversario> avversari = new ArrayList<>();
-        for (int i = 0; i < nodiAvversari.getLength(); i++) {
-            Element elemento = (Element) nodiAvversari.item(i);
-            avversari.add(this.creaAvversario(elemento, tecniche));
-        }
-        return avversari;
-    }
-
-    private Avversario creaAvversario(Element elemento, Set<TecnicaSpeciale> tecniche)
-            throws XPathExpressionException {
-        String id = elemento.getAttribute("id");
-        String nome = DOMUtils.readTextNode(elemento, "nome");
-        StatisticheBase statistiche = this.creaStatistiche(elemento);
-        NodeList nodiTecniche = DOMUtils.executeQuery(elemento, "./tecniche/tecnicaRef");
-        Set<TecnicaSpeciale> tecnicheAvversario = new HashSet<>();
-        for (int i = 0; i < nodiTecniche.getLength(); i++) {
-            Element tecnicaRef = (Element) nodiTecniche.item(i);
-            String idTecnica = tecnicaRef.getAttribute("ref");
-            tecnicheAvversario.add(this.trovaTecnica(tecniche, idTecnica));
-        }
-        return new Avversario(nome, id, statistiche, tecnicheAvversario);
-    }
-
-    private TecnicaSpeciale trovaTecnica(Set<TecnicaSpeciale> tecniche, String id) {
-        return tecniche.stream().filter(tecnica -> tecnica.getId().equals(id))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Tecnica non trovata: " + id));
-    }
-
-    private Livello creaLivello(Element elemento, List<Avversario> avversari) throws XPathExpressionException {
-        int numero = Integer.parseInt(elemento.getAttribute("numero"));
-
-        Element elementoCampo =
-                (Element) DOMUtils.executeQuery(
-                        elemento,
-                        "./campo"
-                ).item(0);
-
-        Campo campo =
-                this.creaCampo(elementoCampo);
-
-        NodeList riferimentiAvversari =
-                DOMUtils.executeQuery(
-                        elemento,
-                        "./avversari/avversarioRef"
-                );
-
-        if (riferimentiAvversari.getLength() != 2)
-            throw new IllegalArgumentException(
-                    "Ogni livello deve contenere due avversari!"
-            );
-
-        Element ref1 =
-                (Element) riferimentiAvversari.item(0);
-
-        Element ref2 =
-                (Element) riferimentiAvversari.item(1);
-
-        Avversario avversario1 =
-                this.trovaAvversario(
-                        avversari,
-                        ref1.getAttribute("ref")
-                );
-
-        Avversario avversario2 =
-                this.trovaAvversario(
-                        avversari,
-                        ref2.getAttribute("ref")
-                );
-
-        return new Livello(
-                numero,
-                campo,
-                avversario1,
-                avversario2
-        );
-    }
-
-    private Campo creaCampo(Element elemento) throws XPathExpressionException {
-        String nome = DOMUtils.readTextNode(elemento, "nome");
-        String descrizione = DOMUtils.readTextNode(elemento, "descrizione");
-        Element elementoModificatore = (Element) DOMUtils.executeQuery(elemento, "./modificatore").item(0);
-        int attacco = Integer.parseInt(DOMUtils.readTextNode(elementoModificatore, "attacco"));
-        int difesa = Integer.parseInt(DOMUtils.readTextNode(elementoModificatore, "difesa"));
-        int agilita = Integer.parseInt(DOMUtils.readTextNode(elementoModificatore, "agilita"));
-        String tipo = elementoModificatore.getAttribute("tipo");
-        ModificatoreStatistiche modificatore = switch (tipo) {
-
-                    case "BONUS" -> new BonusStatistiche(attacco, difesa, agilita);
-
-                    case "MALUS" -> new MalusStatistiche(attacco, difesa, agilita);
-
-                    default -> throw new IllegalArgumentException("Tipo di modificatore non valido: " + tipo);
-                };
-        return new Campo(nome, descrizione, modificatore);
-    }
-
-    private Avversario trovaAvversario(List<Avversario> avversari, String id) {
-        return avversari.stream().filter(avversario -> avversario.getId().equals(id)).
-                findFirst().orElseThrow(() -> new IllegalArgumentException("Avversario non trovato: " + id));
     }
 }
