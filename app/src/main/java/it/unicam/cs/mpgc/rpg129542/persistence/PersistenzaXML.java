@@ -3,17 +3,20 @@ package it.unicam.cs.mpgc.rpg129542.persistence;
 import it.unicam.cs.mpgc.rpg129542.model.livello.Livello;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Avversario;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Protagonista;
-import it.unicam.cs.mpgc.rpg129542.model.statistiche.*;
-import it.unicam.cs.mpgc.rpg129542.model.tecniche.*;
+import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
+import lombok.NonNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -53,6 +56,10 @@ public class PersistenzaXML implements Persistenza {
     private static final String FILE_PERSONAGGI = "persistence/personaggi.xml";
     private static final String FILE_LIVELLI = "persistence/livelli.xml";
 
+    // Costanti che rappresentano il percorso del file XML contenente una partita salvata
+    private static final File CARTELLA_SALVATAGGIO = new File(System.getProperty("user.home"), "VictoryRoad");
+    private static final File FILE_SALVATAGGIO = new File(CARTELLA_SALVATAGGIO, "salvataggio.xml");
+
     private Set<TecnicaSpeciale> tecnicheCache;
 
     /**
@@ -72,7 +79,7 @@ public class PersistenzaXML implements Persistenza {
         if (this.tecnicheCache != null)
             return this.tecnicheCache;
         try {
-            Document document = this.caricaDocumento(FILE_TECNICHE);
+            Document document = this.caricaDomDaResources(FILE_TECNICHE);
             NodeList nodiTecniche = DOMUtils.executeQuery(document, "/tecniche/tecnica");
             Set<TecnicaSpeciale> tecniche = new HashSet<>();
             for (int i = 0; i < nodiTecniche.getLength(); i++) {
@@ -101,7 +108,7 @@ public class PersistenzaXML implements Persistenza {
     @Override
     public List<Protagonista> caricaProtagonisti() throws IOException {
         try {
-            Document document = this.caricaDocumento(FILE_PERSONAGGI);
+            Document document = this.caricaDomDaResources(FILE_PERSONAGGI);
             NodeList nodiProtagonisti = DOMUtils.executeQuery(document, "/personaggi/protagonisti/protagonista");
             Set<TecnicaSpeciale> tecniche = this.caricaTecniche();
             List<Protagonista> protagonisti = new ArrayList<>();
@@ -131,7 +138,7 @@ public class PersistenzaXML implements Persistenza {
     @Override
     public List<Livello> caricaLivelli() throws IOException {
         try {
-            Document document = this.caricaDocumento(FILE_LIVELLI);
+            Document document = this.caricaDomDaResources(FILE_LIVELLI);
             NodeList nodiLivelli = DOMUtils.executeQuery(document, "/livelli/livello");
             List<Avversario> avversari = this.caricaAvversari();
             List<Livello> livelli = new ArrayList<>();
@@ -146,41 +153,53 @@ public class PersistenzaXML implements Persistenza {
     }
 
     /**
-     * Carica i dati relativi a una partita salvata precedentemente.
+     * {@inheritDoc}
      *
-     * @return dati della progressione salvata
-     * @throws IOException se si verifica un errore durante la lettura del salvataggio
+     * A differenza dei metodi {@link #caricaTecniche()}, {@link #caricaProtagonisti()}
+     * {@link #caricaLivelli()}, per caricare i dati non passa per {@link #caricaDomDaResources(String)}
+     * poiché il file di salvataggio non è situato nella cartella resources come 
+     * gli altri, quindi chiama direttamente {@link DOMUtils#loadDomDocument(String)}
      */
     @Override
     public SalvataggioDati caricaPartita() throws IOException {
-        return null;
+        if (!this.verificaSalvataggio())
+            throw new IOException("Nessun salvataggio disponibile!");
+        try {
+            Document document = DOMUtils.loadDomDocument(FILE_SALVATAGGIO.getPath());
+            return DeserializzatoreSalvataggioXML.creaSalvataggio(document.getDocumentElement());
+        } catch (ParserConfigurationException | SAXException | XPathExpressionException | IllegalArgumentException e) {
+            throw new IOException("Errore durante il caricamento del salvataggio", e);
+        }
     }
 
     /**
-     * Salva lo stato attuale di una partita del giocatore.
-     *
-     * @param dati dati da rendere persistenti
-     * @throws IOException se si verifica un errore durante la scrittura del salvataggio
+     * {@inheritDoc}
      */
     @Override
-    public void salvaPartita(SalvataggioDati dati) throws IOException {
+    public void salvaPartita(@NonNull SalvataggioDati dati) throws IOException {
+        if (!CARTELLA_SALVATAGGIO.exists() && !CARTELLA_SALVATAGGIO.mkdirs())
+            throw new IOException("Impossibile creare la cartella di salvataggio!");
+        try {
+            Document document = SerializzatoreSalvataggioXML.creaDocumento(dati);
+            DOMUtils.writeDomDocument(document, FILE_SALVATAGGIO.getPath());
 
+        } catch (ParserConfigurationException | TransformerException e) {
+            throw new IOException("Errore durante il salvataggio della partita", e);
+        }
     }
 
     /**
-     * Verifica se è presente un salvataggio precedente dal quale ricostruire una partita.
-     *
-     * @return {@code true} se il salvataggio esiste, {@code false} altrimenti
+     * {@inheritDoc}
      */
     @Override
     public boolean verificaSalvataggio() {
-        return false;
+        return FILE_SALVATAGGIO.exists();
     }
 
     // Permette a caricaLivelli() di caricare gli avversari definiti in personaggi.xml
     private List<Avversario> caricaAvversari()
             throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        Document document = this.caricaDocumento(FILE_PERSONAGGI);
+        Document document = this.caricaDomDaResources(FILE_PERSONAGGI);
         NodeList nodiAvversari = DOMUtils.executeQuery(document, "/personaggi/avversari/avversario");
         Set<TecnicaSpeciale> tecniche = this.caricaTecniche();
         List<Avversario> avversari = new ArrayList<>();
@@ -191,7 +210,7 @@ public class PersistenzaXML implements Persistenza {
         return avversari;
     }
 
-    private Document caricaDocumento(String file)
+    private Document caricaDomDaResources(String file)
             throws IOException, ParserConfigurationException, SAXException {
         // Utilizzo il metodo getResource() e non getResourceAsStream() solo perché il metodo
         // DOMUtils.loadDomDocument prende una String che rappresenti un percorso, non un InputStream

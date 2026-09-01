@@ -48,6 +48,10 @@ public class SalvataggioDati {
 
         if (tecnicheImparate.contains(null) || avversariSconfitti.contains(null))
             throw new NullPointerException("Le collezioni del salvataggio non possono contenere valori nulli!");
+
+        if (tecnicheImparate.stream().anyMatch(String::isBlank) || avversariSconfitti.stream().anyMatch(String::isBlank))
+            throw new IllegalArgumentException("Gli identificativi del salvataggio non possono essere vuoti!");
+
         this.idProtagonista = idProtagonista;
         this.statisticheProtagonista = statisticheProtagonista;
         this.tecnicheImparate = new HashSet<>(tecnicheImparate);

@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg129542.persistence;
 import it.unicam.cs.mpgc.rpg129542.model.livello.Livello;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Protagonista;
 import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
+import lombok.NonNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -63,7 +64,7 @@ public interface Persistenza {
      *
      * @throws IOException se si verifica un errore durante la scrittura del salvataggio
      */
-    void salvaPartita(SalvataggioDati dati) throws IOException;
+    void salvaPartita(@NonNull SalvataggioDati dati) throws IOException;
 
 
     /**
