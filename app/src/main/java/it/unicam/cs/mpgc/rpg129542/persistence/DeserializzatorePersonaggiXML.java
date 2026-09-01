@@ -48,7 +48,7 @@ public class DeserializzatorePersonaggiXML {
         String nome = DOMUtils.readTextNode(elemento, "nome");
         StatisticheBase statistiche = creaStatistiche(elemento);
 
-        Element tecnicaRef = (Element) DOMUtils.executeQuery(elemento, "./tecniche/tecnicaRef").item(0);
+        Element tecnicaRef = DOMUtils.readElement(elemento, "tecniche/tecnicaRef");
         TecnicaSpeciale tecnica = trovaTecnica(tecniche, tecnicaRef.getAttribute("ref"));
 
         return new Protagonista(nome, id, statistiche, tecnica);
@@ -87,7 +87,30 @@ public class DeserializzatorePersonaggiXML {
         return new Avversario(nome, id, statistiche, tecnicheAvversario);
     }
 
-    private static StatisticheBase creaStatistiche(Element elemento) throws XPathExpressionException{
+    /**
+     * Costruisce un'istanza di {@link StatisticheBase} leggendo i valori
+     * di attacco, difesa e agilità contenuti nell'elemento XML specificato.
+     *
+     * Il metodo è definito {@code protected} esclusivamente perché viene utilizzato
+     * non soltanto in questa classe ma anche in {@link DeserializzatoreSalvataggioXML}
+     * durante il caricamento delle statistiche permanenti di un protagonista salvato,
+     * altrimenti sarebbe stato {@code private}
+     *
+     * @param elemento elemento XML contenente il nodo {@code <statistiche>}
+     *
+     * @return statistiche base ricostruite dai valori presenti nell'elemento
+     *
+     * @throws XPathExpressionException se si verifica un errore durante
+     *                                  la lettura dei valori tramite XPath
+     *
+     * @throws IllegalArgumentException se un valore obbligatorio è mancante,
+     *                                  non è convertibile nel tipo previsto
+     *                                  oppure non rispetta i vincoli
+     *                                  definiti da {@link StatisticheBase}
+     *
+     * @throws NullPointerException se {@code elemento} è {@code null}
+     */
+    protected static StatisticheBase creaStatistiche(@NonNull Element elemento) throws XPathExpressionException{
         int attacco = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/attacco"));
         int difesa = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/difesa"));
         int agilita = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/agilita"));

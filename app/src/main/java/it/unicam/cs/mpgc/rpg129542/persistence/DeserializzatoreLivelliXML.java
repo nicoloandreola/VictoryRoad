@@ -46,7 +46,7 @@ public class DeserializzatoreLivelliXML {
 
     public static Livello creaLivello(@NonNull Element elemento, @NonNull List<Avversario> avversari) throws XPathExpressionException {
         int numero = Integer.parseInt(elemento.getAttribute("numero"));
-        Element elementoCampo = (Element) DOMUtils.executeQuery(elemento, "./campo").item(0);
+        Element elementoCampo = DOMUtils.readElement(elemento, "campo");
         Campo campo = creaCampo(elementoCampo);
         NodeList riferimentiAvversari = DOMUtils.executeQuery(elemento, "./avversari/avversarioRef");
 
@@ -64,7 +64,7 @@ public class DeserializzatoreLivelliXML {
     private static Campo creaCampo(Element elemento) throws XPathExpressionException {
         String nome = DOMUtils.readTextNode(elemento, "nome");
         String descrizione = DOMUtils.readTextNode(elemento, "descrizione");
-        Element elementoModificatore = (Element) DOMUtils.executeQuery(elemento, "./modificatore").item(0);
+        Element elementoModificatore = DOMUtils.readElement(elemento, "modificatore");
         ModificatoreStatistiche modificatore = creaModificatore(elementoModificatore);
         return new Campo(nome, descrizione, modificatore);
     }

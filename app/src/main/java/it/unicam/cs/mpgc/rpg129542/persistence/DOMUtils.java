@@ -50,6 +50,23 @@ public class DOMUtils {
     }
 
     /**
+     * Crea e restituisce un nuovo documento DOM vuoto: a differenza di
+     * {@link #loadDomDocument(String)}, questo metodo non effettua il
+     * parsing di un file XML già esistente, ma crea una nuova struttura DOM
+     * da zero, vuota appunto, che potrà poi essere "popolata".
+     *
+     * @return Un nuovo {@code Document} DOM privo di elementi.
+     *
+     * @throws ParserConfigurationException Se non è possibile creare un
+     *         {@code DocumentBuilder} che soddisfi la configurazione richiesta.
+     */
+    public static Document createDomDocument() throws ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        return builder.newDocument();
+    }
+
+    /**
      * Scrive il contenuto di un documento DOM su un file XML al percorso specificato.
      * Il documento viene formattato utilizzando l'indentazione per rendere
      * più leggibile il contenuto prodotto.
@@ -124,8 +141,8 @@ public class DOMUtils {
 
     /**
      * Cerca, tramite XPath, un elemento figlio con il tag specificato e ne restituisce
-     * il contenuto testuale. Il parametro {@code tag} può rappresentare sia il nome di un
-     * figlio direttamente, che un percorso relativo
+     * il contenuto testuale. Il parametro {@code tag} può rappresentare sia
+     * direttamente il nome di un figlio, che un percorso relativo
      *
      * @param elemento L'elemento XML in cui cercare il figlio.
      * @param tag Il percorso XPath relativo del figlio da cercare.
@@ -145,4 +162,29 @@ public class DOMUtils {
         return nodi.item(0).getTextContent();
     }
 
+
+    /**
+     * Cerca, tramite XPath, un elemento figlio con il tag specificato e ne restituisce
+     * il relativo oggetto {@link Element}. Il parametro {@code tag} può rappresentare
+     * sia direttamente il nome di un figlio, che un percorso relativo.
+     *
+     * @param element L'elemento XML in cui cercare il figlio.
+     * @param tag Il percorso XPath relativo del figlio da cercare.
+     *
+     * @return Il primo {@link Element} corrispondente al tag specificato.
+     *
+     * @throws XPathExpressionException Se si verifica un errore durante la valutazione
+     *                                  della query XPath.
+     *
+     * @throws IllegalArgumentException Se non viene trovato nessun elemento
+     *                                  corrispondente al tag specificato.
+     *
+     * @throws NullPointerException se {@code element} è {@code null}
+     */
+    public static Element readElement(@NonNull Element element, String tag) throws XPathExpressionException {
+        NodeList nodi = DOMUtils.executeQuery(element, "./" + tag);
+        if (nodi.getLength() == 0)
+            throw new IllegalArgumentException("Elemento XML mancante: " + tag);
+        return (Element) nodi.item(0);
+    }
 }
