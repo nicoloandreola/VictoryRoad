@@ -4,6 +4,13 @@ import it.unicam.cs.mpgc.rpg129542.model.livello.Livello;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Avversario;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Protagonista;
 import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
+import it.unicam.cs.mpgc.rpg129542.persistence.configurazione.DeserializzatoreLivelliXML;
+import it.unicam.cs.mpgc.rpg129542.persistence.configurazione.DeserializzatorePersonaggiXML;
+import it.unicam.cs.mpgc.rpg129542.persistence.configurazione.DeserializzatoreTecnicheXML;
+import it.unicam.cs.mpgc.rpg129542.persistence.salvataggio.DeserializzatoreSalvataggioXML;
+import it.unicam.cs.mpgc.rpg129542.persistence.salvataggio.SalvataggioDati;
+import it.unicam.cs.mpgc.rpg129542.persistence.salvataggio.SerializzatoreSalvataggioXML;
+import it.unicam.cs.mpgc.rpg129542.persistence.utils.DOMUtils;
 import lombok.NonNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,7 +22,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -86,7 +92,8 @@ public class PersistenzaXML implements Persistenza {
                 Element elemento = (Element) nodiTecniche.item(i);
                 tecniche.add(DeserializzatoreTecnicheXML.creaTecnica(elemento));
             }
-            this.tecnicheCache = tecniche;
+            // Utilizzo Set.copyOf per proteggere il campo e favorire l'incapsulamento
+            this.tecnicheCache = Set.copyOf(tecniche);
             return tecniche;
         } catch (ParserConfigurationException | SAXException | XPathExpressionException | IllegalArgumentException e) {
             throw new IOException("Errore durante il caricamento delle tecniche", e);

@@ -1,6 +1,7 @@
-package it.unicam.cs.mpgc.rpg129542.persistence;
+package it.unicam.cs.mpgc.rpg129542.persistence.configurazione;
 
 import it.unicam.cs.mpgc.rpg129542.model.tecniche.*;
+import it.unicam.cs.mpgc.rpg129542.persistence.utils.DOMUtils;
 import lombok.NonNull;
 import org.w3c.dom.Element;
 

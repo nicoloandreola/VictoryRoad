@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg129542.persistence;
+package it.unicam.cs.mpgc.rpg129542.persistence.configurazione;
 
 import it.unicam.cs.mpgc.rpg129542.model.livello.Campo;
 import it.unicam.cs.mpgc.rpg129542.model.livello.Livello;
@@ -6,6 +6,7 @@ import it.unicam.cs.mpgc.rpg129542.model.personaggio.Avversario;
 import it.unicam.cs.mpgc.rpg129542.model.statistiche.BonusStatistiche;
 import it.unicam.cs.mpgc.rpg129542.model.statistiche.MalusStatistiche;
 import it.unicam.cs.mpgc.rpg129542.model.statistiche.ModificatoreStatistiche;
+import it.unicam.cs.mpgc.rpg129542.persistence.utils.DOMUtils;
 import lombok.NonNull;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

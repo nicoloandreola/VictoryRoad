@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg129542.persistence;
+package it.unicam.cs.mpgc.rpg129542.persistence.salvataggio;
 
 import it.unicam.cs.mpgc.rpg129542.model.statistiche.StatisticheBase;
 import lombok.Getter;
@@ -39,7 +39,8 @@ public class SalvataggioDati {
      *
      * @throws NullPointerException se uno dei parametri è {@code null}
      *
-     * @throws IllegalArgumentException se l'identificativo del protagonista è vuoto
+     * @throws IllegalArgumentException se l'identificativo del protagonista o uno degli
+     *                                  identificativi contenuto nelle collezioni è vuoto
      */
     public SalvataggioDati(@NonNull String idProtagonista, @NonNull StatisticheBase statisticheProtagonista,
                            @NonNull Set<String> tecnicheImparate, @NonNull Set<String> avversariSconfitti) {

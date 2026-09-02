@@ -1,9 +1,11 @@
-package it.unicam.cs.mpgc.rpg129542.persistence;
+package it.unicam.cs.mpgc.rpg129542.persistence.configurazione;
 
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Avversario;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Protagonista;
 import it.unicam.cs.mpgc.rpg129542.model.statistiche.StatisticheBase;
 import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
+import it.unicam.cs.mpgc.rpg129542.persistence.utils.DOMUtils;
+import it.unicam.cs.mpgc.rpg129542.persistence.salvataggio.DeserializzatoreSalvataggioXML;
 import lombok.NonNull;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -91,10 +93,10 @@ public class DeserializzatorePersonaggiXML {
      * Costruisce un'istanza di {@link StatisticheBase} leggendo i valori
      * di attacco, difesa e agilità contenuti nell'elemento XML specificato.
      *
-     * Il metodo è definito {@code protected} esclusivamente perché viene utilizzato
+     * Il metodo è definito {@code public} esclusivamente perché viene utilizzato
      * non soltanto in questa classe ma anche in {@link DeserializzatoreSalvataggioXML}
      * durante il caricamento delle statistiche permanenti di un protagonista salvato,
-     * altrimenti sarebbe stato {@code private}
+     * altrimenti sarebbe stato tranquillamente {@code private}
      *
      * @param elemento elemento XML contenente il nodo {@code <statistiche>}
      *
@@ -110,7 +112,7 @@ public class DeserializzatorePersonaggiXML {
      *
      * @throws NullPointerException se {@code elemento} è {@code null}
      */
-    protected static StatisticheBase creaStatistiche(@NonNull Element elemento) throws XPathExpressionException{
+    public static StatisticheBase creaStatistiche(@NonNull Element elemento) throws XPathExpressionException{
         int attacco = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/attacco"));
         int difesa = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/difesa"));
         int agilita = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/agilita"));

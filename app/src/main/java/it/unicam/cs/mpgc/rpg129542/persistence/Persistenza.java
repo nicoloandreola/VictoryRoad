@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg129542.persistence;
 import it.unicam.cs.mpgc.rpg129542.model.livello.Livello;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Protagonista;
 import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
+import it.unicam.cs.mpgc.rpg129542.persistence.salvataggio.SalvataggioDati;
 import lombok.NonNull;
 
 import java.io.IOException;
