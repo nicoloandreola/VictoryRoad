@@ -133,7 +133,7 @@ public abstract class Personaggio {
     }
 
     /**
-     * Restituisce una copia non modificabile delle tecniche possedute.
+     * Metodo read-only che restituisce una copia non modificabile delle tecniche possedute.
      *
      * @return insieme non modificabile delle tecniche speciali
      */

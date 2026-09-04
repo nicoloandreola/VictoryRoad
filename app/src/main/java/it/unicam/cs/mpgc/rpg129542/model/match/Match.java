@@ -44,7 +44,7 @@ public class Match {
     /**
      * Crea un nuovo match inizializzando a 0 i gol dei due personaggi e scegliendo
      * casualmente chi dei due inizia ad attaccare con il metodo privato
-     * {@link #sorteggiaPersonaggioIniziale()} che simula il lancio di una moneta.
+     * {@link #sorteggiaAttaccanteIniziale()} che simula il lancio di una moneta.
      *
      * Inoltre, ripristina completamente le risorse dei due personaggi prima dell'inizio.
      *

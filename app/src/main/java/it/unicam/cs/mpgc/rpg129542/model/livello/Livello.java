@@ -15,10 +15,10 @@ import java.util.Map;
  * Per ogni avversario il livello conserva uno {@link StatoAvversario}, che
  * descrive se deve ancora essere affrontato, se è stato selezionato oppure se è
  * già stato sconfitto: per farlo utilizza una {@link Map} che associa
- * a ogni avversario (keys) il suo stato (values)
+ * a ogni avversario (keys) il suo stato (values).
  *
- * Il livello è considerato completato non appena almeno uno dei suoi avversari risulta
- * sconfitto (non è necessario sconfiggerli tutti per passare al successivo)
+ * Il livello è considerato completato solamente quando entrambi gli avversari risultano
+ * sconfitti; tuttavia per sbloccare il livello successivo basta sconfiggerne uno solo.
  *
  * @author Nicolò Andreola
  */
@@ -54,6 +54,15 @@ public class Livello {
         this.avversari = new HashMap<>();
         this.aggiungiAvversario(avversario1);
         this.aggiungiAvversario(avversario2);
+    }
+
+    /**
+     * Metodo read-only che restituisce una copia non modificabile degli avversari del livello.
+     *
+     * @return insieme non modificabile delle tecniche speciali
+     */
+    public Map<Avversario, StatoAvversario> getAvversari() {
+        return Map.copyOf(this.avversari);
     }
 
     /**
@@ -156,17 +165,33 @@ public class Livello {
     }
 
     /**
-     * Verifica se il livello è stato completato.
+     * Verifica se il protagonista può avanzare al livello successivo.
      *
-     * Un livello è completato quando almeno uno dei suoi avversari si trova
-     * nello stato {@link StatoAvversario#SCONFITTO}; non è quindi necessario
-     * sconfiggere tutti gli avversari presenti.
+     * L'avanzamento viene sbloccato non appena almeno uno degli
+     * avversari del livello viene sconfitto: non è quindi necessario
+     * sconfiggere tutti gli avversari presenti per completare i livelli.
      *
      * @return {@code true} se almeno un avversario è stato sconfitto,
      *         {@code false} altrimenti
      */
-    public boolean isCompletato() {
+    public boolean isLivelloSuccessivoSbloccato() {
         return this.avversari.containsValue(StatoAvversario.SCONFITTO);
+    }
+
+    /**
+     * Verifica se il livello è stato completato interamente.
+     *
+     * Un livello è considerato completato quando tutti gli avversari
+     * presenti risultano sconfitti.
+     *
+     * @return {@code true} se tutti gli avversari sono stati sconfitti,
+     *         {@code false} altrimenti
+     */
+    public boolean isCompletato() {
+        for (StatoAvversario stato : this.avversari.values())
+            if(stato != StatoAvversario.DA_SCONFIGGERE)
+                return false;
+        return true;
     }
 
     /**
