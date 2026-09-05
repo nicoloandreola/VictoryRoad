@@ -45,26 +45,50 @@ public class ControllerGioco {
 
     private final Persistenza persistenza;
     private final LogicaMatch logicaMatch;
+    private final StrategiaAvversario strategiaAvversario;
 
-    private Set<TecnicaSpeciale> tecnicheDisponibili;
-    private List<Protagonista> protagonistiDisponibili;
+    private Set<TecnicaSpeciale> tecniche;
+    private List<Protagonista> protagonisti;
     private List<Livello> livelli;
 
     @Getter
     private ControllerPartita partitaCorrente;
 
     /**
-     * Crea il controller associandogli il sistema di persistenza e la
-     * logica utilizzata per risolvere i match.
+     * Crea il controller associandogli il sistema di persistenza, la
+     * logica utilizzata per risolvere i match e la strategia utilizzata
+     * per scegliere automaticamente le azioni degli avversari.
      *
      * @param persistenza sistema utilizzato per caricare e salvare i dati
      * @param logicaMatch logica utilizzata per risolvere i turni dei match
+     * @param strategiaAvversario regole usate per determinare le azioni degli avversari
      *
      * @throws NullPointerException se uno dei parametri è {@code null}
      */
-    public ControllerGioco(@NonNull Persistenza persistenza, @NonNull LogicaMatch logicaMatch) {
+    public ControllerGioco(@NonNull Persistenza persistenza, @NonNull LogicaMatch logicaMatch,
+                           @NonNull StrategiaAvversario strategiaAvversario) {
         this.persistenza = persistenza;
         this.logicaMatch = logicaMatch;
+        this.strategiaAvversario = strategiaAvversario;
+    }
+
+    /**
+     * Restituisce tutte le tecniche speciali disponibili nel gioco.
+     *
+     * @return insieme non modificabile delle tecniche disponibili
+     */
+    public Set<TecnicaSpeciale> getTecniche() {
+        return Set.copyOf(this.tecniche);
+    }
+
+    /**
+     * Restituisce i protagonisti tra cui il giocatore può scegliere
+     * all'inizio di una nuova partita.
+     *
+     * @return lista non modificabile dei protagonisti disponibili
+     */
+    public List<Protagonista> getProtagonisti() {
+        return List.copyOf(this.protagonisti);
     }
 
     /**
@@ -79,38 +103,10 @@ public class ControllerGioco {
      *                     della configurazione iniziale
      */
     public void inizializza() throws IOException {
-        this.tecnicheDisponibili = this.persistenza.caricaTecniche();
-        this.protagonistiDisponibili = this.persistenza.caricaProtagonisti();
+        this.tecniche = this.persistenza.caricaTecniche();
+        this.protagonisti = this.persistenza.caricaProtagonisti();
         this.livelli = this.persistenza.caricaLivelli();
         this.partitaCorrente = null;
-    }
-
-    /**
-     * Restituisce tutte le tecniche speciali disponibili nel gioco.
-     *
-     * @return insieme non modificabile delle tecniche disponibili
-     */
-    public Set<TecnicaSpeciale> getTecnicheDisponibili() {
-        return Set.copyOf(this.tecnicheDisponibili);
-    }
-
-    /**
-     * Restituisce i protagonisti tra cui il giocatore può scegliere
-     * all'inizio di una nuova partita.
-     *
-     * @return lista non modificabile dei protagonisti disponibili
-     */
-    public List<Protagonista> getProtagonistiDisponibili() {
-        return List.copyOf(this.protagonistiDisponibili);
-    }
-
-    /**
-     * Restituisce tutti i livelli che compongono il gioco.
-     *
-     * @return lista non modificabile dei livelli
-     */
-    public List<Livello> getLivelli() {
-        return List.copyOf(this.livelli);
     }
 
     /**
@@ -135,9 +131,11 @@ public class ControllerGioco {
      * @throws IllegalArgumentException se nessun protagonista
      *                                  disponibile possiede quell'id
      */
-    public void iniziaNuovaPartita(@NonNull String idProtagonista) {
+    public void iniziaNuovaPartita(@NonNull String idProtagonista) throws IOException{
+        this.ricaricaDatiPartita();
         Protagonista protagonista = this.trovaProtagonistaPerId(idProtagonista);
-        this.partitaCorrente = new ControllerPartita(protagonista, this.livelli, this.logicaMatch);
+        this.partitaCorrente = new ControllerPartita(protagonista, this.livelli,
+                this.logicaMatch, this.strategiaAvversario);
     }
 
     /**
@@ -153,9 +151,19 @@ public class ControllerGioco {
      */
     public void caricaPartitaSalvata() throws IOException {
         SalvataggioDati dati = this.persistenza.caricaPartita();
+        this.ricaricaDatiPartita();
         Protagonista protagonista = this.trovaProtagonistaPerId(dati.getIdProtagonista());
         this.ripristinaDatiSalvati(protagonista, dati);
-        this.partitaCorrente = new ControllerPartita(protagonista, this.livelli, this.logicaMatch);
+        this.partitaCorrente = new ControllerPartita(protagonista, this.livelli,
+                this.logicaMatch, this.strategiaAvversario);
+    }
+
+    // Ricarica protagonisti e livelli dalla configurazione iniziale prima di
+    // avviare o ripristinare una partita, evitando di riutilizzare oggetti
+    // eventualmente modificati da una sessione precedente nella stessa esecuzione.
+    private void ricaricaDatiPartita() throws IOException {
+        this.protagonisti = this.persistenza.caricaProtagonisti();
+        this.livelli = this.persistenza.caricaLivelli();
     }
 
     /**
@@ -176,7 +184,7 @@ public class ControllerGioco {
         if (this.partitaCorrente == null)
             throw new IllegalStateException("Nessuna partita attiva da salvare!");
 
-        if (this.partitaCorrente.getMatchCorrente() != null)
+        if (this.partitaCorrente.isMatchInCorso())
             throw new IllegalStateException("Non è possibile salvare durante un match!");
 
         Protagonista protagonista = this.partitaCorrente.getProtagonistaCorrente();
@@ -216,7 +224,7 @@ public class ControllerGioco {
 
     private void ripristinaTecniche(Protagonista protagonista, SalvataggioDati dati) {
         for (String idTecnica : dati.getTecnicheImparate()) {
-            TecnicaSpeciale tecnica = this.tecnicheDisponibili.stream()
+            TecnicaSpeciale tecnica = this.tecniche.stream()
                     .filter(t -> t.getId().equals(idTecnica))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Tecnica non trovata: " + idTecnica));
@@ -237,7 +245,7 @@ public class ControllerGioco {
     }
 
     private Protagonista trovaProtagonistaPerId(String id) {
-        return this.protagonistiDisponibili.stream()
+        return this.protagonisti.stream()
                 .filter(protagonista -> protagonista.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Nessun protagonista trovato con id: " + id));

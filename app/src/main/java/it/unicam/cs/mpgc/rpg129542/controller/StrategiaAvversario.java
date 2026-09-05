@@ -23,7 +23,7 @@ import lombok.NonNull;
 public interface StrategiaAvversario {
 
     /**
-     * Sceglie l'azione che l'avversario deve eseguire quando ricopre
+     * Determina l'azione che l'avversario deve eseguire quando ricopre
      * il ruolo di attaccante.
      *
      * L'implementazione deve restituire solamente un'azione utilizzabile
@@ -35,10 +35,10 @@ public interface StrategiaAvversario {
      *
      * @throws NullPointerException se l'avversario è {@code null}
      */
-    AzioneAttaccante scegliAttacco(@NonNull Avversario avversario);
+    AzioneAttaccante determinaAttacco(@NonNull Avversario avversario);
 
     /**
-     * Sceglie la risposta dell'avversario all'azione eseguita
+     * Determina la risposta dell'avversario all'azione scelta
      * dall'attaccante.
      *
      * La risposta deve essere compatibile con il tipo di attacco
@@ -46,12 +46,12 @@ public interface StrategiaAvversario {
      * il metodo restituisce {@code null}.
      *
      * @param avversario avversario che deve difendere
-     * @param attacco azione eseguita dall'attaccante
+     * @param attacco azione scelta dall'attaccante
      *
      * @return azione difensiva scelta oppure {@code null} se
      *         l'attacco non richiede una risposta
      *
      * @throws NullPointerException se uno dei parametri è {@code null}
      */
-    AzioneDifensore scegliDifesa(@NonNull Avversario avversario, @NonNull AzioneAttaccante attacco);
+    AzioneDifensore determinaDifesa(@NonNull Avversario avversario, @NonNull AzioneAttaccante attacco);
 }

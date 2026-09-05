@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * Sebbene la scelta rimanga prevalentemente casuale, per aggiungere un filo
  * di logica, le tecniche di supporto vengono considerate solamente quando la
- * stamina dell'avversario è minore o uguale a {@value SOGLIA_UTILIZZO_SUPPORTO},
+ * stamina dell'avversario è minore o uguale a {@value #SOGLIA_UTILIZZO_SUPPORTO},
  * evitando di utilizzarle quando il recupero non risulta necessario.
  *
  * La classe determina esclusivamente quale azione utilizzare, senza
@@ -42,15 +42,7 @@ public class StrategiaCasuale implements StrategiaAvversario {
 
     // Soglia sotto la quale le tecniche di supporto entrano tra le possibili scelte.
     private static final int SOGLIA_UTILIZZO_SUPPORTO = RisorseMatch.STAMINA_MASSIMA / 2;
-    private final Random random;
-
-    /**
-     * Crea una strategia che utilizza un generatore casuale
-     * per selezionare le azioni dell'avversario.
-     */
-    public StrategiaCasuale() {
-        this.random = new Random();
-    }
+    private final Random random = new Random();
 
     /**
      * {@inheritDoc}
@@ -65,7 +57,7 @@ public class StrategiaCasuale implements StrategiaAvversario {
      * da {@link #SOGLIA_UTILIZZO_SUPPORTO}.
      */
     @Override
-    public AzioneAttaccante scegliAttacco(@NonNull Avversario avversario) {
+    public AzioneAttaccante determinaAttacco(@NonNull Avversario avversario) {
         List<AzioneAttaccante> azioniDisponibili = new ArrayList<>();
         azioniDisponibili.add(new Tiro());
         azioniDisponibili.add(new Dribbling());
@@ -98,7 +90,7 @@ public class StrategiaCasuale implements StrategiaAvversario {
      *                                  offensiva non riconosciuta
      */
     @Override
-    public AzioneDifensore scegliDifesa(@NonNull Avversario avversario, @NonNull AzioneAttaccante attacco) {
+    public AzioneDifensore determinaDifesa(@NonNull Avversario avversario, @NonNull AzioneAttaccante attacco) {
         if (attacco instanceof TecnicaSupporto)
             return null;
         else if (attacco instanceof Tiro || attacco instanceof TecnicaOffensiva)

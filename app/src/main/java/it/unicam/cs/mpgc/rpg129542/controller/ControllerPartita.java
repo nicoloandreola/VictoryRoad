@@ -51,19 +51,22 @@ public class ControllerPartita {
 
     private final LogicaMatch logicaMatch;
     private final List<Livello> livelli;
+    private final StrategiaAvversario strategiaAvversario;
 
     @Getter
     private final Protagonista protagonistaCorrente;
-
     @Getter
     private Livello livelloCorrente;
-
     @Getter
     private Match matchCorrente;
 
+    private AzioneAttaccante attaccoTurno;
+    private AzioneDifensore difesaTurno;
+
     /**
      * Crea il controller di una partita associandogli il protagonista,
-     * i livelli del gioco e la logica utilizzata nei match.
+     * i livelli del gioco, la logica utilizzata nei match e la strategia
+     * utilizzata per determinare le azioni degli avversari.
      *
      * Il livello corrente viene inizializzato automaticamente al livello
      * più avanzato attualmente sbloccato (in una nuova partita questo
@@ -72,14 +75,16 @@ public class ControllerPartita {
      * @param protagonistaCorrente protagonista controllato dal giocatore
      * @param livelli livelli che compongono il gioco
      * @param logicaMatch logica utilizzata per risolvere i turni dei match
+     * @param strategiaAvversario regole usate per scegliere le azioni dell'avversario
      *
      * @throws NullPointerException se uno dei parametri è {@code null}
      */
-    public ControllerPartita(@NonNull Protagonista protagonistaCorrente,
-                             @NonNull List<Livello> livelli, @NonNull LogicaMatch logicaMatch) {
+    public ControllerPartita(@NonNull Protagonista protagonistaCorrente, @NonNull List<Livello> livelli,
+                             @NonNull LogicaMatch logicaMatch, @NonNull StrategiaAvversario strategiaAvversario) {
         this.protagonistaCorrente = protagonistaCorrente;
         this.livelli = livelli;
         this.logicaMatch = logicaMatch;
+        this.strategiaAvversario = strategiaAvversario;
         this.livelloCorrente = this.getMaxLivelloSbloccato();
         this.matchCorrente = null;
     }
@@ -95,6 +100,15 @@ public class ControllerPartita {
      */
     public boolean isGiocoCompletato() {
         return this.livelli.stream().allMatch(Livello::isCompletato);
+    }
+
+    /**
+     * Restituisce tutti i livelli che compongono il gioco.
+     *
+     * @return lista non modificabile dei livelli
+     */
+    public List<Livello> getLivelli() {
+        return List.copyOf(this.livelli);
     }
 
     /**
@@ -118,7 +132,7 @@ public class ControllerPartita {
      *                               oppure è presente un match in corso
      */
     public void selezionaLivello(@NonNull Livello livello) {
-        if (this.matchCorrente != null)
+        if (this.isMatchInCorso())
             throw new IllegalStateException("Non è possibile cambiare livello durante un match!");
 
         int indice = this.livelli.indexOf(livello);
@@ -147,7 +161,7 @@ public class ControllerPartita {
      *                               è già in corso un match
      */
     public void selezionaAvversario(@NonNull Avversario avversario) {
-        if (this.matchCorrente != null)
+        if (this.isMatchInCorso())
             throw new IllegalStateException("Non è possibile cambiare avversario durante un match!");
         this.livelloCorrente.selezionaAvversario(avversario);
     }
@@ -163,31 +177,140 @@ public class ControllerPartita {
      *                               oppure nessun avversario è stato selezionato
      */
     public void iniziaMatch() {
-        if (this.matchCorrente != null)
+        if (this.isMatchInCorso())
             throw new IllegalStateException("È già presente un match in corso!");
         Livello livello = this.getLivelloCorrente();
         Avversario avversario = livello.getAvversarioSelezionato();
+        this.attaccoTurno = null;
+        this.difesaTurno = null;
         this.applicaEffettoCampo(livello.getCampo(), avversario);
         this.matchCorrente = new Match(this.protagonistaCorrente, avversario, this.logicaMatch);
     }
 
     /**
-     * Esegue un turno del match corrente delegandone completamente
-     * la risoluzione alla classe {@link Match}.
+     * Chiede a {@link StrategiaAvversario} la difesa che l'avversario
+     * opporrà all'attacco scelto dal protagonista.
      *
-     * @param attacco azione scelta dall'attaccante
-     * @param difesa risposta scelta dal difensore
+     * L'attacco e la difesa selezionata vengono memorizzati fino alla
+     * successiva esecuzione del turno, permettendo alla View di mostrare
+     * la scelta dell'avversario prima della risoluzione.
+     *
+     * @param attacco azione scelta dal protagonista
+     *
+     * @return difesa scelta automaticamente dall'avversario,
+     *         oppure {@code null} se l'attacco non richiede risposta
+     *
+     * @throws NullPointerException se l'attacco è {@code null}
+     *
+     * @throws IllegalStateException se non è presente un match in corso
+     *                               oppure il protagonista non è
+     *                               l'attaccante corrente
+     */
+    public AzioneDifensore scegliDifesaAvversario(@NonNull AzioneAttaccante attacco) {
+        if (!this.isMatchInCorso())
+            throw new IllegalStateException("Nessun match in corso!");
+
+        if (!this.matchCorrente.isTurnoProtagonista())
+            throw new IllegalStateException("Il protagonista non è l'attaccante corrente!");
+
+        Avversario avversario = this.matchCorrente.getAvversario();
+
+        this.attaccoTurno = attacco;
+        this.difesaTurno = this.strategiaAvversario.determinaDifesa(avversario, attacco);
+
+        return this.difesaTurno;
+    }
+
+    /**
+     * Esegue il turno precedentemente scelto dal metodo
+     * {@link #scegliDifesaAvversario(AzioneAttaccante)}, nel quale
+     * il protagonista ricopre il ruolo di attaccante.
      *
      * @return esito prodotto dal turno
      *
-     * @throws NullPointerException se l'azione di attacco è {@code null}
-     *
-     * @throws IllegalStateException se non è presente alcun match
+     * @throws IllegalStateException se non è presente un match in corso
+     *                               oppure la difesa dell'avversario
+     *                               non è ancora stata scelta
      */
-    public EsitoTurno eseguiTurno(@NonNull AzioneAttaccante attacco, AzioneDifensore difesa) {
-        if (this.matchCorrente == null)
+    public EsitoTurno eseguiAttaccoProtagonista() {
+        if (!this.isMatchInCorso())
             throw new IllegalStateException("Nessun match in corso!");
-        return this.matchCorrente.giocaTurno(attacco, difesa);
+
+        if (this.attaccoTurno == null)
+            throw new IllegalStateException("La risposta dell'avversario non è ancora stata determinata!");
+
+        EsitoTurno esito = this.matchCorrente.giocaTurno(this.attaccoTurno, this.difesaTurno);
+        this.attaccoTurno = null;
+        this.difesaTurno = null;
+        return esito;
+    }
+
+    /**
+     * Chiede a {@link StrategiaAvversario} l'attacco che verrà eseguito
+     * dall'avversario nel turno corrente.
+     *
+     * L'azione scelta viene memorizzata fino all'esecuzione del turno,
+     * così che possa essere mostrata al giocatore prima della scelta
+     * della propria risposta difensiva.
+     *
+     * Chiamate successive effettuate nello stesso turno restituiscono
+     * la stessa azione già selezionata, evitando un nuovo sorteggio.
+     *
+     * @return attacco scelto dall'avversario
+     *
+     * @throws IllegalStateException se non è presente un match in corso
+     *                               oppure il protagonista è
+     *                               l'attaccante corrente
+     */
+    public AzioneAttaccante scegliAttaccoAvversario() {
+        if (!this.isMatchInCorso())
+            throw new IllegalStateException("Nessun match in corso!");
+
+        if (this.matchCorrente.isTurnoProtagonista())
+            throw new IllegalStateException("L'avversario non è l'attaccante corrente!");
+
+        if (this.attaccoTurno == null) {
+            Avversario avversario = this.matchCorrente.getAvversario();
+            this.attaccoTurno = this.strategiaAvversario.determinaAttacco(avversario);
+        }
+        return this.attaccoTurno;
+    }
+
+    /**
+     * Esegue il turno dell'avversario utilizzando l'attacco
+     * precedentemente scelto da {@link #scegliAttaccoAvversario()}
+     * e la risposta scelta dal protagonista.
+     *
+     * Dopo la corretta esecuzione del turno l'attacco memorizzato viene
+     * eliminato, così che un eventuale turno successivo dell'avversario
+     * richieda una nuova scelta da parte della strategia.
+     *
+     * Il parametro {@code difesa} può essere {@code null} quando
+     * l'attacco scelto dall'avversario non richiede alcuna risposta.
+     *
+     * @param difesa risposta scelta dal protagonista, oppure {@code null}
+     *               se non richiesta dall'attacco
+     *
+     * @return esito prodotto dal turno
+     *
+     * @throws IllegalStateException se non è presente un match in corso,
+     *                               se il protagonista è l'attaccante corrente
+     *                               oppure se l'attacco dell'avversario non è
+     *                               ancora stato determinato
+     */
+    public EsitoTurno eseguiAttaccoAvversario(AzioneDifensore difesa) {
+        if (!this.isMatchInCorso())
+            throw new IllegalStateException("Nessun match in corso!");
+
+        if (this.matchCorrente.isTurnoProtagonista())
+            throw new IllegalStateException("L'avversario non è l'attaccante corrente!");
+
+        if (this.attaccoTurno == null)
+            throw new IllegalStateException("L'attacco dell'avversario non è ancora stato scelto!");
+
+        EsitoTurno esito = this.matchCorrente.giocaTurno(this.attaccoTurno, difesa);
+        this.attaccoTurno = null;
+        return esito;
     }
 
     /**
@@ -211,15 +334,18 @@ public class ControllerPartita {
      *                          oppure {@code null} se non sono disponibili
      *                          nuove tecniche o in caso di sconfitta
      *
-     * @throws IllegalStateException se non è presente un match
+     * @throws IllegalStateException se nessun match è in corso
      *                               oppure il match non è ancora concluso
      *
      * @throws IllegalArgumentException se la tecnica indicata non rappresenta
      *                                  una ricompensa valida
      */
     public void terminaMatch(TecnicaSpeciale tecnicaRicompensa) {
-        if (this.matchCorrente == null)
+        if (!this.isMatchInCorso())
             throw new IllegalStateException("Nessun match in corso!");
+
+        if(!this.matchCorrente.isConcluso())
+            throw new IllegalStateException("Il match non è ancora terminato!");
 
         this.gestisciRicompensa(tecnicaRicompensa);
         Avversario avversario = this.matchCorrente.getAvversario();
@@ -232,7 +358,19 @@ public class ControllerPartita {
 
         this.protagonistaCorrente.getGestoreStatistiche().rimuoviModificatore();
         avversario.getGestoreStatistiche().rimuoviModificatore();
+        this.attaccoTurno = null;
+        this.difesaTurno = null;
         this.matchCorrente = null;
+    }
+
+    /**
+     * Verifica se è attualmente presente un match in corso.
+     *
+     * @return {@code true} se esiste un match corrente,
+     *         {@code false} altrimenti
+     */
+    public boolean isMatchInCorso() {
+        return this.matchCorrente != null;
     }
 
     /**
@@ -250,11 +388,10 @@ public class ControllerPartita {
      *                               con la vittoria del protagonista
      */
     public Set<TecnicaSpeciale> getTecnicheRicompensa() {
-        if (this.matchCorrente == null || !this.matchCorrente.isConcluso() || !this.isVittoriaProtagonista())
+        if (!this.isMatchInCorso() || !this.matchCorrente.isConcluso() || !this.isVittoriaProtagonista())
             throw new IllegalStateException("Le tecniche possono essere scelte solamente dopo una vittoria!");
         return this.calcolaTecnicheRicompensa();
     }
-
 
     private void applicaEffettoCampo(Campo campo, Avversario avversario) {
         this.protagonistaCorrente.getGestoreStatistiche().applicaModificatore(campo.getModificatore());
@@ -262,7 +399,7 @@ public class ControllerPartita {
     }
 
     private boolean isVittoriaProtagonista() {
-        if (this.matchCorrente == null)
+        if (!this.isMatchInCorso())
             throw new IllegalStateException("Nessun match in corso!");
         return this.matchCorrente.getVincitore().equals(this.protagonistaCorrente);
     }
