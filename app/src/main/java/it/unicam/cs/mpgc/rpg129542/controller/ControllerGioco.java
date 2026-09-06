@@ -73,6 +73,24 @@ public class ControllerGioco {
     }
 
     /**
+     * Inizializza il controller caricando dalla persistenza tutti i dati
+     * statici necessari al funzionamento del gioco: tecniche speciali,
+     * protagonisti disponibili e livelli.
+     *
+     * Questo metodo deve essere chiamato all'avvio dell'applicazione,
+     * prima di iniziare o caricare una partita.
+     *
+     * @throws IOException se si verifica un errore durante il caricamento
+     *                     della configurazione iniziale
+     */
+    public void inizializza() throws IOException {
+        this.tecniche = this.persistenza.caricaTecniche();
+        this.protagonisti = this.persistenza.caricaProtagonisti();
+        this.livelli = this.persistenza.caricaLivelli();
+        this.partitaCorrente = null;
+    }
+
+    /**
      * Restituisce tutte le tecniche speciali disponibili nel gioco.
      *
      * @return insieme non modificabile delle tecniche disponibili
@@ -89,24 +107,6 @@ public class ControllerGioco {
      */
     public List<Protagonista> getProtagonisti() {
         return List.copyOf(this.protagonisti);
-    }
-
-    /**
-     * Inizializza il controller caricando dalla persistenza tutti i dati
-     * statici necessari al funzionamento del gioco: tecniche speciali,
-     * protagonisti disponibili e livelli.
-     *
-     * Questo metodo deve essere chiamato all'avvio dell'applicazione,
-     * prima di iniziare o caricare una partita.
-     *
-     * @throws IOException se si verifica un errore durante il caricamento
-     *                     della configurazione iniziale
-     */
-    public void inizializza() throws IOException {
-        this.tecniche = this.persistenza.caricaTecniche();
-        this.protagonisti = this.persistenza.caricaProtagonisti();
-        this.livelli = this.persistenza.caricaLivelli();
-        this.partitaCorrente = null;
     }
 
     /**
@@ -130,6 +130,9 @@ public class ControllerGioco {
      *
      * @throws IllegalArgumentException se nessun protagonista
      *                                  disponibile possiede quell'id
+     *
+     * @throws IOException se si verifica un errore durante il caricamento
+     *                     dei dati iniziali della partita
      */
     public void iniziaNuovaPartita(@NonNull String idProtagonista) throws IOException{
         this.ricaricaDatiPartita();
@@ -139,9 +142,9 @@ public class ControllerGioco {
     }
 
     /**
-     * Ripristina una partita precedentemente salvata: a partire dai dati statici già
-     * caricati vengono ricostruiti il protagonista scelto, le sue statistiche permanenti,
-     * le tecniche imparate e gli avversari già sconfitti.
+     * Ripristina una partita precedentemente salvata: a partire dai dati statici ricaricati
+     * dalla configurazione iniziale vengono ricostruiti il protagonista scelto, le sue
+     * statistiche permanenti, le tecniche imparate e gli avversari già sconfitti.
      *
      * Terminato il ripristino, viene creato un nuovo {@link ControllerPartita}, che
      * individua automaticamente il livello più avanzato attualmente sbloccato.
@@ -166,43 +169,11 @@ public class ControllerGioco {
         this.livelli = this.persistenza.caricaLivelli();
     }
 
-    /**
-     * Salva lo stato corrente della partita in accordo con {@link SalvataggioDati},
-     * comprendendo il protagonista, le sue statistiche permanenti, le tecniche
-     * imparate e gli avversari già sconfitti.
-     *
-     * Non è possibile effettuare un salvataggio durante un match, poiché
-     * le informazioni temporanee di una partita non fanno parte dei dati
-     * memorizzati nel salvataggio.
-     *
-     * @throws IllegalStateException se non è presente una partita attiva
-     *                               oppure è in corso un match
-     *
-     * @throws IOException se si verifica un errore durante il salvataggio
-     */
-    public void salvaPartitaCorrente() throws IOException {
-        if (this.partitaCorrente == null)
-            throw new IllegalStateException("Nessuna partita attiva da salvare!");
-
-        if (this.partitaCorrente.isMatchInCorso())
-            throw new IllegalStateException("Non è possibile salvare durante un match!");
-
-        Protagonista protagonista = this.partitaCorrente.getProtagonistaCorrente();
-
-        Set<String> tecnicheImparate = protagonista.getTecnicheSpeciali().stream()
-                .map(TecnicaSpeciale::getId)
-                .collect(Collectors.toSet());
-
-        Set<String> avversariSconfitti = this.livelli.stream()
-                .flatMap(livello -> livello.getAvversari().entrySet().stream())
-                .filter(entry -> entry.getValue() == StatoAvversario.SCONFITTO)
-                .map(entry -> entry.getKey().getId())
-                .collect(Collectors.toSet());
-
-        SalvataggioDati dati = new SalvataggioDati(protagonista.getId(),
-                protagonista.getStatisticheBase(), tecnicheImparate, avversariSconfitti);
-
-        this.persistenza.salvaPartita(dati);
+    private Protagonista trovaProtagonistaPerId(String id) {
+        return this.protagonisti.stream()
+                .filter(protagonista -> protagonista.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Nessun protagonista trovato con id: " + id));
     }
 
     // Applica al protagonista e ai livelli i dati dinamici contenuti nel salvataggio:
@@ -244,10 +215,42 @@ public class ControllerGioco {
             throw new IllegalArgumentException("Il salvataggio contiene avversari inesistenti!");
     }
 
-    private Protagonista trovaProtagonistaPerId(String id) {
-        return this.protagonisti.stream()
-                .filter(protagonista -> protagonista.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Nessun protagonista trovato con id: " + id));
+    /**
+     * Salva lo stato corrente della partita in accordo con {@link SalvataggioDati},
+     * comprendendo il protagonista, le sue statistiche permanenti, le tecniche
+     * imparate e gli avversari già sconfitti.
+     *
+     * Non è possibile effettuare un salvataggio durante un match, poiché
+     * le informazioni temporanee di una partita non fanno parte dei dati
+     * memorizzati nel salvataggio.
+     *
+     * @throws IllegalStateException se non è presente una partita attiva
+     *                               oppure è in corso un match
+     *
+     * @throws IOException se si verifica un errore durante il salvataggio
+     */
+    public void salvaPartitaCorrente() throws IOException {
+        if (this.partitaCorrente == null)
+            throw new IllegalStateException("Nessuna partita attiva da salvare!");
+
+        if (this.partitaCorrente.isMatchInCorso())
+            throw new IllegalStateException("Non è possibile salvare durante un match!");
+
+        Protagonista protagonista = this.partitaCorrente.getProtagonistaCorrente();
+
+        Set<String> tecnicheImparate = protagonista.getTecnicheSpeciali().stream()
+                .map(TecnicaSpeciale::getId)
+                .collect(Collectors.toSet());
+
+        Set<String> avversariSconfitti = this.livelli.stream()
+                .flatMap(livello -> livello.getAvversari().entrySet().stream())
+                .filter(entry -> entry.getValue() == StatoAvversario.SCONFITTO)
+                .map(entry -> entry.getKey().getId())
+                .collect(Collectors.toSet());
+
+        SalvataggioDati dati = new SalvataggioDati(protagonista.getId(),
+                protagonista.getStatisticheBase(), tecnicheImparate, avversariSconfitti);
+
+        this.persistenza.salvaPartita(dati);
     }
 }

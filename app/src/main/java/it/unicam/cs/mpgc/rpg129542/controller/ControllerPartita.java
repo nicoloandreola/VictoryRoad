@@ -85,21 +85,20 @@ public class ControllerPartita {
         this.livelli = livelli;
         this.logicaMatch = logicaMatch;
         this.strategiaAvversario = strategiaAvversario;
-        this.livelloCorrente = this.getMaxLivelloSbloccato();
+        this.livelloCorrente = this.getMassimoLivelloSbloccato();
         this.matchCorrente = null;
     }
 
-    /**
-     * Verifica se il giocatore ha completato l'intero gioco.
-     *
-     * Il gioco è completato solamente quando tutti i livelli risultano
-     * completati, quindi quando tutti gli avversari del gioco sono stati sconfitti.
-     *
-     * @return {@code true} se tutti i livelli sono completati,
-     *         {@code false} altrimenti
-     */
-    public boolean isGiocoCompletato() {
-        return this.livelli.stream().allMatch(Livello::isCompletato);
+    // Restituisce il livello più avanzato attualmente sbloccato,
+    // dal quale il giocatore può riprendere a giocare.
+    private Livello getMassimoLivelloSbloccato() {
+        Livello livelloSbloccato = this.livelli.getFirst();
+        for (int i = 1; i < this.livelli.size(); i++) {
+            if (!this.livelli.get(i - 1).isLivelloSuccessivoSbloccato())
+                break;
+            livelloSbloccato = this.livelli.get(i);
+        }
+        return livelloSbloccato;
     }
 
     /**
@@ -187,6 +186,11 @@ public class ControllerPartita {
         this.matchCorrente = new Match(this.protagonistaCorrente, avversario, this.logicaMatch);
     }
 
+    private void applicaEffettoCampo(Campo campo, Avversario avversario) {
+        this.protagonistaCorrente.getGestoreStatistiche().applicaModificatore(campo.getModificatore());
+        avversario.getGestoreStatistiche().applicaModificatore(campo.getModificatore());
+    }
+
     /**
      * Chiede a {@link StrategiaAvversario} la difesa che l'avversario
      * opporrà all'attacco scelto dal protagonista.
@@ -232,7 +236,7 @@ public class ControllerPartita {
      *                               oppure la difesa dell'avversario
      *                               non è ancora stata scelta
      */
-    public EsitoTurno eseguiAttaccoProtagonista() {
+    public EsitoTurno eseguiTurnoProtagonista() {
         if (!this.isMatchInCorso())
             throw new IllegalStateException("Nessun match in corso!");
 
@@ -277,9 +281,8 @@ public class ControllerPartita {
     }
 
     /**
-     * Esegue il turno dell'avversario utilizzando l'attacco
-     * precedentemente scelto da {@link #scegliAttaccoAvversario()}
-     * e la risposta scelta dal protagonista.
+     * Esegue il turno precedentemente scelto da {@link #scegliAttaccoAvversario()},
+     * nel quale l'avversario ricopre il ruolo di attaccante.
      *
      * Dopo la corretta esecuzione del turno l'attacco memorizzato viene
      * eliminato, così che un eventuale turno successivo dell'avversario
@@ -363,53 +366,10 @@ public class ControllerPartita {
         this.matchCorrente = null;
     }
 
-    /**
-     * Verifica se è attualmente presente un match in corso.
-     *
-     * @return {@code true} se esiste un match corrente,
-     *         {@code false} altrimenti
-     */
-    public boolean isMatchInCorso() {
-        return this.matchCorrente != null;
-    }
-
-    /**
-     * Restituisce le tecniche possedute dall'avversario sconfitto
-     * che il protagonista non possiede ancora e che possono quindi
-     * essere scelte come ricompensa.
-     *
-     * Il metodo costituisce l'operazione pubblica attraverso la quale
-     * la View può conoscere le tecniche da mostrare al giocatore
-     * dopo la vittoria di un match.
-     *
-     * @return insieme delle tecniche selezionabili come ricompensa
-     *
-     * @throws IllegalStateException se non è presente un match concluso
-     *                               con la vittoria del protagonista
-     */
-    public Set<TecnicaSpeciale> getTecnicheRicompensa() {
-        if (!this.isMatchInCorso() || !this.matchCorrente.isConcluso() || !this.isVittoriaProtagonista())
-            throw new IllegalStateException("Le tecniche possono essere scelte solamente dopo una vittoria!");
-        return this.calcolaTecnicheRicompensa();
-    }
-
-    private void applicaEffettoCampo(Campo campo, Avversario avversario) {
-        this.protagonistaCorrente.getGestoreStatistiche().applicaModificatore(campo.getModificatore());
-        avversario.getGestoreStatistiche().applicaModificatore(campo.getModificatore());
-    }
-
     private boolean isVittoriaProtagonista() {
         if (!this.isMatchInCorso())
             throw new IllegalStateException("Nessun match in corso!");
         return this.matchCorrente.getVincitore().equals(this.protagonistaCorrente);
-    }
-
-    private Set<TecnicaSpeciale> calcolaTecnicheRicompensa() {
-        return this.matchCorrente.getAvversario()
-                .getTecnicheSpeciali()
-                .stream()
-                .filter(tecnica -> !this.protagonistaCorrente.possiedeTecnica(tecnica))
-                .collect(Collectors.toSet());
     }
 
     private void gestisciRicompensa(TecnicaSpeciale tecnicaRicompensa) {
@@ -434,6 +394,34 @@ public class ControllerPartita {
         }
     }
 
+    /**
+     * Restituisce le tecniche possedute dall'avversario sconfitto
+     * che il protagonista non possiede ancora e che possono quindi
+     * essere scelte come ricompensa.
+     *
+     * Il metodo costituisce l'operazione pubblica attraverso la quale
+     * la View può conoscere le tecniche da mostrare al giocatore
+     * dopo la vittoria di un match.
+     *
+     * @return insieme delle tecniche selezionabili come ricompensa
+     *
+     * @throws IllegalStateException se non è presente un match concluso
+     *                               con la vittoria del protagonista
+     */
+    public Set<TecnicaSpeciale> getTecnicheRicompensa() {
+        if (!this.isMatchInCorso() || !this.matchCorrente.isConcluso() || !this.isVittoriaProtagonista())
+            throw new IllegalStateException("Le tecniche possono essere scelte solamente dopo una vittoria!");
+        return this.calcolaTecnicheRicompensa();
+    }
+
+    private Set<TecnicaSpeciale> calcolaTecnicheRicompensa() {
+        return this.matchCorrente.getAvversario()
+                .getTecnicheSpeciali()
+                .stream()
+                .filter(tecnica -> !this.protagonistaCorrente.possiedeTecnica(tecnica))
+                .collect(Collectors.toSet());
+    }
+
     private void miglioraStatisticheFineLivello() {
         Random random = new Random();
         int attacco = random.nextInt(INCREMENTO_MINIMO, INCREMENTO_MASSIMO + 1);
@@ -442,15 +430,26 @@ public class ControllerPartita {
         this.protagonistaCorrente.miglioraStatistiche(attacco, difesa, agilita);
     }
 
-    // Restituisce il livello più avanzato attualmente sbloccato,
-    // dal quale il giocatore può riprendere a giocare.
-    private Livello getMaxLivelloSbloccato() {
-        Livello livelloSbloccato = this.livelli.getFirst();
-        for (int i = 1; i < this.livelli.size(); i++) {
-            if (!this.livelli.get(i - 1).isLivelloSuccessivoSbloccato())
-                break;
-            livelloSbloccato = this.livelli.get(i);
-        }
-        return livelloSbloccato;
+    /**
+     * Verifica se è attualmente presente un match in corso.
+     *
+     * @return {@code true} se esiste un match corrente,
+     *         {@code false} altrimenti
+     */
+    public boolean isMatchInCorso() {
+        return this.matchCorrente != null;
+    }
+
+    /**
+     * Verifica se il giocatore ha completato l'intero gioco.
+     *
+     * Il gioco è completato solamente quando tutti i livelli risultano
+     * completati, quindi quando tutti gli avversari del gioco sono stati sconfitti.
+     *
+     * @return {@code true} se tutti i livelli sono completati,
+     *         {@code false} altrimenti
+     */
+    public boolean isGiocoCompletato() {
+        return this.livelli.stream().allMatch(Livello::isCompletato);
     }
 }
