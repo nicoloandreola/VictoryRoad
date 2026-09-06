@@ -85,6 +85,20 @@ public abstract class Personaggio {
         this.risorseMatch = new RisorseMatch();
     }
 
+    private void verificaNomeEId(String nome, String id) {
+        if (nome.isBlank())
+            throw new IllegalArgumentException("Nome del personaggio non può essere vuoto!");
+        if (id.isBlank())
+            throw new IllegalArgumentException("ID del personaggio non può essere vuoto!");
+    }
+
+    private void verificaSetTecniche(Set<TecnicaSpeciale> tecnicheSpeciali) {
+        if (tecnicheSpeciali.isEmpty())
+            throw new IllegalArgumentException("Il personaggio deve avere almeno una tecnica speciale!");
+        if (tecnicheSpeciali.contains(null))
+            throw new NullPointerException("Le tecniche non possono contenere valori nulli!");
+    }
+
     /**
      * Restituisce le statistiche permanenti del personaggio,
      * senza considerare eventuali modificatori temporanei.
@@ -285,19 +299,4 @@ public abstract class Personaggio {
     public int hashCode() {
         return this.id.hashCode();
     }
-
-    private void verificaNomeEId(String nome, String id) {
-        if (nome.isBlank())
-            throw new IllegalArgumentException("Nome del personaggio non può essere vuoto!");
-        if (id.isBlank())
-            throw new IllegalArgumentException("ID del personaggio non può essere vuoto!");
-    }
-
-    private void verificaSetTecniche(Set<TecnicaSpeciale> tecnicheSpeciali) {
-        if (tecnicheSpeciali.isEmpty())
-            throw new IllegalArgumentException("Il personaggio deve avere almeno una tecnica speciale!");
-        if (tecnicheSpeciali.contains(null))
-            throw new NullPointerException("Le tecniche non possono contenere valori nulli!");
-    }
-
 }

@@ -89,6 +89,12 @@ public class DeserializzatorePersonaggiXML {
         return new Avversario(nome, id, statistiche, tecnicheAvversario);
     }
 
+    // Cerca nell'insieme la tecnica associata all'identificativo ricevuto.
+    private static TecnicaSpeciale trovaTecnica(Set<TecnicaSpeciale> tecniche, String id) {
+        return tecniche.stream().filter(tecnica -> tecnica.getId().equals(id))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Tecnica non trovata: " + id));
+    }
+
     /**
      * Costruisce un'istanza di {@link StatisticheBase} leggendo i valori
      * di attacco, difesa e agilità contenuti nell'elemento XML specificato.
@@ -117,11 +123,5 @@ public class DeserializzatorePersonaggiXML {
         int difesa = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/difesa"));
         int agilita = Integer.parseInt(DOMUtils.readTextNode(elemento, "statistiche/agilita"));
         return new StatisticheBase(attacco, difesa, agilita);
-    }
-
-    // Cerca nell'insieme la tecnica associata all'identificativo ricevuto.
-    private static TecnicaSpeciale trovaTecnica(Set<TecnicaSpeciale> tecniche, String id) {
-        return tecniche.stream().filter(tecnica -> tecnica.getId().equals(id))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Tecnica non trovata: " + id));
     }
 }

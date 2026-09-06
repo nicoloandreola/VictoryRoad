@@ -59,7 +59,7 @@ public class Livello {
     /**
      * Metodo read-only che restituisce una copia non modificabile degli avversari del livello.
      *
-     * @return insieme non modificabile delle tecniche speciali
+     * @return mappa non modificabile degli avversari e dei relativi stati
      */
     public Map<Avversario, StatoAvversario> getAvversari() {
         return Map.copyOf(this.avversari);
@@ -168,8 +168,8 @@ public class Livello {
      * Verifica se il protagonista può avanzare al livello successivo.
      *
      * L'avanzamento viene sbloccato non appena almeno uno degli
-     * avversari del livello viene sconfitto: non è quindi necessario
-     * sconfiggere tutti gli avversari presenti per completare i livelli.
+     * avversari del livello viene sconfitto, non è necessario
+     * sconfiggerli entrambi (quello solo se lo si vuole completare).
      *
      * @return {@code true} se almeno un avversario è stato sconfitto,
      *         {@code false} altrimenti
@@ -189,7 +189,7 @@ public class Livello {
      */
     public boolean isCompletato() {
         for (StatoAvversario stato : this.avversari.values())
-            if(stato != StatoAvversario.DA_SCONFIGGERE)
+            if(stato != StatoAvversario.SCONFITTO)
                 return false;
         return true;
     }

@@ -94,7 +94,7 @@ public class PersistenzaXML implements Persistenza {
             }
             // Utilizzo Set.copyOf per proteggere il campo e favorire l'incapsulamento
             this.tecnicheCache = Set.copyOf(tecniche);
-            return tecniche;
+            return this.tecnicheCache;
         } catch (ParserConfigurationException | SAXException | XPathExpressionException | IllegalArgumentException e) {
             throw new IOException("Errore durante il caricamento delle tecniche", e);
         }
@@ -159,12 +159,38 @@ public class PersistenzaXML implements Persistenza {
         }
     }
 
+    // Permette a caricaLivelli() di caricare gli avversari definiti in personaggi.xml
+    private List<Avversario> caricaAvversari()
+            throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+        Document document = this.caricaDomDaResources(FILE_PERSONAGGI);
+        NodeList nodiAvversari = DOMUtils.executeQuery(document, "/personaggi/avversari/avversario");
+        Set<TecnicaSpeciale> tecniche = this.caricaTecniche();
+        List<Avversario> avversari = new ArrayList<>();
+        for (int i = 0; i < nodiAvversari.getLength(); i++) {
+            Element elemento = (Element) nodiAvversari.item(i);
+            avversari.add(DeserializzatorePersonaggiXML.creaAvversario(elemento, tecniche));
+        }
+        return avversari;
+    }
+
+    private Document caricaDomDaResources(String file)
+            throws IOException, ParserConfigurationException, SAXException {
+        // Utilizzo il metodo getResource() e non getResourceAsStream() solo perché il metodo
+        // DOMUtils.loadDomDocument prende una String che rappresenti un percorso, non un InputStream
+        URL risorsa = PersistenzaXML.class.getClassLoader().getResource(file);
+        if (risorsa == null)
+            throw new IOException("Risorsa XML non trovata: " + file);
+        // Trasformo l'URL in String per passarlo al metodo della classe DOMUtils
+        String percorso = risorsa.toExternalForm();
+        return DOMUtils.loadDomDocument(percorso);
+    }
+
     /**
      * {@inheritDoc}
      *
      * A differenza dei metodi {@link #caricaTecniche()}, {@link #caricaProtagonisti()}
      * {@link #caricaLivelli()}, per caricare i dati non passa per {@link #caricaDomDaResources(String)}
-     * poiché il file di salvataggio non è situato nella cartella resources come 
+     * poiché il file di salvataggio non è situato nella cartella resources come
      * gli altri, quindi chiama direttamente {@link DOMUtils#loadDomDocument(String)}
      */
     @Override
@@ -201,31 +227,5 @@ public class PersistenzaXML implements Persistenza {
     @Override
     public boolean verificaSalvataggio() {
         return FILE_SALVATAGGIO.exists();
-    }
-
-    // Permette a caricaLivelli() di caricare gli avversari definiti in personaggi.xml
-    private List<Avversario> caricaAvversari()
-            throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        Document document = this.caricaDomDaResources(FILE_PERSONAGGI);
-        NodeList nodiAvversari = DOMUtils.executeQuery(document, "/personaggi/avversari/avversario");
-        Set<TecnicaSpeciale> tecniche = this.caricaTecniche();
-        List<Avversario> avversari = new ArrayList<>();
-        for (int i = 0; i < nodiAvversari.getLength(); i++) {
-            Element elemento = (Element) nodiAvversari.item(i);
-            avversari.add(DeserializzatorePersonaggiXML.creaAvversario(elemento, tecniche));
-        }
-        return avversari;
-    }
-
-    private Document caricaDomDaResources(String file)
-            throws IOException, ParserConfigurationException, SAXException {
-        // Utilizzo il metodo getResource() e non getResourceAsStream() solo perché il metodo
-        // DOMUtils.loadDomDocument prende una String che rappresenti un percorso, non un InputStream
-        URL risorsa = PersistenzaXML.class.getClassLoader().getResource(file);
-        if (risorsa == null)
-            throw new IOException("Risorsa XML non trovata: " + file);
-        // Trasformo l'URL in String per passarlo al metodo della classe DOMUtils
-        String percorso = risorsa.toExternalForm();
-        return DOMUtils.loadDomDocument(percorso);
     }
 }

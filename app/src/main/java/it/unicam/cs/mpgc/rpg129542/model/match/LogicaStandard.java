@@ -41,6 +41,10 @@ public class LogicaStandard implements LogicaMatch {
         return difensore.getResistenza() == 0 ? EsitoTurno.GOL_SEGNATO : EsitoTurno.DANNO_INFLITTO;
     }
 
+    private int calcolaDanno(int valoreAttacco, int valoreDifesa) {
+        return Math.max(0, valoreAttacco - valoreDifesa);
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -53,10 +57,6 @@ public class LogicaStandard implements LogicaMatch {
         if (this.isDribblingRiuscito(valoreDribbling, valoreContrasto))
             return EsitoTurno.DRIBBLING_RIUSCITO;
         return EsitoTurno.PALLA_PERSA;
-    }
-
-    private int calcolaDanno(int valoreAttacco, int valoreDifesa) {
-        return Math.max(0, valoreAttacco - valoreDifesa);
     }
 
     private boolean isDribblingRiuscito(int valoreDribbling, int valoreContrasto) {

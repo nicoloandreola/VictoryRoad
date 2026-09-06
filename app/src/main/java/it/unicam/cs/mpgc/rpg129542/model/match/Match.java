@@ -72,6 +72,18 @@ public class Match {
     }
 
     /**
+     * Verifica se il protagonista è l'attaccante corrente.
+     *
+     * @return {@code true} se il protagonista è l'attaccante corrente,
+     *         {@code false} se l'attaccante è l'avversario
+     */
+    public boolean isTurnoProtagonista() {return this.attaccanteCorrente.equals(this.protagonista);}
+
+    private Personaggio getDifensoreCorrente() {
+        return isTurnoProtagonista() ? this.avversario : this.protagonista;
+    }
+
+    /**
      * Esegue un turno del match utilizzando le azioni e le eventuali
      * tecniche selezionate.
      *
@@ -124,6 +136,22 @@ public class Match {
         }
     }
 
+    private void aggiornaPunteggio(Personaggio attaccante) {
+        if (attaccante.equals(this.protagonista))
+            this.golProtagonista++;
+        else
+            this.golAvversario++;
+    }
+
+    private void cambiaTurno() {
+        this.attaccanteCorrente = isTurnoProtagonista() ? this.avversario : this.protagonista;
+    }
+
+    private void ripristinaRisorse() {
+        this.protagonista.ripristinaRisorseMatch();
+        this.avversario.ripristinaRisorseMatch();
+    }
+
     /**
      * Verifica se il match è terminato.
      *
@@ -145,28 +173,5 @@ public class Match {
         if (!this.isConcluso())
             throw new IllegalStateException("Il match non è ancora terminato!");
         return this.golProtagonista >= GOL_PER_VITTORIA ? this.protagonista : this.avversario;
-    }
-
-    // Verifica se il protagonista è l'attaccante corrente
-    private boolean isTurnoProtagonista() {return this.attaccanteCorrente.equals(this.protagonista);}
-
-    private Personaggio getDifensoreCorrente() {
-        return isTurnoProtagonista() ? this.avversario : this.protagonista;
-    }
-
-    private void aggiornaPunteggio(Personaggio attaccante) {
-        if (attaccante.equals(this.protagonista))
-            this.golProtagonista++;
-        else
-            this.golAvversario++;
-    }
-
-    private void cambiaTurno() {
-        this.attaccanteCorrente = isTurnoProtagonista() ? this.avversario : this.protagonista;
-    }
-
-    private void ripristinaRisorse() {
-        this.protagonista.ripristinaRisorseMatch();
-        this.avversario.ripristinaRisorseMatch();
     }
 }
