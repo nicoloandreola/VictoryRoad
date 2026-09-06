@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 repositories {
@@ -24,6 +25,7 @@ dependencies {
     // This dependency is used by the application.
     implementation(libs.guava)
 
+    // Lombok library used for annotation
     implementation("org.projectlombok:lombok:1.18.44")
     annotationProcessor("org.projectlombok:lombok:1.18.44")
 }
@@ -38,6 +40,11 @@ java {
 application {
     // Define the main class for the application.
     mainClass = "it.unicam.cs.mpgc.rpg129542.App"
+}
+
+javafx {
+    version = "25.0.3"
+    modules = listOf("javafx.controls", "javafx.fxml", "javafx.web")
 }
 
 tasks.named<Test>("test") {
