@@ -39,7 +39,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "it.unicam.cs.mpgc.rpg129542.App"
+    mainClass = "it.unicam.cs.mpgc.rpg129542.VictoryRoadApp"
 }
 
 javafx {
