@@ -23,9 +23,6 @@ import java.net.URL;
  */
 public class GestoreSchermate {
 
-    // Cartella, relativa alla root del classpath, in cui si trovano i file FXML
-    private static final String CARTELLA_FXML = "/fxml/";
-
     private final Stage stagePrincipale;
     private final ControllerGioco controllerGioco;
 
@@ -61,7 +58,7 @@ public class GestoreSchermate {
      *                              non implementa {@link ControllerSchermata}
      */
     public void mostraSchermata(@NonNull String nomeFxml) throws IOException {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(CARTELLA_FXML + nomeFxml + ".fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(nomeFxml + ".fxml"));
         Parent radice = loader.load();
         Object controller = loader.getController();
         if (!(controller instanceof ControllerSchermata))
