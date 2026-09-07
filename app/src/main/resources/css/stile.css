@@ -1,0 +1,46 @@
+.root {
+    -fx-background-color: #F3E5AB;
+}
+
+/* Stile comune */
+.label {
+    -fx-text-fill: #6D3B07;
+}
+
+.button {
+    -fx-background-color: #CC5500;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #B84C00;
+}
+
+.button:disabled {
+    -fx-opacity: 0.55;
+}
+
+/* Menu */
+.titolo-menu {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.pulsante-menu {
+    -fx-font-size: 15px;
+}
+
+/* Scelta protagonista */
+.card-protagonista {
+    -fx-border-color: #6D3B07;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.card-selezionata {
+    -fx-border-color: #CC5500;
+    -fx-border-width: 4;
+}

@@ -59,33 +59,17 @@ public class ControllerMenu implements ControllerSchermata, Initializable {
 
     }
 
-    /**
-     * Mostra la schermata dalla quale il giocatore può scegliere
-     * il protagonista con cui iniziare una nuova partita.
-     *
-     * @throws IOException se il caricamento della schermata fallisce
-     */
     @FXML
     private void nuovaPartita() throws IOException {
         this.gestoreSchermate.mostraSchermata("sceltaProtagonista");
     }
 
-    /**
-     * Carica la partita precedentemente salvata e, se il caricamento
-     * termina correttamente, mostra la schermata dei livelli.
-     *
-     * @throws IOException se si verifica un errore durante il caricamento
-     *                     della partita o della schermata successiva
-     */
     @FXML
     private void caricaSalvataggio() throws IOException {
         this.controllerGioco.caricaPartitaSalvata();
         this.gestoreSchermate.mostraSchermata("livelli");
     }
 
-    /**
-     * Termina l'esecuzione dell'applicazione JavaFX.
-     */
     @FXML
     private void esci() {
         Platform.exit();

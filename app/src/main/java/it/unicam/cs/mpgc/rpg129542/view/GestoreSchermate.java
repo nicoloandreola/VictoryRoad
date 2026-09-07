@@ -41,7 +41,7 @@ public class GestoreSchermate {
 
     /**
      * Carica la schermata identificata dal nome del file FXML (senza estensione,
-     * situato nella cartella {@code resources/fxml}) e la mostra sullo stage principale.
+     * situato nella cartella {@code resources}) e la mostra sullo stage principale.
      *
      * Non utilizza direttamente il metodo statico {@link FXMLLoader#load(URL)},
      * ma si salva l'istanza del loader nell'omonima variabile per poter poi
@@ -58,7 +58,7 @@ public class GestoreSchermate {
      *                              non implementa {@link ControllerSchermata}
      */
     public void mostraSchermata(@NonNull String nomeFxml) throws IOException {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(nomeFxml + ".fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeFxml + ".fxml"));
         Parent radice = loader.load();
         Object controller = loader.getController();
         if (!(controller instanceof ControllerSchermata))
@@ -66,6 +66,10 @@ public class GestoreSchermate {
         ControllerSchermata schermata = (ControllerSchermata) controller;
         schermata.configura(this.controllerGioco, this);
         Scene scena = new Scene(radice);
+        URL foglioDiStile = GestoreSchermate.class.getClassLoader().getResource("css/stile.css");
+        if (foglioDiStile == null)
+            throw new IllegalStateException("Foglio di stile non trovato!");
+        scena.getStylesheets().add(foglioDiStile.toExternalForm());
         this.stagePrincipale.setScene(scena);
         this.stagePrincipale.show();
     }

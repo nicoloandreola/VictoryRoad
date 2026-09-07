@@ -6,18 +6,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerMenu">
+<VBox alignment="CENTER" prefHeight="720.0" prefWidth="960.0" spacing="20.0"
+      xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerMenu">
     <padding>
         <Insets bottom="60.0" left="60.0" right="60.0" top="60.0" />
     </padding>
 
-    <Label text="Victory Road">
+    <Label styleClass="titolo-menu" text="Victory Road">
       <font>
          <Font name="System Bold" size="30.0" />
       </font>
     </Label>
 
-    <Button onAction="#nuovaPartita" prefHeight="40" prefWidth="220.0" text="Nuova Partita" />
-    <Button fx:id="caricaPartita" onAction="#caricaSalvataggio" prefHeight="40" prefWidth="220.0" text="Carica Partita" />
-    <Button onAction="#esci" prefHeight="40" prefWidth="220.0" text="Esci" />
+    <Button onAction="#nuovaPartita" prefHeight="40" prefWidth="220.0" styleClass="pulsante-menu" text="Nuova Partita" />
+    <Button fx:id="caricaPartita" onAction="#caricaSalvataggio" prefHeight="40" prefWidth="220.0" styleClass="pulsante-menu" text="Carica Partita" />
+    <Button onAction="#esci" prefHeight="40" prefWidth="220.0" styleClass="pulsante-menu" text="Esci" />
 </VBox>
