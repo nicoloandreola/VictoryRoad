@@ -41,7 +41,8 @@ public class GestoreSchermate {
 
     /**
      * Carica la schermata identificata dal nome del file FXML (senza estensione,
-     * situato nella cartella {@code resources}) e la mostra sullo stage principale.
+     * situato nello stesso package di questa classe nella cartella {@code resources})
+     * e la mostra sullo stage principale.
      *
      * Non utilizza direttamente il metodo statico {@link FXMLLoader#load(URL)},
      * ma si salva l'istanza del loader nell'omonima variabile per poter poi
@@ -60,17 +61,25 @@ public class GestoreSchermate {
     public void mostraSchermata(@NonNull String nomeFxml) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeFxml + ".fxml"));
         Parent radice = loader.load();
+        ControllerSchermata schermata = this.getControllerSchermata(loader);
+        schermata.configura(this.controllerGioco, this);
+        Scene scena = new Scene(radice);
+        scena.getStylesheets().add(this.caricaFoglioDiStile());
+        this.stagePrincipale.setScene(scena);
+        this.stagePrincipale.show();
+    }
+
+    private ControllerSchermata getControllerSchermata(FXMLLoader loader) {
         Object controller = loader.getController();
         if (!(controller instanceof ControllerSchermata))
             throw new IllegalStateException("Il controller FXML deve implementare ControllerSchermata!");
-        ControllerSchermata schermata = (ControllerSchermata) controller;
-        schermata.configura(this.controllerGioco, this);
-        Scene scena = new Scene(radice);
+        return (ControllerSchermata) controller;
+    }
+
+    private String caricaFoglioDiStile() {
         URL foglioDiStile = GestoreSchermate.class.getClassLoader().getResource("css/stile.css");
         if (foglioDiStile == null)
             throw new IllegalStateException("Foglio di stile non trovato!");
-        scena.getStylesheets().add(foglioDiStile.toExternalForm());
-        this.stagePrincipale.setScene(scena);
-        this.stagePrincipale.show();
+        return foglioDiStile.toExternalForm();
     }
 }

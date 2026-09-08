@@ -21,7 +21,7 @@ import java.io.IOException;
  * persistenza, logica dei match, strategia dell'avversario,
  * controller principale e gestione delle schermate.
  *
- * Terminata l'inizializzazione,  mostra la prima schermata dell'applicazione
+ * Terminata l'inizializzazione, mostra la prima schermata dell'applicazione
  * (il menu principale) e delega la gestione dell'interfaccia a {@link GestoreSchermate}.
  *
  * @author Nicolò Andreola
@@ -59,7 +59,7 @@ public class VictoryRoadApp extends Application {
      *
      * @param args argomenti ricevuti dalla linea di comando
      */
-    static void main(String[] args) {
+    public static void main(String[] args) {
         launch(args);
     }
 }

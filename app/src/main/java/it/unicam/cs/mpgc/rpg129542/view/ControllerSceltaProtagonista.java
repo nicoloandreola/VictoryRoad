@@ -3,7 +3,6 @@ package it.unicam.cs.mpgc.rpg129542.view;
 import it.unicam.cs.mpgc.rpg129542.controller.ControllerGioco;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Protagonista;
 import it.unicam.cs.mpgc.rpg129542.model.statistiche.StatisticheBase;
-import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -26,13 +25,15 @@ import java.util.ResourceBundle;
  */
 public class ControllerSceltaProtagonista implements ControllerSchermata, Initializable {
 
+    // Classe CSS applicata alla card del protagonista selezionato
+    // per evidenziarla graficamente rispetto alle altre.
     private static final String CLASSE_CARD_SELEZIONATA = "card-selezionata";
 
     private ControllerGioco controllerGioco;
     private GestoreSchermate gestoreSchermate;
 
-    private Protagonista protagonista1, protagonista2, protagonista3;
     private Protagonista protagonistaSelezionato;
+    private VBox cardSelezionata;
 
     @FXML
     private VBox cardProtagonista1, cardProtagonista2, cardProtagonista3;
@@ -51,89 +52,88 @@ public class ControllerSceltaProtagonista implements ControllerSchermata, Initia
     @FXML
     private Button conferma;
 
+    private List<Protagonista> protagonisti;
+    private VBox[] cardProtagonisti;
+    private Label[] nomi, valoriAttacco, valoriDifesa, valoriAgilita, valoriOverall, tecnicheIniziali;
+
     /**
      * {@inheritDoc}
      *
      * Dopo aver ricevuto le dipendenze, recupera i protagonisti disponibili
      * dal controller principale e ne mostra i dati nelle rispettive card.
+     *
+     * @throws IllegalStateException se il numero di protagonisti disponibili
+     *                              è diverso da tre, visto che la schermata
+     *                              è progettata strutturalmente per 3 protagonisti
      */
     @Override
     public void configura(ControllerGioco controllerGioco, GestoreSchermate gestoreSchermate) {
         this.controllerGioco = controllerGioco;
         this.gestoreSchermate = gestoreSchermate;
-
-        List<Protagonista> protagonisti = this.controllerGioco.getProtagonisti();
-        // Questa View è progettata strutturalmente per tre protagonisti
+        this.protagonisti = this.controllerGioco.getProtagonisti();
         if (protagonisti.size() != 3)
             throw new IllegalStateException("La schermata richiede esattamente tre protagonisti!");
-        this.protagonista1 = protagonisti.get(0);
-        this.protagonista2 = protagonisti.get(1);
-        this.protagonista3 = protagonisti.get(2);
-
-        this.mostraProtagonista(this.protagonista1, this.nomeProtagonista1, this.attaccoProtagonista1,
-                this.difesaProtagonista1, this.agilitaProtagonista1, this.overallProtagonista1, this.tecnicaProtagonista1);
-        this.mostraProtagonista(this.protagonista2, this.nomeProtagonista2, this.attaccoProtagonista2,
-                this.difesaProtagonista2, this.agilitaProtagonista2, this.overallProtagonista2, this.tecnicaProtagonista2);
-        this.mostraProtagonista(this.protagonista3, this.nomeProtagonista3, this.attaccoProtagonista3,
-                this.difesaProtagonista3, this.agilitaProtagonista3,this.overallProtagonista3, this.tecnicaProtagonista3);
+        for (int i = 0; i < protagonisti.size(); i++)
+            mostraProtagonista(i);
     }
 
     /**
      * {@inheritDoc}
      *
-     * Il pulsante di conferma viene inizialmente disabilitato,
+     * Inizializza i componenti della schermata raggruppando in array
+     * le card e le Label corrispondenti dei tre protagonisti, così da
+     * poterle gestire uniformemente attraverso il loro indice.
+     *
+     * Inoltre disabilita inizialmente il pulsante di conferma
      * poiché il giocatore deve prima selezionare un protagonista.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.cardProtagonisti = new VBox[]{cardProtagonista1, cardProtagonista2, cardProtagonista3};
+        this.nomi = new Label[]{nomeProtagonista1, nomeProtagonista2, nomeProtagonista3};
+        this.valoriAttacco = new Label[]{attaccoProtagonista1, attaccoProtagonista2, attaccoProtagonista3};
+        this.valoriDifesa = new Label[]{difesaProtagonista1, difesaProtagonista2, difesaProtagonista3};
+        this.valoriAgilita = new Label[]{agilitaProtagonista1, agilitaProtagonista2, agilitaProtagonista3};
+        this.valoriOverall = new Label[]{overallProtagonista1, overallProtagonista2, overallProtagonista3};
+        this.tecnicheIniziali = new Label[]{tecnicaProtagonista1, tecnicaProtagonista2, tecnicaProtagonista3};
         this.conferma.setDisable(true);
     }
 
-    // Aggiorna le Label di una card con i dati del protagonista ricevuto.
-    private void mostraProtagonista(Protagonista protagonista, Label nome, Label attacco,
-                                    Label difesa, Label agilita, Label overall, Label tecnica) {
-        StatisticheBase statistiche = protagonista.getStatisticheBase();
-        TecnicaSpeciale tecnicaIniziale = this.getTecnicaIniziale(protagonista);
-        nome.setText(protagonista.getNome());
-        attacco.setText("Attacco: " + statistiche.getAttacco());
-        difesa.setText("Difesa: " + statistiche.getDifesa());
-        agilita.setText("Agilità: " + statistiche.getAgilita());
-        overall.setText(String.valueOf(protagonista.getOverall()));
-        tecnica.setText("Tecnica iniziale: " + tecnicaIniziale.getNome());
-    }
-
-    private TecnicaSpeciale getTecnicaIniziale(Protagonista protagonista) {
-        for (TecnicaSpeciale tecnica : protagonista.getTecnicheSpeciali())
-            return tecnica;
-        throw new IllegalStateException("Il protagonista non possiede alcuna tecnica!");
+    // Aggiorna le Label di una card con i dati del protagonista corrispondente.
+    private void mostraProtagonista(int indice) {
+        Protagonista protagonista = this.protagonisti.get(indice);
+        StatisticheBase s = protagonista.getStatisticheBase();
+        this.nomi[indice].setText(protagonista.getNome());
+        this.valoriAttacco[indice].setText("Attacco: " + s.getAttacco());
+        this.valoriDifesa[indice].setText("Difesa: " + s.getDifesa());
+        this.valoriAgilita[indice].setText("Agilità: " + s.getAgilita());
+        this.valoriOverall[indice].setText(String.valueOf(protagonista.getOverall()));
+        this.tecnicheIniziali[indice].setText("Tecnica iniziale: " + protagonista.getTecnicaIniziale().getNome());
     }
 
     @FXML
     private void scegliProtagonista1() {
-        this.selezionaProtagonista(this.protagonista1, this.cardProtagonista1);
+        this.selezionaProtagonista(0);
     }
 
     @FXML
     private void scegliProtagonista2() {
-        this.selezionaProtagonista(this.protagonista2, this.cardProtagonista2);
+        this.selezionaProtagonista(1);
     }
 
     @FXML
     private void scegliProtagonista3() {
-        this.selezionaProtagonista(this.protagonista3, this.cardProtagonista3);
+        this.selezionaProtagonista(2);
     }
 
-    // Memorizza il protagonista scelto, prepara graficamente la card selezionata
+    // Memorizza il protagonista scelto, evidenzia graficamente la card selezionata
     // e abilita il pulsante che permette di confermare la scelta.
-    private void selezionaProtagonista(Protagonista protagonista, VBox cardSelezionata) {
-        this.protagonistaSelezionato = protagonista;
-
-        this.cardProtagonista1.getStyleClass().remove(CLASSE_CARD_SELEZIONATA);
-        this.cardProtagonista2.getStyleClass().remove(CLASSE_CARD_SELEZIONATA);
-        this.cardProtagonista3.getStyleClass().remove(CLASSE_CARD_SELEZIONATA);
-
-        cardSelezionata.getStyleClass().add(CLASSE_CARD_SELEZIONATA);
-
+    private void selezionaProtagonista(int indice) {
+        this.protagonistaSelezionato = this.protagonisti.get(indice);
+        if (this.cardSelezionata != null)
+            this.cardSelezionata.getStyleClass().remove(CLASSE_CARD_SELEZIONATA);
+        this.cardSelezionata = this.cardProtagonisti[indice];
+        this.cardSelezionata.getStyleClass().add(CLASSE_CARD_SELEZIONATA);
         this.conferma.setDisable(false);
     }
 
@@ -144,5 +144,10 @@ public class ControllerSceltaProtagonista implements ControllerSchermata, Initia
 
         this.controllerGioco.iniziaNuovaPartita(this.protagonistaSelezionato.getId());
         this.gestoreSchermate.mostraSchermata("livelli");
+    }
+
+    @FXML
+    private void tornaAlMenu() throws IOException {
+        this.gestoreSchermate.mostraSchermata("menu");
     }
 }

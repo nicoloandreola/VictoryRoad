@@ -2,15 +2,25 @@ package it.unicam.cs.mpgc.rpg129542.model.personaggio;
 
 import it.unicam.cs.mpgc.rpg129542.model.statistiche.StatisticheBase;
 import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
+import lombok.Getter;
 import lombok.NonNull;
 
 /**
  * Rappresenta il personaggio controllato dal giocatore ed estende {@link Personaggio}
  *
+ * Oltre alle caratteristiche comuni a tutti i personaggi, mantiene
+ * il riferimento alla propria tecnica iniziale, permette di apprenderne
+ * di nuove e di migliorare permanentemente le statistiche durante
+ * la progressione del gioco.
+ *
  * @author Nicolò Andreola
  */
 
 public class Protagonista extends Personaggio {
+
+    @Getter
+    private final TecnicaSpeciale tecnicaIniziale;
+
     /**
      * Crea un protagonista con una tecnica speciale iniziale.
      *
@@ -21,14 +31,17 @@ public class Protagonista extends Personaggio {
      *
      * @throws IllegalArgumentException se uno dei parametri non rispetta
      *         i vincoli definiti da {@link Personaggio}
+     *
+     * @throws NullPointerException se uno dei parametri è {@code null}
      */
     public Protagonista(String nome, String id, StatisticheBase statisticheBase, TecnicaSpeciale tecnicaIniziale) {
         super(nome, id, statisticheBase, tecnicaIniziale);
+        this.tecnicaIniziale = tecnicaIniziale;
     }
 
     /**
      * Permette di aggiungere una nuova tecnica alla collezione del protagonista
-     * ogni volta che ne "impara" una (cioè dopo ogni vittoria)
+     * quando viene appresa come ricompensa dopo una vittoria.
      *
      * @param tecnica nuova tecnica da aggiungere
      * @return {@code true} se la tecnica non è già presente nel set del
