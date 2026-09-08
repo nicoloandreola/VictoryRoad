@@ -11,7 +11,8 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="720.0" prefWidth="960.0" spacing="28.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerSceltaProtagonista">
+<VBox alignment="CENTER" prefHeight="720.0" prefWidth="960.0" spacing="28.0" xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerSceltaProtagonista">
 
     <padding>
         <Insets bottom="40.0" left="45.0" right="45.0" top="40.0" />
@@ -22,12 +23,17 @@
             <Font name="System Bold" size="30.0" />
         </font>
     </Label>
-
-    <Label text="Seleziona il protagonista con cui iniziare la tua avventura!">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </Label>
+   <VBox alignment="CENTER" spacing="5.0">
+      <children>
+      
+          <Label text="Seleziona il protagonista con cui iniziare la tua avventura!">
+              <font>
+                  <Font size="18.0" />
+              </font>
+          </Label>
+         <Label text="(ogni protagonista ha caratteristiche uniche: scegli quello più adatto al tuo stile)" wrapText="true" />
+      </children>
+   </VBox>
 
     <HBox alignment="CENTER" spacing="25.0">
 
@@ -44,7 +50,7 @@
                 </Label>
 
                 <StackPane prefHeight="48.0" prefWidth="48.0">
-                    <Circle radius="22.0" />
+                    <Circle fill="#cc5500" radius="22.0" />
                     <Label fx:id="overallProtagonista1" text="-">
                         <font>
                             <Font name="System Bold" size="14.0" />
@@ -93,7 +99,7 @@
                 </Label>
 
                 <StackPane prefHeight="48.0" prefWidth="48.0">
-                    <Circle radius="22.0" />
+                    <Circle fill="#cc5500" radius="22.0" />
                     <Label fx:id="overallProtagonista2" text="-">
                         <font>
                             <Font name="System Bold" size="14.0" />
@@ -142,7 +148,7 @@
                 </Label>
 
                 <StackPane prefHeight="48.0" prefWidth="48.0">
-                    <Circle radius="22.0" />
+                    <Circle fill="#cc5500" radius="22.0" />
                     <Label fx:id="overallProtagonista3" text="-">
                         <font>
                             <Font name="System Bold" size="14.0" />
@@ -179,7 +185,12 @@
         </VBox>
 
     </HBox>
-
-    <Button fx:id="conferma" mnemonicParsing="false" onAction="#confermaScelta" prefHeight="45.0" prefWidth="220.0" text="CONFERMA" />
+   <HBox alignment="CENTER" spacing="40.0">
+      <children>
+         <Button mnemonicParsing="false" onAction="#tornaAlMenu" prefHeight="45.0" prefWidth="220.0" text="INDIETRO" />
+      
+          <Button fx:id="conferma" mnemonicParsing="false" onAction="#confermaScelta" prefHeight="45.0" prefWidth="220.0" text="CONFERMA" />
+      </children>
+   </HBox>
 
 </VBox>
