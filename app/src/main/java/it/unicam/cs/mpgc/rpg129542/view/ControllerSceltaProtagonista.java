@@ -53,7 +53,7 @@ public class ControllerSceltaProtagonista implements ControllerSchermata, Initia
     private Button conferma;
 
     private List<Protagonista> protagonisti;
-    private VBox[] cardProtagonisti;
+    private VBox[] cardsProtagonisti;
     private Label[] nomi, valoriAttacco, valoriDifesa, valoriAgilita, valoriOverall, tecnicheIniziali;
 
     /**
@@ -89,7 +89,7 @@ public class ControllerSceltaProtagonista implements ControllerSchermata, Initia
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.cardProtagonisti = new VBox[]{cardProtagonista1, cardProtagonista2, cardProtagonista3};
+        this.cardsProtagonisti = new VBox[]{cardProtagonista1, cardProtagonista2, cardProtagonista3};
         this.nomi = new Label[]{nomeProtagonista1, nomeProtagonista2, nomeProtagonista3};
         this.valoriAttacco = new Label[]{attaccoProtagonista1, attaccoProtagonista2, attaccoProtagonista3};
         this.valoriDifesa = new Label[]{difesaProtagonista1, difesaProtagonista2, difesaProtagonista3};
@@ -132,7 +132,7 @@ public class ControllerSceltaProtagonista implements ControllerSchermata, Initia
         this.protagonistaSelezionato = this.protagonisti.get(indice);
         if (this.cardSelezionata != null)
             this.cardSelezionata.getStyleClass().remove(CLASSE_CARD_SELEZIONATA);
-        this.cardSelezionata = this.cardProtagonisti[indice];
+        this.cardSelezionata = this.cardsProtagonisti[indice];
         this.cardSelezionata.getStyleClass().add(CLASSE_CARD_SELEZIONATA);
         this.conferma.setDisable(false);
     }
@@ -143,7 +143,7 @@ public class ControllerSceltaProtagonista implements ControllerSchermata, Initia
             throw new IllegalStateException("Nessun protagonista selezionato!");
 
         this.controllerGioco.iniziaNuovaPartita(this.protagonistaSelezionato.getId());
-        this.gestoreSchermate.mostraSchermata("livelli");
+        this.gestoreSchermate.mostraSchermata("mappa");
     }
 
     @FXML

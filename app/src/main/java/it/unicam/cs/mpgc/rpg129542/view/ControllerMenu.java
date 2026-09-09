@@ -67,7 +67,7 @@ public class ControllerMenu implements ControllerSchermata, Initializable {
     @FXML
     private void caricaSalvataggio() throws IOException {
         this.controllerGioco.caricaPartitaSalvata();
-        this.gestoreSchermate.mostraSchermata("livelli");
+        this.gestoreSchermate.mostraSchermata("mappa");
     }
 
     @FXML
