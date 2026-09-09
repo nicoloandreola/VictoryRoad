@@ -47,8 +47,8 @@ public class VictoryRoadApp extends Application {
         GestoreSchermate gestoreSchermate = new GestoreSchermate(stage, controllerGioco);
         // Imposta dimensioni della finestra
         stage.setTitle("Victory Road");
-        stage.setWidth(960);
-        stage.setHeight(720);
+        stage.setWidth(1000);
+        stage.setHeight(800);
         stage.setResizable(false);
         // Mostra il menu principale
         gestoreSchermate.mostraSchermata("menu");

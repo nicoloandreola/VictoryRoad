@@ -19,6 +19,19 @@
     -fx-background-color: #B84C00;
 }
 
+.pulsante-secondario {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7A4300;
+    -fx-border-color: #7A4300;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.pulsante-secondario:hover {
+    -fx-background-color: rgba(122, 67, 0, 0.10);
+}
+
 .button:disabled {
     -fx-opacity: 0.55;
 }
@@ -52,7 +65,25 @@
     -fx-background-color: #FFF4D3;
 }
 
+.pulsante-card {
+    -fx-background-color: rgba(109, 59, 7, 0.82);
+    -fx-border-color: rgba(243, 229, 171, 0.9);
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.pulsante-card:hover {
+    -fx-background-color: #6D3B07;
+}
+
 /* Mappa */
+.barra-superiore {
+    -fx-background-color: #F3E5AB;
+    -fx-border-color: transparent transparent #D6B66A transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
 .split-pane {
     -fx-background-color: #F3E5AB;
     -fx-padding: 0;
@@ -69,8 +100,17 @@
 }
 
 .pannello-dettagli-livello {
-    -fx-background-color: #FFF9E6;
+    -fx-background-color: #F8EDBE;
     -fx-background-radius: 10;
+}
+
+.box-campo {
+    -fx-background-color: #FFF4D3;
+    -fx-border-color: #D6B66A;
+    -fx-border-width: 2;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 14;
 }
 
 .nome-campo {
@@ -79,7 +119,7 @@
 }
 
 .card-avversario {
-    -fx-background-color: #FFFDF5;
+    -fx-background-color: #FFF9E6;
     -fx-border-color: #C9A15A;
     -fx-border-width: 2;
     -fx-border-radius: 12;
@@ -133,7 +173,6 @@
     -fx-opacity: 1;
 }
 
-/* Aggiunte dinamicamente da ControllerMappa */
 .nodo-livello-completato {
     -fx-background-color: #6F9F55;
     -fx-text-fill: white;
@@ -157,6 +196,8 @@
 
 .button-bar {
     -fx-background-color: #F3E5AB;
+    -fx-border-color: #D6B66A transparent transparent transparent;
+    -fx-border-width: 2 0 0 0;
 }
 
 .button-bar .button {

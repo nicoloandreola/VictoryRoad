@@ -11,11 +11,10 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="720.0" prefWidth="960.0" spacing="28.0" xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerSceltaProtagonista">
+<VBox alignment="CENTER" prefHeight="750.0" prefWidth="990.0" spacing="15.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerSceltaProtagonista">
 
     <padding>
-        <Insets bottom="40.0" left="45.0" right="45.0" top="40.0" />
+        <Insets bottom="20.0" left="45.0" right="45.0" top="20.0" />
     </padding>
 
     <Label text="SCEGLI IL PROTAGONISTA">
@@ -23,7 +22,7 @@
             <Font name="System Bold" size="30.0" />
         </font>
     </Label>
-   <VBox alignment="CENTER" spacing="5.0">
+   <VBox alignment="TOP_CENTER" spacing="5.0">
       <children>
       
           <Label text="Seleziona il protagonista con cui iniziare la tua avventura!">
@@ -37,7 +36,7 @@
 
     <HBox alignment="CENTER" spacing="25.0">
 
-        <VBox fx:id="cardProtagonista1" alignment="TOP_CENTER" prefHeight="410.0" prefWidth="250.0" spacing="14.0" styleClass="card-personaggio">
+        <VBox fx:id="cardProtagonista1" alignment="TOP_CENTER" prefHeight="410.0" prefWidth="250.0" spacing="10.0" styleClass="card-personaggio">
             <padding>
                 <Insets bottom="20.0" left="15.0" right="15.0" top="20.0" />
             </padding>
@@ -80,13 +79,21 @@
             </font></Label>
 
             <Region VBox.vgrow="ALWAYS" />
-
-            <ImageView fitHeight="125.0" fitWidth="125.0" preserveRatio="true" />
-
-            <Button mnemonicParsing="false" onAction="#scegliProtagonista1" prefHeight="38.0" prefWidth="150.0" text="SCEGLI" />
+         <StackPane maxWidth="1.7976931348623157E308" prefHeight="250.0">
+            <children>
+      
+                  <ImageView fx:id="immagineProtagonista1" fitHeight="285.0" fitWidth="310.0" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER" />
+      
+                  <Button mnemonicParsing="false" onAction="#scegliProtagonista1" prefHeight="30.0" prefWidth="150.0" styleClass="pulsante-card" text="SCEGLI" StackPane.alignment="BOTTOM_CENTER">
+                  <StackPane.margin>
+                     <Insets bottom="15.0" />
+                  </StackPane.margin>
+               </Button>
+            </children>
+         </StackPane>
         </VBox>
 
-        <VBox fx:id="cardProtagonista2" alignment="TOP_CENTER" prefHeight="410.0" prefWidth="250.0" spacing="14.0" styleClass="card-personaggio">
+        <VBox fx:id="cardProtagonista2" alignment="TOP_CENTER" prefHeight="410.0" prefWidth="250.0" spacing="10.0" styleClass="card-personaggio">
             <padding>
                 <Insets bottom="20.0" left="15.0" right="15.0" top="20.0" />
             </padding>
@@ -129,13 +136,19 @@
             </font></Label>
 
             <Region VBox.vgrow="ALWAYS" />
-
-            <ImageView fitHeight="125.0" fitWidth="125.0" preserveRatio="true" />
-
-            <Button mnemonicParsing="false" onAction="#scegliProtagonista2" prefHeight="38.0" prefWidth="150.0" text="SCEGLI" />
+         <StackPane maxWidth="1.7976931348623157E308" prefHeight="250.0">
+            <children>
+               <ImageView fx:id="immagineProtagonista2" fitHeight="285.0" fitWidth="310.0" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER" />
+               <Button mnemonicParsing="false" onAction="#scegliProtagonista2" prefHeight="30.0" prefWidth="150.0" styleClass="pulsante-card" text="SCEGLI" StackPane.alignment="BOTTOM_CENTER">
+                  <StackPane.margin>
+                     <Insets bottom="15.0" />
+                  </StackPane.margin>
+               </Button>
+            </children>
+         </StackPane>
         </VBox>
 
-        <VBox fx:id="cardProtagonista3" alignment="TOP_CENTER" prefHeight="410.0" prefWidth="250.0" spacing="14.0" styleClass="card-personaggio">
+        <VBox fx:id="cardProtagonista3" alignment="TOP_CENTER" prefHeight="410.0" prefWidth="250.0" spacing="10.0" styleClass="card-personaggio">
             <padding>
                 <Insets bottom="20.0" left="15.0" right="15.0" top="20.0" />
             </padding>
@@ -178,18 +191,24 @@
             </font></Label>
 
             <Region VBox.vgrow="ALWAYS" />
-
-            <ImageView fitHeight="125.0" fitWidth="125.0" preserveRatio="true" />
-
-            <Button mnemonicParsing="false" onAction="#scegliProtagonista3" prefHeight="38.0" prefWidth="150.0" text="SCEGLI" />
+         <StackPane maxWidth="1.7976931348623157E308" prefHeight="250.0">
+            <children>
+               <ImageView fx:id="immagineProtagonista3" fitHeight="285.0" fitWidth="310.0" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER" />
+               <Button mnemonicParsing="false" onAction="#scegliProtagonista3" prefHeight="30.0" prefWidth="150.0" styleClass="pulsante-card" text="SCEGLI" StackPane.alignment="BOTTOM_CENTER">
+                  <StackPane.margin>
+                     <Insets bottom="15.0" />
+                  </StackPane.margin>
+               </Button>
+            </children>
+         </StackPane>
         </VBox>
 
     </HBox>
-   <HBox alignment="CENTER" spacing="40.0">
+   <HBox alignment="CENTER" spacing="60.0">
       <children>
-         <Button mnemonicParsing="false" onAction="#tornaAlMenu" prefHeight="45.0" prefWidth="220.0" text="INDIETRO" />
+         <Button mnemonicParsing="false" onAction="#tornaAlMenu" prefHeight="50.0" prefWidth="220.0" styleClass="pulsante-secondario" text="INDIETRO" />
       
-          <Button fx:id="conferma" mnemonicParsing="false" onAction="#confermaScelta" prefHeight="45.0" prefWidth="220.0" text="CONFERMA" />
+          <Button fx:id="conferma" mnemonicParsing="false" onAction="#confermaScelta" prefHeight="50.0" prefWidth="220.0" text="CONFERMA" />
       </children>
    </HBox>
 

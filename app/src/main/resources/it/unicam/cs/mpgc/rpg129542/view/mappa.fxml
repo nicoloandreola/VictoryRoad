@@ -18,12 +18,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerMappa">
+<BorderPane prefHeight="750.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerMappa">
 
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="20.0">
+        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="barra-superiore">
             <padding>
-                <Insets bottom="12.0" left="28.0" right="28.0" top="18.0" />
+                <Insets bottom="20.0" left="28.0" right="28.0" top="18.0" />
             </padding>
 
             <VBox spacing="3.0">
@@ -60,7 +60,7 @@
         <SplitPane dividerPositions="0.39670283806343903" prefWidth="960.0">
 
             <!-- Mappa dei sette livelli -->
-            <VBox alignment="TOP_CENTER" minWidth="330.0" spacing="10.0">
+            <VBox alignment="TOP_CENTER" minWidth="330.0" spacing="30.0">
                 <padding>
                     <Insets bottom="10.0" left="24.0" right="16.0" top="8.0" />
                 </padding>
@@ -80,7 +80,7 @@
             </VBox>
 
                 <!-- Pane usato intenzionalmente per posizionare liberamente i nodi della mappa -->
-                <Pane prefWidth="340.0" styleClass="pannello-mappa">
+                <Pane prefWidth="352.0" styleClass="pannello-mappa">
                <VBox prefWidth="340.0">
                   <children>
                      <HBox spacing="8.0">
@@ -143,29 +143,34 @@
             </VBox>
 
             <!-- Dettagli del livello selezionato e scelta dell'avversario -->
-            <VBox prefWidth="575.0" spacing="9.0" styleClass="pannello-dettagli-livello">
+            <VBox prefWidth="575.0" spacing="15.0" styleClass="pannello-dettagli-livello">
                 <padding>
                     <Insets bottom="10.0" left="20.0" right="24.0" top="8.0" />
                 </padding>
 
                 <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <Label fx:id="titoloLivello" text="Livello 1" />
+                    <Label fx:id="titoloLivello" text="LIVELLO 1">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font></Label>
                     <Region HBox.hgrow="ALWAYS" />
-                    <Label fx:id="statoLivello" text="Disponibile" />
+                    <Label fx:id="statoLivello" text="Disponibile">
+                  <font>
+                     <Font name="System Italic" size="14.0" />
+                  </font></Label>
                 </HBox>
+            <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" spacing="8.0" styleClass="box-campo">
+               <children>
+      
+                      <Label fx:id="nomeCampo" alignment="CENTER" styleClass="nome-campo" text="Nome campo" />
+                      <Label fx:id="descrizioneCampo" alignment="CENTER" maxWidth="470.0" text="Descrizione del campo" textAlignment="CENTER" wrapText="true" />
+               </children>
+            </VBox>
 
-                <Label fx:id="nomeCampo" alignment="CENTER" styleClass="nome-campo" text="Nome campo">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin></Label>
-                <Label fx:id="descrizioneCampo" maxWidth="470.0" text="Descrizione del campo" wrapText="true" />
-
-                <Label text="Avversari" />
-
-                <HBox alignment="CENTER" prefWidth="510.0" spacing="14.0">
-                    <VBox fx:id="cardAvversario1" alignment="TOP_CENTER" prefWidth="230.0" spacing="15.0" styleClass="card-avversario">
+                <HBox alignment="CENTER" prefWidth="510.0" spacing="14.0" VBox.vgrow="ALWAYS">
+                    <VBox fx:id="cardAvversario1" alignment="TOP_CENTER" prefWidth="230.0" spacing="12.0" styleClass="card-avversario">
                         <padding>
-                            <Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </padding>
 
                         <Label styleClass="nome-personaggio">
@@ -186,14 +191,14 @@
                            </children>
                         </HBox>
                      </graphic></Label>
-                        <ImageView fx:id="immagineAvversario1" fitHeight="200.0" fitWidth="180.0" preserveRatio="true" smooth="true" />
+                        <ImageView fx:id="immagineAvversario1" fitHeight="260.0" fitWidth="205.0" preserveRatio="true" smooth="true" />
 
                         <Label fx:id="statisticheAvversario1" text="ATT 0 | DIF 0 | AGI 0" />
                         <Label fx:id="statoAvversario1" text="Da sconfiggere" />
-                        <Button fx:id="pulsanteAvversario1" mnemonicParsing="false" onAction="#selezionaAvversario" text="Seleziona" />
+                        <Button fx:id="pulsanteAvversario1" mnemonicParsing="false" onAction="#selezionaAvversario" styleClass="pulsante-card" text="Seleziona" />
                     </VBox>
 
-                    <VBox fx:id="cardAvversario2" alignment="TOP_CENTER" prefWidth="230.0" spacing="15.0" styleClass="card-avversario">
+                    <VBox fx:id="cardAvversario2" alignment="TOP_CENTER" prefWidth="230.0" spacing="12.0" styleClass="card-avversario">
                         <padding>
                             <Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
                         </padding>
@@ -216,11 +221,11 @@
                            </children>
                         </HBox>
                      </graphic></Label>
-                  <ImageView fx:id="immagineAvversario2" fitHeight="200.0" fitWidth="180.0" preserveRatio="true" smooth="true" />
+                  <ImageView fx:id="immagineAvversario2" fitHeight="260.0" fitWidth="205.0" preserveRatio="true" smooth="true" />
 
                         <Label fx:id="statisticheAvversario2" text="ATT 0 | DIF 0 | AGI 0" />
                         <Label fx:id="statoAvversario2" text="Da sconfiggere" />
-                        <Button fx:id="pulsanteAvversario2" mnemonicParsing="false" onAction="#selezionaAvversario" text="Seleziona" />
+                        <Button fx:id="pulsanteAvversario2" mnemonicParsing="false" onAction="#selezionaAvversario" styleClass="pulsante-card" text="Seleziona" />
                     </VBox>
                 </HBox>
             </VBox>
@@ -228,13 +233,13 @@
     </center>
 
     <bottom>
-        <ButtonBar buttonMinWidth="50.0">
+        <ButtonBar buttonMinWidth="50.0" prefHeight="64.0">
             <padding>
-                <Insets bottom="8.0" left="28.0" right="28.0" top="6.0" />
+                <Insets bottom="12.0" left="28.0" right="28.0" top="12.0" />
             </padding>
 
             <buttons>
-                <Button mnemonicParsing="false" onAction="#tornaAlMenu" text="Menu principale" ButtonBar.buttonData="LEFT" />
+                <Button mnemonicParsing="false" onAction="#tornaAlMenu" styleClass="pulsante-secondario" text="Menu principale" ButtonBar.buttonData="LEFT" />
                 <Button mnemonicParsing="false" onAction="#salvaPartita" text="Salva partita" ButtonBar.buttonData="LEFT" />
                 <Button fx:id="pulsanteIniziaMatch" mnemonicParsing="false" onAction="#iniziaMatch" text="Inizia match" ButtonBar.buttonData="RIGHT" />
             </buttons>
