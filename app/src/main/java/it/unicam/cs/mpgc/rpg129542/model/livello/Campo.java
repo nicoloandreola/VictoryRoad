@@ -26,9 +26,9 @@ import lombok.NonNull;
 @Getter
 public class Campo {
 
-    // Costanti usata per ricavare il percorso dell'immagine a partire dal nome del
-    // campo: definite in modo che, se un giorno cambi cartella, modifichi una sola riga
-    private static final String CARTELLA_IMMAGINI = "/immagini/campi/";
+    // Costanti usata per ricavare il percorso dell'immagine a partire dal nome del campo:
+    // definite in modo che, se un giorno si cambi cartella, basta modificare il loro valore
+    private static final String CARTELLA_IMMAGINI = "immagini/campi/";
     private static final String ESTENSIONE_IMMAGINE = ".png";
 
     private final String nome;

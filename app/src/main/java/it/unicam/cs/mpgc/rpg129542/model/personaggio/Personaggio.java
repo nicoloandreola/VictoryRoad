@@ -21,6 +21,12 @@ import java.util.Set;
  * @author Nicolò Andreola
  */
 public abstract class Personaggio {
+
+    // Costanti usata per ricavare il percorso dell'immagine a partire dall'id del personaggio:
+    // definite in modo che, se un giorno si cambi cartella, basta modificare il loro valore
+    private static final String CARTELLA_IMMAGINI = "immagini/personaggi/";
+    private static final String ESTENSIONE_IMMAGINE = ".png";
+
     @Getter
     private final String nome;
     @Getter
@@ -269,6 +275,10 @@ public abstract class Personaggio {
      */
     protected final boolean aggiungiTecnica(@NonNull TecnicaSpeciale tecnica) {
         return this.tecnicheSpeciali.add(tecnica);
+    }
+
+    public String getPercorsoImmagine() {
+        return CARTELLA_IMMAGINI + this.id + ESTENSIONE_IMMAGINE;
     }
 
     /**

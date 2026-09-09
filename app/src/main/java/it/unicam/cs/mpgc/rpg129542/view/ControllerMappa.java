@@ -130,6 +130,46 @@ public class ControllerMappa implements ControllerSchermata, Initializable {
         this.mostraLivelloCorrente();
     }
 
+    @FXML
+    private void selezionaLivello(ActionEvent evento) {
+        Button pulsante = (Button) evento.getSource();
+        for (int i = 0; i < this.pulsantiLivelli.length; i++)
+            if (this.pulsantiLivelli[i] == pulsante) {
+                this.controllerPartita.selezionaLivello(this.livelli.get(i));
+                this.aggiornaMappa();
+                this.mostraLivelloCorrente();
+                return;
+            }
+    }
+
+    @FXML
+    private void selezionaAvversario(ActionEvent evento) {
+        Button pulsante = (Button) evento.getSource();
+        for (int i = 0; i < this.pulsantiAvversari.length; i++)
+            if (this.pulsantiAvversari[i] == pulsante) {
+                Avversario avversario = this.avversariCorrenti.get(i);
+                this.controllerPartita.selezionaAvversario(avversario);
+                this.mostraLivelloCorrente();
+                return;
+            }
+    }
+
+    @FXML
+    private void salvaPartita() throws IOException {
+        this.controllerGioco.salvaPartitaCorrente();
+    }
+
+    @FXML
+    private void tornaAlMenu() throws IOException {
+        this.gestoreSchermate.mostraSchermata("menu");
+    }
+
+    @FXML
+    private void iniziaMatch() throws IOException {
+        this.controllerPartita.iniziaMatch();
+        this.gestoreSchermate.mostraSchermata("match");
+    }
+
     // Aggiorna nell'intestazione le informazioni del protagonista corrente.
     private void aggiornaProtagonista() {
         Protagonista protagonista = this.controllerPartita.getProtagonistaCorrente();
@@ -146,7 +186,6 @@ public class ControllerMappa implements ControllerSchermata, Initializable {
         this.percentualeAvversariSconfitti.setText(percentualeAvversari + "%");
         this.barraAvversariSconfitti.setProgress(percentualeAvversari / 100.0);
     }
-
 
     // Aggiorna disponibilità e stile grafico dei pulsanti dei livelli.
     private void aggiornaMappa() {
@@ -197,7 +236,8 @@ public class ControllerMappa implements ControllerSchermata, Initializable {
         this.statisticheAvversari[indice].setText("ATT " + statistiche.getAttacco()
                         + " | DIF " + statistiche.getDifesa() + " | AGI " + statistiche.getAgilita());
         this.statiAvversari[indice].setText(this.aggiornaStatoAvversario(stato));
-        this.caricaImmagine(avversario, this.immaginiAvversari[indice]);
+        Image immagineAvversario = CaricatoreImmagini.carica(avversario.getPercorsoImmagine());
+        this.immaginiAvversari[indice].setImage(immagineAvversario);
         this.aggiornaCardAvversario(indice, stato);
     }
 
@@ -237,55 +277,5 @@ public class ControllerMappa implements ControllerSchermata, Initializable {
     private void aggiornaPulsanteMatch() {
         boolean avversarioSelezionato = this.controllerPartita.getLivelloCorrente().isAvversarioSelezionato();
         this.pulsanteIniziaMatch.setDisable(!avversarioSelezionato);
-    }
-
-    private void caricaImmagine(Avversario avversario, ImageView destinazione) {
-        String percorso = "/immagini/personaggi/" + avversario.getId() + ".png";
-        URL risorsa = this.getClass().getResource(percorso);
-        if (risorsa == null) {
-            destinazione.setImage(null);
-            return;
-        }
-        destinazione.setImage(new Image(risorsa.toExternalForm()));
-    }
-
-    @FXML
-    private void selezionaLivello(ActionEvent evento) {
-        Button pulsante = (Button) evento.getSource();
-        for (int i = 0; i < this.pulsantiLivelli.length; i++)
-            if (this.pulsantiLivelli[i] == pulsante) {
-                this.controllerPartita.selezionaLivello(this.livelli.get(i));
-                this.aggiornaMappa();
-                this.mostraLivelloCorrente();
-                return;
-            }
-    }
-
-    @FXML
-    private void selezionaAvversario(ActionEvent evento) {
-        Button pulsante = (Button) evento.getSource();
-        for (int i = 0; i < this.pulsantiAvversari.length; i++)
-            if (this.pulsantiAvversari[i] == pulsante) {
-                Avversario avversario = this.avversariCorrenti.get(i);
-                this.controllerPartita.selezionaAvversario(avversario);
-                this.mostraLivelloCorrente();
-                return;
-            }
-    }
-
-    @FXML
-    private void salvaPartita() throws IOException {
-        this.controllerGioco.salvaPartitaCorrente();
-    }
-
-    @FXML
-    private void tornaAlMenu() throws IOException {
-        this.gestoreSchermate.mostraSchermata("menu");
-    }
-
-    @FXML
-    private void iniziaMatch() throws IOException {
-        this.controllerPartita.iniziaMatch();
-        this.gestoreSchermate.mostraSchermata("match");
     }
 }

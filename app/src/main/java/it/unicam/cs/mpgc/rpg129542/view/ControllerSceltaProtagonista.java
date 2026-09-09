@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -50,11 +52,14 @@ public class ControllerSceltaProtagonista implements ControllerSchermata, Initia
     @FXML
     private Label tecnicaProtagonista1, tecnicaProtagonista2, tecnicaProtagonista3;
     @FXML
+    private ImageView immagineProtagonista1, immagineProtagonista2, immagineProtagonista3;
+    @FXML
     private Button conferma;
 
     private List<Protagonista> protagonisti;
     private VBox[] cardsProtagonisti;
     private Label[] nomi, valoriAttacco, valoriDifesa, valoriAgilita, valoriOverall, tecnicheIniziali;
+    private ImageView[] immaginiProtagonisti;
 
     /**
      * {@inheritDoc}
@@ -96,6 +101,7 @@ public class ControllerSceltaProtagonista implements ControllerSchermata, Initia
         this.valoriAgilita = new Label[]{agilitaProtagonista1, agilitaProtagonista2, agilitaProtagonista3};
         this.valoriOverall = new Label[]{overallProtagonista1, overallProtagonista2, overallProtagonista3};
         this.tecnicheIniziali = new Label[]{tecnicaProtagonista1, tecnicaProtagonista2, tecnicaProtagonista3};
+        this.immaginiProtagonisti = new ImageView[]{immagineProtagonista1, immagineProtagonista2, immagineProtagonista3};
         this.conferma.setDisable(true);
     }
 
@@ -109,6 +115,8 @@ public class ControllerSceltaProtagonista implements ControllerSchermata, Initia
         this.valoriAgilita[indice].setText("Agilità: " + s.getAgilita());
         this.valoriOverall[indice].setText(String.valueOf(protagonista.getOverall()));
         this.tecnicheIniziali[indice].setText("Tecnica iniziale: " + protagonista.getTecnicaIniziale().getNome());
+        Image immagineProtagonista = CaricatoreImmagini.carica(protagonista.getPercorsoImmagine());
+        this.immaginiProtagonisti[indice].setImage(immagineProtagonista);
     }
 
     @FXML
