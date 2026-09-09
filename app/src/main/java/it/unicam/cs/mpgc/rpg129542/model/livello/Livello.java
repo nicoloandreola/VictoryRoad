@@ -132,6 +132,16 @@ public class Livello {
     }
 
     /**
+     * Verifica se nel livello è presente un avversario attualmente selezionato.
+     *
+     * @return {@code true} se uno degli avversari si trova nello stato
+     *         {@link StatoAvversario#SELEZIONATO}, {@code false} altrimenti
+     */
+    public boolean isAvversarioSelezionato() {
+        return this.avversari.containsValue(StatoAvversario.SELEZIONATO);
+    }
+
+    /**
      * Cerca e restituisce l'avversario attualmente selezionato nel livello.
      *
      * @return l'avversario selezionato

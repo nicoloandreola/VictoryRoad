@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerMappa">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <padding>
+                <Insets bottom="12.0" left="28.0" right="28.0" top="18.0" />
+            </padding>
+
+            <VBox spacing="3.0">
+                <Label text="MAPPA">
+               <font>
+                  <Font name="System Bold Italic" size="20.0" />
+               </font></Label>
+                <Label text="Scegli un livello e l'avversario da affrontare">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                <VBox alignment="CENTER_RIGHT" spacing="2.0">
+                    <Label text="Protagonista">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font></Label>
+                    <Label fx:id="nomeProtagonista" styleClass="nome-personaggio" text="Nome protagonista" />
+                </VBox>
+
+                <StackPane prefHeight="50.0" prefWidth="50.0">
+                    <Circle fill="#cc5500" radius="22.0" />
+                    <Text fx:id="overallProtagonista" text="-" />
+                </StackPane>
+            </HBox>
+        </HBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.39670283806343903" prefWidth="960.0">
+
+            <!-- Mappa dei sette livelli -->
+            <VBox alignment="TOP_CENTER" minWidth="330.0" spacing="10.0">
+                <padding>
+                    <Insets bottom="10.0" left="24.0" right="16.0" top="8.0" />
+                </padding>
+            <VBox alignment="CENTER" prefWidth="340.0" spacing="5.0">
+               <children>
+      
+                      <Label text="Percorso">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Sconfiggi tutti gli avversari per salvare l'Inazuma dagli alieni!" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="12.0" />
+                     </font></Label>
+               </children>
+            </VBox>
+
+                <!-- Pane usato intenzionalmente per posizionare liberamente i nodi della mappa -->
+                <Pane prefWidth="340.0" styleClass="pannello-mappa">
+               <VBox prefWidth="340.0">
+                  <children>
+                     <HBox spacing="8.0">
+                        <children>
+                           <Label prefWidth="114.0" text="LIVELLI COMPLETATI">
+                              <HBox.margin>
+                                 <Insets />
+                              </HBox.margin>
+                              <font>
+                                 <Font name="System Italic" size="12.0" />
+                              </font>
+                           </Label>
+                           <ProgressBar fx:id="barraLivelliCompletati" prefWidth="150.0" progress="0.0">
+                              <HBox.margin>
+                                 <Insets left="19.0" />
+                              </HBox.margin>
+                           </ProgressBar>
+                           <Label fx:id="percentualeLivelliCompletati" text="0%" />
+                        </children>
+                        <VBox.margin>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </VBox.margin>
+                     </HBox>
+                     <HBox layoutX="20.0" layoutY="20.0" prefWidth="340.0" spacing="8.0">
+                        <children>
+                           <Label prefWidth="133.0" text="AVVERSARI SCONFITTI">
+                              <HBox.margin>
+                                 <Insets right="10.0" />
+                              </HBox.margin>
+                              <font>
+                                 <Font name="System Italic" size="12.0" />
+                              </font>
+                           </Label>
+                           <ProgressBar fx:id="barraAvversariSconfitti" prefHeight="18.0" prefWidth="150.0" progress="0.0" />
+                           <Label fx:id="percentualeAvversariSconfitti" text="0%" />
+                        </children>
+                        <VBox.margin>
+                           <Insets />
+                        </VBox.margin>
+                     </HBox>
+                  </children>
+               </VBox>
+                    <!-- Collegamenti tra i livelli -->
+                    <Line endX="186.29287719726562" endY="390.0" layoutX="-10.0" layoutY="50.0" startX="60.0" startY="390.0" styleClass="collegamento-livelli" />
+                    <Line endX="301.0" endY="375.0" startX="176.79287719726562" startY="440.5" styleClass="collegamento-livelli" />
+                    <Line endX="170.0" endY="315.0" startX="301.0" startY="375.0" styleClass="collegamento-livelli" />
+                    <Line endX="47.0" endY="259.0" layoutX="3.0" layoutY="1.0" startX="167.0" startY="314.0" styleClass="collegamento-livelli" />
+                    <Line endX="171.0" endY="184.99998474121094" startX="50.0" startY="260.0" styleClass="collegamento-livelli" />
+                    <Line endX="301.0" endY="114.99998474121094" startX="171.0" startY="184.99998474121094" styleClass="collegamento-livelli" />
+   
+                    <!-- I pulsanti vengono abilitati/disabilitati dal controller in base alla progressione -->
+                    <Button fx:id="livello1" layoutX="25.0" layoutY="415.0" mnemonicParsing="false" onAction="#selezionaLivello" prefHeight="50.0" prefWidth="50.0" styleClass="nodo-livello" text="1" />
+                    <Button fx:id="livello2" layoutX="152.0" layoutY="415.0" mnemonicParsing="false" onAction="#selezionaLivello" prefHeight="50.0" prefWidth="50.0" styleClass="nodo-livello" text="2" />
+                    <Button fx:id="livello3" layoutX="276.0" layoutY="350.0" mnemonicParsing="false" onAction="#selezionaLivello" prefHeight="50.0" prefWidth="50.0" styleClass="nodo-livello" text="3" />
+                    <Button fx:id="livello4" layoutX="145.0" layoutY="290.0" mnemonicParsing="false" onAction="#selezionaLivello" prefHeight="50.0" prefWidth="50.0" styleClass="nodo-livello" text="4" />
+                    <Button fx:id="livello5" layoutX="25.0" layoutY="235.0" mnemonicParsing="false" onAction="#selezionaLivello" prefHeight="50.0" prefWidth="50.0" styleClass="nodo-livello" text="5" />
+                    <Button fx:id="livello6" layoutX="146.0" layoutY="160.0" mnemonicParsing="false" onAction="#selezionaLivello" prefHeight="50.0" prefWidth="50.0" styleClass="nodo-livello" text="6" />
+                    <Button fx:id="livello7" layoutX="276.0" layoutY="90.0" mnemonicParsing="false" onAction="#selezionaLivello" prefHeight="50.0" prefWidth="50.0" styleClass="nodo-livello" text="7" />
+                </Pane>
+            </VBox>
+
+            <!-- Dettagli del livello selezionato e scelta dell'avversario -->
+            <VBox prefWidth="575.0" spacing="9.0" styleClass="pannello-dettagli-livello">
+                <padding>
+                    <Insets bottom="10.0" left="20.0" right="24.0" top="8.0" />
+                </padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <Label fx:id="titoloLivello" text="Livello 1" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="statoLivello" text="Disponibile" />
+                </HBox>
+
+                <Label fx:id="nomeCampo" alignment="CENTER" styleClass="nome-campo" text="Nome campo">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></Label>
+                <Label fx:id="descrizioneCampo" maxWidth="470.0" text="Descrizione del campo" wrapText="true" />
+
+                <Label text="Avversari" />
+
+                <HBox alignment="CENTER" prefWidth="510.0" spacing="14.0">
+                    <VBox fx:id="cardAvversario1" alignment="TOP_CENTER" prefWidth="230.0" spacing="15.0" styleClass="card-avversario">
+                        <padding>
+                            <Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+                        </padding>
+
+                        <Label styleClass="nome-personaggio">
+                     <graphic>
+                        <HBox alignment="CENTER" spacing="15.0">
+                           <children>
+                              <Label fx:id="nomeAvversario1" text="Avversario 1">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <StackPane prefHeight="48.0" prefWidth="48.0">
+                                 <children>
+                                    <Circle fill="#cc5500" radius="22.0" />
+                                    <Text fx:id="overallAvversario1" text="-" />
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                     </graphic></Label>
+                        <ImageView fx:id="immagineAvversario1" fitHeight="200.0" fitWidth="180.0" preserveRatio="true" smooth="true" />
+
+                        <Label fx:id="statisticheAvversario1" text="ATT 0 | DIF 0 | AGI 0" />
+                        <Label fx:id="statoAvversario1" text="Da sconfiggere" />
+                        <Button fx:id="pulsanteAvversario1" mnemonicParsing="false" onAction="#selezionaAvversario" text="Seleziona" />
+                    </VBox>
+
+                    <VBox fx:id="cardAvversario2" alignment="TOP_CENTER" prefWidth="230.0" spacing="15.0" styleClass="card-avversario">
+                        <padding>
+                            <Insets bottom="9.0" left="9.0" right="9.0" top="9.0" />
+                        </padding>
+
+                        <Label styleClass="nome-personaggio">
+                     <graphic>
+                        <HBox alignment="CENTER" spacing="15.0">
+                           <children>
+                              <Label fx:id="nomeAvversario2" text="Avversario 2">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <StackPane prefHeight="48.0" prefWidth="48.0">
+                                 <children>
+                                    <Circle fill="#cc5500" radius="22.0" />
+                                    <Text fx:id="overallAvversario2" text="-" />
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                     </graphic></Label>
+                  <ImageView fx:id="immagineAvversario2" fitHeight="200.0" fitWidth="180.0" preserveRatio="true" smooth="true" />
+
+                        <Label fx:id="statisticheAvversario2" text="ATT 0 | DIF 0 | AGI 0" />
+                        <Label fx:id="statoAvversario2" text="Da sconfiggere" />
+                        <Button fx:id="pulsanteAvversario2" mnemonicParsing="false" onAction="#selezionaAvversario" text="Seleziona" />
+                    </VBox>
+                </HBox>
+            </VBox>
+        </SplitPane>
+    </center>
+
+    <bottom>
+        <ButtonBar buttonMinWidth="50.0">
+            <padding>
+                <Insets bottom="8.0" left="28.0" right="28.0" top="6.0" />
+            </padding>
+
+            <buttons>
+                <Button mnemonicParsing="false" onAction="#tornaAlMenu" text="Menu principale" ButtonBar.buttonData="LEFT" />
+                <Button mnemonicParsing="false" onAction="#salvaPartita" text="Salva partita" ButtonBar.buttonData="LEFT" />
+                <Button fx:id="pulsanteIniziaMatch" mnemonicParsing="false" onAction="#iniziaMatch" text="Inizia match" ButtonBar.buttonData="RIGHT" />
+            </buttons>
+        </ButtonBar>
+    </bottom>
+
+</BorderPane>

@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg129542.model.azioni.AzioneAttaccante;
 import it.unicam.cs.mpgc.rpg129542.model.azioni.AzioneDifensore;
 import it.unicam.cs.mpgc.rpg129542.model.livello.Campo;
 import it.unicam.cs.mpgc.rpg129542.model.livello.Livello;
+import it.unicam.cs.mpgc.rpg129542.model.livello.StatoAvversario;
 import it.unicam.cs.mpgc.rpg129542.model.match.EsitoTurno;
 import it.unicam.cs.mpgc.rpg129542.model.match.LogicaMatch;
 import it.unicam.cs.mpgc.rpg129542.model.match.Match;
@@ -125,24 +126,42 @@ public class ControllerPartita {
      *
      * @throws NullPointerException se il livello è {@code null}
      *
-     * @throws IllegalArgumentException se il livello non ha un indice valido
+     * @throws IllegalArgumentException se il livello non esiste o
+     *                                  non è ancora stato sbloccato
      *
-     * @throws IllegalStateException se il livello non è ancora accessibile
-     *                               oppure è presente un match in corso
+     * @throws IllegalStateException se è presente un match in corso
      */
     public void selezionaLivello(@NonNull Livello livello) {
         if (this.isMatchInCorso())
             throw new IllegalStateException("Non è possibile cambiare livello durante un match!");
+        if(!this.isLivelloDisponibile(livello))
+            throw new IllegalArgumentException("Il livello non è ancora stato sbloccato!");
+        this.livelloCorrente = livello;
+    }
 
+    /**
+     * Verifica se un livello è attualmente disponibile e può quindi
+     * essere selezionato dal giocatore.
+     *
+     * Il primo livello è sempre disponibile, mentre ciascun livello
+     * successivo viene sbloccato quando nel livello precedente è stato
+     * sconfitto almeno un avversario, in accordo con il model.
+     *
+     * @param livello livello del quale verificare la disponibilità
+     *
+     * @return {@code true} se il livello è disponibile,
+     *         {@code false} altrimenti
+     *
+     * @throws NullPointerException se il livello è {@code null}
+     *
+     * @throws IllegalArgumentException se il livello non appartiene
+     *                                  alla partita corrente
+     */
+    public boolean isLivelloDisponibile(@NonNull Livello livello) {
         int indice = this.livelli.indexOf(livello);
-
         if (indice < 0)
             throw new IllegalArgumentException("Il livello non esiste!");
-
-        if (indice > 0 && !this.livelli.get(indice - 1).isLivelloSuccessivoSbloccato())
-            throw new IllegalStateException("Il livello non è ancora disponibile!");
-
-        this.livelloCorrente = livello;
+        return indice == 0 || this.livelli.get(indice - 1).isLivelloSuccessivoSbloccato();
     }
 
     /**
@@ -428,6 +447,49 @@ public class ControllerPartita {
         int difesa = random.nextInt(INCREMENTO_MINIMO, INCREMENTO_MASSIMO + 1);
         int agilita = random.nextInt(INCREMENTO_MINIMO, INCREMENTO_MASSIMO + 1);
         this.protagonistaCorrente.miglioraStatistiche(attacco, difesa, agilita);
+    }
+
+    /**
+     * Calcola la percentuale complessiva degli avversari già sconfitti
+     * rispetto al numero totale di avversari presenti nel gioco.
+     *
+     * La percentuale restituita è un valore intero compreso tra 0 e 100
+     * ed è destinata principalmente alla rappresentazione della progressione
+     * del giocatore nella GUI.
+     *
+     * @return percentuale degli avversari sconfitti
+     */
+    public int getPercentualeAvversariSconfitti() {
+        int avversariTotali = 0;
+        int avversariSconfitti = 0;
+        for (Livello livello : this.livelli)
+            for (StatoAvversario stato : livello.getAvversari().values()) {
+                avversariTotali++;
+                if (stato == StatoAvversario.SCONFITTO)
+                    avversariSconfitti++;
+            }
+        return avversariSconfitti * 100 / avversariTotali;
+    }
+
+    /**
+     * Calcola la percentuale dei livelli completati rispetto al numero
+     * totale di livelli presenti nel gioco.
+     *
+     * In accordo con {@link Livello#isCompletato()}, un livello viene considerato
+     * completato solamente quando tutti i suoi avversari risultano sconfitti.
+     *
+     * La percentuale restituita è un valore intero compreso tra 0 e 100
+     * ed è destinata principalmente alla rappresentazione della progressione
+     * del giocatore nella GUI.
+     *
+     * @return percentuale dei livelli completati
+     */
+    public int getPercentualeLivelliCompletati() {
+        int livelliCompletati = 0;
+        for (Livello livello : this.livelli)
+            if (livello.isCompletato())
+                livelliCompletati++;
+        return livelliCompletati * 100 / this.livelli.size();
     }
 
     /**
