@@ -44,4 +44,12 @@ public class Dribbling implements AzioneAttaccante {
         int valoreContrasto = risposta.esegui(difensore);
         return logicaMatch.risolviDribbling(valoreDribbling, valoreContrasto);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getNome() {
+        return "Dribbling";
+    }
 }

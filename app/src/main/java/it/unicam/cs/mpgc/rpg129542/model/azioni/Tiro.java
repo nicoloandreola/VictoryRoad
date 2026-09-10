@@ -41,4 +41,12 @@ public class Tiro implements AzioneAttaccante {
         int valoreDifesa = risposta.esegui(difensore);
         return logicaMatch.risolviAttaccoDiretto(difensore, valoreAttacco, valoreDifesa);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getNome() {
+        return "Tiro";
+    }
 }

@@ -28,4 +28,12 @@ public class Parata implements DifesaAttaccoDiretto {
     public int esegui(@NonNull Personaggio difensore) {
         return difensore.getStatisticheEffettive().getDifesa();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getNome() {
+        return "Parata";
+    }
 }

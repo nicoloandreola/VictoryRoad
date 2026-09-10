@@ -33,4 +33,12 @@ public interface AzioneDifensore {
      * @throws NullPointerException se il difensore è {@code null}
      */
     int esegui(@NonNull Personaggio difensore);
+
+    /**
+     * Restituisce il nome con cui l'azione viene identificata e mostrata
+     * all'interno dell'interfaccia di gioco.
+     *
+     * @return nome dell'azione difensiva
+     */
+    String getNome();
 }

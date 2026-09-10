@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg129542.controller;
 
-import it.unicam.cs.mpgc.rpg129542.model.azioni.AzioneAttaccante;
-import it.unicam.cs.mpgc.rpg129542.model.azioni.AzioneDifensore;
+import it.unicam.cs.mpgc.rpg129542.model.azioni.*;
 import it.unicam.cs.mpgc.rpg129542.model.livello.Campo;
 import it.unicam.cs.mpgc.rpg129542.model.livello.Livello;
 import it.unicam.cs.mpgc.rpg129542.model.livello.StatoAvversario;
@@ -10,6 +9,7 @@ import it.unicam.cs.mpgc.rpg129542.model.match.LogicaMatch;
 import it.unicam.cs.mpgc.rpg129542.model.match.Match;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Avversario;
 import it.unicam.cs.mpgc.rpg129542.model.personaggio.Protagonista;
+import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaOffensiva;
 import it.unicam.cs.mpgc.rpg129542.model.tecniche.TecnicaSpeciale;
 import lombok.Getter;
 import lombok.NonNull;
@@ -320,7 +320,7 @@ public class ControllerPartita {
      *                               oppure se l'attacco dell'avversario non è
      *                               ancora stato determinato
      */
-    public EsitoTurno eseguiAttaccoAvversario(AzioneDifensore difesa) {
+    public EsitoTurno eseguiTurnoAvversario(AzioneDifensore difesa) {
         if (!this.isMatchInCorso())
             throw new IllegalStateException("Nessun match in corso!");
 
@@ -333,6 +333,39 @@ public class ControllerPartita {
         EsitoTurno esito = this.matchCorrente.giocaTurno(this.attaccoTurno, difesa);
         this.attaccoTurno = null;
         return esito;
+    }
+
+    /**
+     * Verifica se una determinata azione difensiva è compatibile con
+     * l'attacco memorizzato per il turno corrente.
+     *
+     * Un {@link Tiro} o una {@link TecnicaOffensiva} possono essere
+     * contrastati solamente da una {@link DifesaAttaccoDiretto}, mentre
+     * un {@link Dribbling} richiede una risposta che implementi
+     * {@link DifesaDribbling}.
+     *
+     * Se l'attacco corrente non richiede alcuna risposta difensiva,
+     * il metodo restituisce {@code false}.
+     *
+     * @param difesa azione difensiva della quale verificare la compatibilità
+     *
+     * @return {@code true} se la difesa può essere utilizzata contro
+     *         l'attacco corrente, {@code false} altrimenti
+     *
+     * @throws NullPointerException se la difesa è {@code null}
+     *
+     * @throws IllegalStateException se l'attacco del turno non è ancora
+     *                               stato determinato
+     */
+    public boolean isDifesaCompatibile(AzioneDifensore difesa) {
+        if (this.attaccoTurno == null)
+            throw new IllegalStateException("L'attacco del turno non è ancora stato determinato!");
+        if (this.attaccoTurno instanceof Tiro || this.attaccoTurno instanceof TecnicaOffensiva)
+            return difesa instanceof DifesaAttaccoDiretto;
+        else if (this.attaccoTurno instanceof Dribbling)
+            return difesa instanceof DifesaDribbling;
+        else
+            return false;
     }
 
     /**

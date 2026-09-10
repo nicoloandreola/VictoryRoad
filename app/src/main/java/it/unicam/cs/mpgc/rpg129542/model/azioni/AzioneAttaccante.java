@@ -37,4 +37,11 @@ public interface AzioneAttaccante {
      */
     EsitoTurno esegui(@NonNull Personaggio attaccante, @NonNull Personaggio difensore,
                               AzioneDifensore difesa, @NonNull LogicaMatch logicaMatch);
+    /**
+     * Restituisce il nome con cui l'azione viene identificata e mostrata
+     * all'interno dell'interfaccia di gioco.
+     *
+     * @return nome dell'azione offensiva
+     */
+    String getNome();
 }

@@ -78,7 +78,7 @@ public class Campo {
      * @return percorso dell'immagine associata al campo
      */
     public String getPercorsoImmagine() {
-        return CARTELLA_IMMAGINI + this.nome + ESTENSIONE_IMMAGINE;
+        return CARTELLA_IMMAGINI + "Campo" + this.nome + ESTENSIONE_IMMAGINE;
     }
 
     /**

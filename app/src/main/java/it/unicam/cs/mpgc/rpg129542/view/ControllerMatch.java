@@ -201,15 +201,9 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
         this.aggiornaRisorse(this.avversario, this.staminaAvversario, this.resistenzaAvversario);
     }
 
-    private void aggiornaRisorse(Personaggio personaggio,
-                                 ProgressBar barraStamina,
-                                 ProgressBar barraResistenza) {
-        barraStamina.setProgress(
-                personaggio.getStamina() / (double) RisorseMatch.STAMINA_MASSIMA
-        );
-        barraResistenza.setProgress(
-                personaggio.getResistenza() / (double) RisorseMatch.RESISTENZA_MASSIMA
-        );
+    private void aggiornaRisorse(Personaggio personaggio, ProgressBar barraStamina, ProgressBar barraResistenza) {
+        barraStamina.setProgress(personaggio.getStamina() / (double) RisorseMatch.STAMINA_MASSIMA);
+        barraResistenza.setProgress(personaggio.getResistenza() / (double) RisorseMatch.RESISTENZA_MASSIMA);
     }
 
     private void preparaTurno() {
@@ -227,7 +221,6 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
         this.attaccoAvversarioCorrente = null;
         this.titoloAzioni.setText("Scegli l'attacco");
         this.azioneTurno.setText("Scegli la tua prossima azione");
-
         this.impostaVisibilitaPulsante(this.pulsanteTiro, true);
         this.impostaVisibilitaPulsante(this.pulsanteDribbling, true);
         this.impostaVisibilitaPulsante(this.pulsanteParata, false);

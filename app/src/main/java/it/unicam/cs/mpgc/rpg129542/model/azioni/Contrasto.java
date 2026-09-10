@@ -29,4 +29,12 @@ public class Contrasto implements DifesaDribbling {
     public int esegui(@NonNull Personaggio difensore) {
         return difensore.getStatisticheEffettive().getAgilita();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getNome() {
+        return "Contrasto";
+    }
 }
