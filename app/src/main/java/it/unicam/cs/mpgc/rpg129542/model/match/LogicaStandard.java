@@ -17,12 +17,19 @@ import lombok.NonNull;
  */
 public class LogicaStandard implements LogicaMatch {
 
+    // Quantità di danno aggiunta a ogni attacco diretto
+    private static final int DANNO_BASE = 10;
+
     /**
      * {@inheritDoc}
      *
-     * Il danno viene determinato dalla differenza tra valore offensivo
-     * e valore difensivo. Se il risultato non produce danno, l'attacco
-     * viene respinto; altrimenti la resistenza del difensore viene ridotta.
+     * Il danno viene determinato aggiungendo un valore base ({@value DANNO_BASE})
+     * alla differenza tra valore offensivo e valore difensivo. {@link #DANNO_BASE} evita
+     * che piccole differenze tra le statistiche rendano i match eccessivamente lunghi,
+     * mantenendo comunque rilevante il confronto tra attacco e difesa.
+     *
+     * Se il risultato complessivo non produce danno, l'attacco viene respinto;
+     * altrimenti la resistenza del difensore viene ridotta.
      *
      * Se la resistenza raggiunge zero, l'attacco produce un gol.
      *
@@ -42,7 +49,7 @@ public class LogicaStandard implements LogicaMatch {
     }
 
     private int calcolaDanno(int valoreAttacco, int valoreDifesa) {
-        return Math.max(0, valoreAttacco - valoreDifesa);
+        return Math.max(0, DANNO_BASE + valoreAttacco - valoreDifesa);
     }
 
     /**

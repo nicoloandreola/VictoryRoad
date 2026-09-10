@@ -25,7 +25,7 @@ import lombok.Getter;
 public class RisorseMatch {
 
     public static final int STAMINA_MASSIMA = 100;
-    public static final int RESISTENZA_MASSIMA = 100;
+    public static final int RESISTENZA_MASSIMA = 50;
 
     private int stamina;
     private int resistenza;

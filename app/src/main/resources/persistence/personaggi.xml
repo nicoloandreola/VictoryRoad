@@ -53,7 +53,7 @@
             </statistiche>
             <tecniche>
                 <tecnicaRef ref="muro_roccia"/>
-                <tecnicaRef ref="turbina_rotante"/>
+                <tecnicaRef ref="stoccata_micidiale"/>
             </tecniche>
         </avversario>
 
@@ -65,8 +65,8 @@
                 <agilita>32</agilita>
             </statistiche>
             <tecniche>
-                <tecnicaRef ref="furia_vento"/>
-                <tecnicaRef ref="parata_ardente"/>
+                <tecnicaRef ref="freccia_saettante"/>
+                <tecnicaRef ref="blocco_acrobatico"/>
             </tecniche>
         </avversario>
 
@@ -166,7 +166,7 @@
             <tecniche>
                 <tecnicaRef ref="pinguino_imperatore_7"/>
                 <tecnicaRef ref="scudo_energia"/>
-                <tecnicaRef ref="galleria_vento"/>
+                <tecnicaRef ref="furia_vento"/>
                 <tecnicaRef ref="teletrasporto"/>
             </tecniche>
         </avversario>
@@ -228,7 +228,7 @@
             <tecniche>
                 <tecnicaRef ref="uragano_bianco"/>
                 <tecnicaRef ref="vento_supremo"/>
-                <tecnicaRef ref="parata_suprema"/>
+                <tecnicaRef ref="cinta_nebbia"/>
                 <tecnicaRef ref="z_zag"/>
                 <tecnicaRef ref="galleria_vento"/>
             </tecniche>
@@ -244,7 +244,7 @@
             <tecniche>
                 <tecnicaRef ref="tiro_portentoso"/>
                 <tecnicaRef ref="scarica_stellare"/>
-                <tecnicaRef ref="parata_suprema"/>
+                <tecnicaRef ref="cinta_nebbia"/>
                 <tecnicaRef ref="martello_colosso"/>
                 <tecnicaRef ref="z_zag"/>
             </tecniche>

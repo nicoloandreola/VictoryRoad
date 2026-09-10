@@ -118,14 +118,14 @@
         <costoStamina>34</costoStamina>
     </tecnica>
 
-    <tecnica id="parata_suprema" tipo="DIFENSIVA">
-        <nome>Parata Suprema</nome>
+    <tecnica id="cinta_nebbia" tipo="DIFENSIVA">
+        <nome>Cinta di Nebbia</nome>
         <potenza>30</potenza>
         <costoStamina>42</costoStamina>
     </tecnica>
 
-    <tecnica id="parata_ardente" tipo="DIFENSIVA">
-        <nome>Parata Ardente</nome>
+    <tecnica id="blocco_acrobatico" tipo="DIFENSIVA">
+        <nome>Blocco Acrobatico</nome>
         <potenza>10</potenza>
         <costoStamina>15</costoStamina>
     </tecnica>
