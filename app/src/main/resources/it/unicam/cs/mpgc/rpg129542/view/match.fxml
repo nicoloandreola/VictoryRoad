@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerMatch">
+   <children>
+      <ImageView fx:id="immagineCampo" fitHeight="600.0" fitWidth="980.0" preserveRatio="false" smooth="true" StackPane.alignment="CENTER">
+         <StackPane.margin>
+            <Insets top="30.0" />
+         </StackPane.margin>
+      </ImageView>
+      <BorderPane prefHeight="800.0" prefWidth="1000.0" styleClass="schermata-match">
+      
+          <top>
+              <VBox alignment="CENTER" spacing="8.0" styleClass="testata-match">
+                  <padding>
+                      <Insets bottom="16.0" left="24.0" right="24.0" top="18.0" />
+                  </padding>
+      
+                  <BorderPane maxWidth="800.0">
+                      <left>
+                          <Label styleClass="nome-personaggio-testata" text="PROTAGONISTA" BorderPane.alignment="CENTER_LEFT">
+                        <BorderPane.margin>
+                           <Insets left="50.0" />
+                        </BorderPane.margin>
+                     </Label>
+                      </left>
+      
+                      <center>
+                          <StackPane maxWidth="350.0" styleClass="badge-punteggio">
+                              <Label fx:id="punteggioMatch" alignment="CENTER" contentDisplay="CENTER" styleClass="punteggio-match" text="[0  –  0]" textAlignment="CENTER" />
+                          </StackPane>
+                      </center>
+      
+                      <right>
+                          <Label styleClass="nome-personaggio-testata" text="AVVERSARIO" BorderPane.alignment="CENTER_RIGHT">
+                        <BorderPane.margin>
+                           <Insets right="50.0" />
+                        </BorderPane.margin>
+                     </Label>
+                      </right>
+                  </BorderPane>
+      
+                  <Label fx:id="dettaglioMatch" alignment="CENTER" styleClass="dettaglio-match" text="Livello • Campo" textAlignment="CENTER" />
+              </VBox>
+          </top>
+      
+          <center>
+              <GridPane hgap="14.0" styleClass="contenuto-match">
+                  <padding>
+                      <Insets bottom="14.0" left="18.0" right="18.0" top="14.0" />
+                  </padding>
+      
+                  <columnConstraints>
+                      <ColumnConstraints hgrow="ALWAYS" percentWidth="15.0" />
+                      <ColumnConstraints hgrow="ALWAYS" percentWidth="70.0" />
+                      <ColumnConstraints hgrow="ALWAYS" percentWidth="15.0" />
+                  </columnConstraints>
+      
+                  <rowConstraints>
+                      <RowConstraints vgrow="ALWAYS" />
+                  </rowConstraints>
+      
+                  <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" spacing="10.0" styleClass="pannello-personaggio-match" GridPane.columnIndex="0">
+      
+                      <padding>
+                          <Insets bottom="12.0" left="10.0" right="10.0" top="12.0" />
+                      </padding>
+      
+                      <Label fx:id="nomeProtagonista" alignment="CENTER" styleClass="nome-personaggio" text="Protagonista" textAlignment="CENTER" wrapText="true" />
+      
+                      <ImageView fx:id="immagineProtagonista" fitHeight="155.0" fitWidth="120.0" preserveRatio="true" smooth="true" />
+      
+                      <VBox maxWidth="1.7976931348623157E308" spacing="6.0">
+                          <Label text="Stamina" />
+                          <ProgressBar fx:id="staminaProtagonista" maxWidth="1.7976931348623157E308" progress="1.0" />
+      
+                          <Label text="Resistenza" />
+                          <ProgressBar fx:id="resistenzaProtagonista" maxWidth="1.7976931348623157E308" progress="1.0" />
+                      </VBox>
+      
+                      <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="4.0" styleClass="statistiche-match">
+                          <Label fx:id="attaccoProtagonista" text="Attacco: --" />
+                          <Label fx:id="difesaProtagonista" text="Difesa: --" />
+                          <Label fx:id="agilitaProtagonista" text="Agilità: --" />
+                      </VBox>
+                  </VBox>
+      
+                  <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" spacing="10.0" styleClass="pannello-personaggio-match" GridPane.columnIndex="2">
+      
+                      <padding>
+                          <Insets bottom="12.0" left="10.0" right="10.0" top="12.0" />
+                      </padding>
+      
+                      <Label fx:id="nomeAvversario" alignment="CENTER" styleClass="nome-personaggio" text="Avversario" textAlignment="CENTER" wrapText="true" />
+      
+                      <ImageView fx:id="immagineAvversario" fitHeight="155.0" fitWidth="120.0" preserveRatio="true" smooth="true" />
+      
+                      <VBox maxWidth="1.7976931348623157E308" spacing="6.0">
+                          <Label text="Stamina" />
+                          <ProgressBar fx:id="staminaAvversario" maxWidth="1.7976931348623157E308" progress="1.0" />
+      
+                          <Label text="Resistenza" />
+                          <ProgressBar fx:id="resistenzaAvversario" maxWidth="1.7976931348623157E308" progress="1.0" />
+                      </VBox>
+      
+                      <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="4.0" styleClass="statistiche-match">
+                          <Label fx:id="attaccoAvversario" text="Attacco: --" />
+                          <Label fx:id="difesaAvversario" text="Difesa: --" />
+                          <Label fx:id="agilitaAvversario" text="Agilità: --" />
+                      </VBox>
+                  </VBox>
+               <StackPane minHeight="450.0" styleClass="campo-match" GridPane.columnIndex="1">
+                  <children>
+                     <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="220.0" spacing="4.0" styleClass="info-turno-match" StackPane.alignment="TOP_CENTER">
+                        <StackPane.margin>
+                           <Insets top="14.0" />
+                        </StackPane.margin>
+                        <children>
+                           <Label text="POSSESSO" />
+                           <Label fx:id="possesso" text="Protagonista" />
+                        </children>
+                     </VBox>
+                     <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="420.0" spacing="5.0" styleClass="esito-turno-match" StackPane.alignment="BOTTOM_CENTER">
+                        <StackPane.margin>
+                           <Insets bottom="14.0" />
+                        </StackPane.margin>
+                        <children>
+                           <Label text="AZIONE DEL TURNO" />
+                           <Label fx:id="azioneTurno" text="In attesa della scelta..." />
+                           <Label fx:id="esitoTurno" text="" />
+                        </children>
+                     </VBox>
+                  </children>
+               </StackPane>
+              </GridPane>
+          </center>
+      
+          <bottom>
+              <VBox alignment="CENTER" spacing="8.0" styleClass="barra-azioni-match">
+                  <padding>
+                      <Insets bottom="14.0" left="20.0" right="20.0" top="10.0" />
+                  </padding>
+      
+                  <Label fx:id="titoloAzioni" styleClass="titolo-azioni-match" text="Scegli l'azione" />
+      
+                  <HBox alignment="CENTER" spacing="15.0">
+                      <Button fx:id="pulsanteTiro" onAction="#eseguiTiro" prefWidth="130.0" text="Tiro" />
+                      <Button fx:id="pulsanteDribbling" onAction="#eseguiDribbling" prefWidth="130.0" text="Dribbling" />
+                  <Button fx:id="pulsanteParata" mnemonicParsing="false" onAction="#eseguiParata" prefWidth="130.0" text="Parata" />
+                  <Button fx:id="pulsanteContrasto" mnemonicParsing="false" onAction="#eseguiContrasto" prefWidth="130.0" text="Contrasto" />
+                      <MenuButton fx:id="menuTecniche" prefWidth="130.0" styleClass="button" text="Tecnica..." />
+                  </HBox>
+              </VBox>
+          </bottom>
+      
+      </BorderPane>
+   </children>
+</StackPane>
