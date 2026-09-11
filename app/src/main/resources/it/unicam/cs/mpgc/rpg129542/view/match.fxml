@@ -73,21 +73,21 @@
                       <RowConstraints vgrow="ALWAYS" />
                   </rowConstraints>
       
-                  <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" spacing="10.0" styleClass="pannello-personaggio-match" GridPane.columnIndex="0">
+                  <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" spacing="30.0" styleClass="pannello-personaggio-match" GridPane.columnIndex="0">
       
                       <padding>
                           <Insets bottom="12.0" left="10.0" right="10.0" top="12.0" />
                       </padding>
       
-                      <Label fx:id="nomeProtagonista" alignment="CENTER" styleClass="nome-personaggio" text="Protagonista" textAlignment="CENTER" wrapText="true" />
+                      <Label fx:id="nomeProtagonistaCard" alignment="CENTER" styleClass="nome-personaggio" text="Protagonista" textAlignment="CENTER" wrapText="true" />
       
-                      <ImageView fx:id="immagineProtagonista" fitHeight="155.0" fitWidth="120.0" preserveRatio="true" smooth="true" />
+                      <ImageView fx:id="immagineProtagonista" fitHeight="175.0" fitWidth="120.0" preserveRatio="true" smooth="true" />
       
                       <VBox maxWidth="1.7976931348623157E308" spacing="6.0">
-                          <Label text="Stamina" />
+                          <Label fx:id="valoreStaminaProtagonista" styleClass="valore-risorsa-match" text="Stamina: 100/100" />
                           <ProgressBar fx:id="staminaProtagonista" maxWidth="1.7976931348623157E308" progress="1.0" />
       
-                          <Label text="Resistenza" />
+                          <Label fx:id="valoreResistenzaProtagonista" styleClass="valore-risorsa-match" text="Resistenza : 50/50" />
                           <ProgressBar fx:id="resistenzaProtagonista" maxWidth="1.7976931348623157E308" progress="1.0" />
                       </VBox>
       
@@ -98,21 +98,21 @@
                       </VBox>
                   </VBox>
       
-                  <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" spacing="10.0" styleClass="pannello-personaggio-match" GridPane.columnIndex="2">
+                  <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" spacing="30.0" styleClass="pannello-personaggio-match" GridPane.columnIndex="2">
       
                       <padding>
                           <Insets bottom="12.0" left="10.0" right="10.0" top="12.0" />
                       </padding>
       
-                      <Label fx:id="nomeAvversario" alignment="CENTER" styleClass="nome-personaggio" text="Avversario" textAlignment="CENTER" wrapText="true" />
+                      <Label fx:id="nomeAvversarioCard" alignment="CENTER" styleClass="nome-personaggio" text="Avversario" textAlignment="CENTER" wrapText="true" />
       
-                      <ImageView fx:id="immagineAvversario" fitHeight="155.0" fitWidth="120.0" preserveRatio="true" smooth="true" />
+                      <ImageView fx:id="immagineAvversario" fitHeight="175.0" fitWidth="120.0" preserveRatio="true" smooth="true" />
       
                       <VBox maxWidth="1.7976931348623157E308" spacing="6.0">
-                          <Label text="Stamina" />
+                          <Label fx:id="valoreStaminaAvversario" styleClass="valore-risorsa-match" text="Stamina: 100/100" />
                           <ProgressBar fx:id="staminaAvversario" maxWidth="1.7976931348623157E308" progress="1.0" />
       
-                          <Label text="Resistenza" />
+                          <Label fx:id="valoreResistenzaAvversario" styleClass="valore-risorsa-match" text="Resistenza : 50/50" />
                           <ProgressBar fx:id="resistenzaAvversario" maxWidth="1.7976931348623157E308" progress="1.0" />
                       </VBox>
       
@@ -133,14 +133,25 @@
                            <Label fx:id="possesso" text="Protagonista" />
                         </children>
                      </VBox>
-                     <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="420.0" spacing="5.0" styleClass="esito-turno-match" StackPane.alignment="BOTTOM_CENTER">
+                     <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="460.0" spacing="8.0" styleClass="esito-turno-match" StackPane.alignment="BOTTOM_CENTER">
                         <StackPane.margin>
                            <Insets bottom="14.0" />
                         </StackPane.margin>
                         <children>
-                           <Label text="AZIONE DEL TURNO" />
-                           <Label fx:id="azioneTurno" text="In attesa della scelta..." />
-                           <Label fx:id="esitoTurno" text="" />
+                           <Label styleClass="titolo-turno-match" text="SVOLGIMENTO TURNO" />
+                           <HBox alignment="CENTER" prefWidth="200.0" spacing="4.0">
+                              <children>
+                                 <Label fx:id="nomeProtagonistaTurno" styleClass="nome-azione-turno" text="Protagonista" />
+                                 <Label fx:id="azioneProtagonistaTurno" styleClass="azione-turno-match" text="-" />
+                              </children>
+                           </HBox>
+                           <HBox alignment="CENTER" prefWidth="200.0" spacing="4.0">
+                              <children>
+                                 <Label fx:id="nomeAvversarioTurno" styleClass="nome-azione-turno" text="Avversario" />
+                                 <Label fx:id="azioneAvversarioTurno" styleClass="azione-turno-match" text="-" />
+                              </children>
+                           </HBox>
+                           <Label fx:id="esitoTurno" styleClass="esito-turno-testo" text="Nessun turno eseguito" />
                         </children>
                      </VBox>
                   </children>

@@ -204,3 +204,137 @@
     -fx-font-size: 14px;
     -fx-pref-height: 34px;
 }
+
+/* Match */
+.testata-match {
+    -fx-background-color: #F3E5AB;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 10, 0, 0, 3);
+}
+
+.nome-personaggio-testata {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6D3B07;
+}
+
+.badge-punteggio {
+    -fx-background-color: #CC5500;
+    -fx-background-radius: 22;
+    -fx-padding: 4 26 4 26;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 5, 0, 0, 2);
+}
+
+.punteggio-match {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.dettaglio-match {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6D3B07;
+}
+
+.pannello-personaggio-match {
+    -fx-background-color: #F8EDBE;
+    -fx-border-color: #D6B66A;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.statistiche-match {
+    -fx-font-size: 13px;
+}
+
+.campo-match {
+    -fx-background-color: transparent;
+}
+
+.info-turno-match {
+    -fx-background-color: rgba(255, 244, 211, 0.92);
+    -fx-background-radius: 10;
+    -fx-padding: 8 22 8 22;
+}
+
+.info-turno-match .label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.esito-turno-match {
+    -fx-background-color: rgba(255, 244, 211, 0.95);
+    -fx-background-radius: 10;
+    -fx-padding: 10 26 10 26;
+}
+
+.esito-turno-match .titolo-turno-match {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.esito-turno-match .nome-azione-turno {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.esito-turno-match .azione-turno-match {
+    -fx-font-size: 15px;
+}
+
+.esito-turno-match .esito-turno-testo {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.barra-azioni-match {
+    -fx-background-color: rgba(243, 229, 171, 1);
+    -fx-border-color: #D6B66A;
+    -fx-border-width: 2 0 0 0;
+}
+
+.valore-risorsa-match {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.titolo-azioni-match {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.menu-tecniche-match {
+    -fx-background-color: #CC5500;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.menu-tecniche-match:hover {
+    -fx-background-color: #B84C00;
+}
+
+.tecnica-menu {
+    -fx-padding: 6 10 6 10;
+}
+
+.nome-tecnica-menu {
+    -fx-font-weight: bold;
+    -fx-text-fill: #6D3B07;
+}
+
+.tipo-tecnica-menu {
+    -fx-font-size: 11px;
+    -fx-text-fill: #8B7658;
+}
+
+.costo-tecnica-menu {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #CC5500;
+}
+
+.tooltip {
+    -fx-font-size: 12px;
+}

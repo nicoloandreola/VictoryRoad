@@ -31,7 +31,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -78,19 +77,23 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
     @FXML
     private Label punteggioMatch, dettaglioMatch;
     @FXML
-    private Label nomeProtagonista, nomeAvversario;
+    private Label nomeProtagonistaCard, nomeAvversarioCard;
     @FXML
     private ImageView immagineProtagonista, immagineAvversario, immagineCampo;
     @FXML
-    private ProgressBar staminaProtagonista, resistenzaProtagonista;
+    private ProgressBar staminaProtagonista, resistenzaProtagonista, staminaAvversario, resistenzaAvversario;
     @FXML
-    private ProgressBar staminaAvversario, resistenzaAvversario;
+    private Label valoreStaminaProtagonista, valoreResistenzaProtagonista, valoreStaminaAvversario, valoreResistenzaAvversario;
     @FXML
     private Label attaccoProtagonista, difesaProtagonista, agilitaProtagonista;
     @FXML
     private Label attaccoAvversario, difesaAvversario, agilitaAvversario;
     @FXML
-    private Label possesso, azioneTurno, esitoTurno, titoloAzioni;
+    private Label possesso, titoloAzioni, esitoTurno;
+    @FXML
+    private Label nomeProtagonistaTurno, azioneProtagonistaTurno;
+    @FXML
+    private Label nomeAvversarioTurno, azioneAvversarioTurno;
     @FXML
     private Button pulsanteTiro, pulsanteDribbling, pulsanteParata, pulsanteContrasto;
     @FXML
@@ -106,7 +109,9 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.attaccoAvversarioCorrente = null;
-        this.esitoTurno.setText("");
+        this.azioneProtagonistaTurno.setText("—");
+        this.azioneAvversarioTurno.setText("—");
+        this.esitoTurno.setText("Nessun turno eseguito");
         this.menuTecniche.getItems().clear();
     }
 
@@ -163,22 +168,28 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
     }
 
     private void mostraDatiMatch() {
-        Livello livello = this.controllerPartita.getLivelloCorrente();
-        Campo campo = livello.getCampo();
+        this.mostraPersonaggi();
+        this.mostraCampo();
+        this.aggiornaStatistiche();
+    }
 
-        this.nomeProtagonista.setText(this.protagonista.getNome());
-        this.nomeAvversario.setText(this.avversario.getNome());
-        this.dettaglioMatch.setText("Livello " + livello.getNumero() + " • " + campo.getNome());
-
+    private void mostraPersonaggi() {
+        this.nomeProtagonistaCard.setText(this.protagonista.getNome());
+        this.nomeAvversarioCard.setText(this.avversario.getNome());
+        this.nomeProtagonistaTurno.setText(this.protagonista.getNome() + ":");
+        this.nomeAvversarioTurno.setText(this.avversario.getNome() + ":");
         Image immagineProtagonista = CaricatoreImmagini.carica(this.protagonista.getPercorsoImmagine());
         Image immagineAvversario = CaricatoreImmagini.carica(this.avversario.getPercorsoImmagine());
-        Image immagineCampo = CaricatoreImmagini.carica(campo.getPercorsoImmagine());
-
         this.immagineProtagonista.setImage(immagineProtagonista);
         this.immagineAvversario.setImage(immagineAvversario);
-        this.immagineCampo.setImage(immagineCampo);
+    }
 
-        this.aggiornaStatistiche();
+    private void mostraCampo() {
+        Livello livello = this.controllerPartita.getLivelloCorrente();
+        Campo campo = livello.getCampo();
+        this.dettaglioMatch.setText("Livello " + livello.getNumero() + " • " + campo.getNome());
+        Image immagineCampo = CaricatoreImmagini.carica(campo.getPercorsoImmagine());
+        this.immagineCampo.setImage(immagineCampo);
     }
 
     private void aggiornaStatistiche() {
@@ -197,13 +208,16 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
         this.punteggioMatch.setText(this.matchCorrente.getGolProtagonista()
                 + "  –  " + this.matchCorrente.getGolAvversario());
         this.possesso.setText(this.matchCorrente.getAttaccanteCorrente().getNome());
-        this.aggiornaRisorse(this.protagonista, this.staminaProtagonista, this.resistenzaProtagonista);
-        this.aggiornaRisorse(this.avversario, this.staminaAvversario, this.resistenzaAvversario);
+        this.aggiornaRisorse(this.protagonista, this.staminaProtagonista, this.resistenzaProtagonista, this.valoreStaminaProtagonista, this.valoreResistenzaProtagonista);
+        this.aggiornaRisorse(this.avversario, this.staminaAvversario, this.resistenzaAvversario, this.valoreStaminaAvversario, this.valoreResistenzaAvversario);
     }
 
-    private void aggiornaRisorse(Personaggio personaggio, ProgressBar barraStamina, ProgressBar barraResistenza) {
+    private void aggiornaRisorse(Personaggio personaggio, ProgressBar barraStamina, ProgressBar barraResistenza,
+    Label valoreStamina, Label valoreResistenza) {
         barraStamina.setProgress(personaggio.getStamina() / (double) RisorseMatch.STAMINA_MASSIMA);
         barraResistenza.setProgress(personaggio.getResistenza() / (double) RisorseMatch.RESISTENZA_MASSIMA);
+        valoreStamina.setText("Stamina: " + personaggio.getStamina() + " / " + RisorseMatch.STAMINA_MASSIMA);
+        valoreResistenza.setText("Resistenza: " + personaggio.getResistenza() + " / " + RisorseMatch.RESISTENZA_MASSIMA);
     }
 
     private void preparaTurno() {
@@ -219,8 +233,7 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
 
     private void preparaAttaccoProtagonista() {
         this.attaccoAvversarioCorrente = null;
-        this.titoloAzioni.setText("Scegli l'attacco");
-        this.azioneTurno.setText("Scegli la tua prossima azione");
+        this.titoloAzioni.setText("SCEGLI L'ATTACCO!");
         this.impostaVisibilitaPulsante(this.pulsanteTiro, true);
         this.impostaVisibilitaPulsante(this.pulsanteDribbling, true);
         this.impostaVisibilitaPulsante(this.pulsanteParata, false);
@@ -232,12 +245,12 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
 
     private void preparaDifesaProtagonista() {
         this.attaccoAvversarioCorrente = this.controllerPartita.scegliAttaccoAvversario();
-        this.titoloAzioni.setText("Scegli la difesa");
-        this.azioneTurno.setText(this.avversario.getNome() + " usa " + this.attaccoAvversarioCorrente.getNome());
+        this.titoloAzioni.setText(this.avversario.getNome() + " usa "
+                + this.attaccoAvversarioCorrente.getNome() + " — SCEGLI LA DIFESA!");
 
         if (this.attaccoAvversarioCorrente instanceof TecnicaSupporto) {
             EsitoTurno esito = this.controllerPartita.eseguiTurnoAvversario(null);
-            this.mostraEsito(this.attaccoAvversarioCorrente, null, esito);
+            this.mostraEsitoTurno("Nessuna risposta", this.attaccoAvversarioCorrente.getNome(), esito);
             this.attaccoAvversarioCorrente = null;
             this.completaTurno();
             return;
@@ -315,14 +328,15 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
     private void eseguiAttaccoProtagonista(AzioneAttaccante attacco) {
         AzioneDifensore difesa = this.controllerPartita.scegliDifesaAvversario(attacco);
         EsitoTurno esito = this.controllerPartita.eseguiTurnoProtagonista();
-        this.mostraEsito(attacco, difesa, esito);
+        String azioneAvversario = difesa == null ? "Nessuna risposta" : difesa.getNome();
+        this.mostraEsitoTurno(attacco.getNome(), azioneAvversario, esito);
         this.completaTurno();
     }
 
     private void eseguiDifesaProtagonista(AzioneDifensore difesa) {
         AzioneAttaccante attacco = this.attaccoAvversarioCorrente;
         EsitoTurno esito = this.controllerPartita.eseguiTurnoAvversario(difesa);
-        this.mostraEsito(attacco, difesa, esito);
+        this.mostraEsitoTurno(difesa.getNome(), attacco.getNome(), esito);
         this.attaccoAvversarioCorrente = null;
         this.completaTurno();
     }
@@ -332,15 +346,10 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
         this.preparaTurno();
     }
 
-    private void mostraEsito(AzioneAttaccante attacco, AzioneDifensore difesa, EsitoTurno esito) {
-        StringBuilder testo = new StringBuilder();
-        testo.append(attacco.getNome());
-
-        if (difesa != null)
-            testo.append(" VS ").append(difesa.getNome());
-
-        testo.append(" • ").append(this.descriviEsito(esito));
-        this.esitoTurno.setText(testo.toString());
+    private void mostraEsitoTurno(String azioneProtagonista, String azioneAvversario, EsitoTurno esito) {
+        this.azioneProtagonistaTurno.setText(azioneProtagonista);
+        this.azioneAvversarioTurno.setText(azioneAvversario);
+        this.esitoTurno.setText("Esito: " + this.descriviEsito(esito));
     }
 
     private String descriviEsito(EsitoTurno esito) {

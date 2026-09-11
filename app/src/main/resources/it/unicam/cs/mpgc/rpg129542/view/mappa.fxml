@@ -18,7 +18,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="750.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerMappa">
+<BorderPane prefHeight="750.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerMappa">
 
     <top>
         <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="barra-superiore">
@@ -59,7 +60,6 @@
     <center>
         <SplitPane dividerPositions="0.39670283806343903" prefWidth="960.0">
 
-            <!-- Mappa dei sette livelli -->
             <VBox alignment="TOP_CENTER" minWidth="330.0" spacing="30.0">
                 <padding>
                     <Insets bottom="10.0" left="24.0" right="16.0" top="8.0" />
@@ -79,7 +79,6 @@
                </children>
             </VBox>
 
-                <!-- Pane usato intenzionalmente per posizionare liberamente i nodi della mappa -->
                 <Pane prefWidth="352.0" styleClass="pannello-mappa">
                <VBox prefWidth="340.0">
                   <children>
@@ -123,7 +122,6 @@
                      </HBox>
                   </children>
                </VBox>
-                    <!-- Collegamenti tra i livelli -->
                     <Line endX="186.29287719726562" endY="390.0" layoutX="-10.0" layoutY="50.0" startX="60.0" startY="390.0" styleClass="collegamento-livelli" />
                     <Line endX="301.0" endY="375.0" startX="176.79287719726562" startY="440.5" styleClass="collegamento-livelli" />
                     <Line endX="170.0" endY="315.0" startX="301.0" startY="375.0" styleClass="collegamento-livelli" />
@@ -131,7 +129,6 @@
                     <Line endX="171.0" endY="184.99998474121094" startX="50.0" startY="260.0" styleClass="collegamento-livelli" />
                     <Line endX="301.0" endY="114.99998474121094" startX="171.0" startY="184.99998474121094" styleClass="collegamento-livelli" />
    
-                    <!-- I pulsanti vengono abilitati/disabilitati dal controller in base alla progressione -->
                     <Button fx:id="livello1" layoutX="25.0" layoutY="415.0" mnemonicParsing="false" onAction="#selezionaLivello" prefHeight="50.0" prefWidth="50.0" styleClass="nodo-livello" text="1" />
                     <Button fx:id="livello2" layoutX="152.0" layoutY="415.0" mnemonicParsing="false" onAction="#selezionaLivello" prefHeight="50.0" prefWidth="50.0" styleClass="nodo-livello" text="2" />
                     <Button fx:id="livello3" layoutX="276.0" layoutY="350.0" mnemonicParsing="false" onAction="#selezionaLivello" prefHeight="50.0" prefWidth="50.0" styleClass="nodo-livello" text="3" />
@@ -142,7 +139,6 @@
                 </Pane>
             </VBox>
 
-            <!-- Dettagli del livello selezionato e scelta dell'avversario -->
             <VBox prefWidth="575.0" spacing="15.0" styleClass="pannello-dettagli-livello">
                 <padding>
                     <Insets bottom="10.0" left="20.0" right="24.0" top="8.0" />
