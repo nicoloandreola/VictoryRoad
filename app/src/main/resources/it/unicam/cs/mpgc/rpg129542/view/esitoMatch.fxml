@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane alignment="TOP_CENTER" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129542.view.ControllerEsitoMatch">
+
+    <children>
+      <BorderPane prefHeight="800.0" prefWidth="1000.0">
+         <center>
+            <VBox alignment="TOP_CENTER" spacing="8.0" BorderPane.alignment="CENTER">
+               <children>
+                  <StackPane prefHeight="540.0" prefWidth="1000.0">
+                     <children>
+                        <ImageView fx:id="immagineEsito" fitHeight="540.0" fitWidth="850.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../immagini/esitoMatch/sconfitta.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </StackPane>
+            
+                          <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="700.0" spacing="12.0" styleClass="pannello-esito">
+            
+                              <padding>
+                            <Insets bottom="5.0" left="28.0" right="28.0" top="5.0" />
+                        </padding>
+                     <GridPane styleClass="riepilogo-esito">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="38.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="24.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="38.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <Label fx:id="nomeProtagonista" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="nome-esito" text="Protagonista" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Label>
+                  
+                                                         <Label fx:id="punteggioFinale" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="punteggio-finale-esito" text="3  -  1" textAlignment="CENTER" GridPane.columnIndex="1">
+                              <font>
+                                 <Font name="System Bold" size="36.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="nomeAvversario" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="nome-esito" text="Avversario" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="2">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </GridPane>
+            
+                                 <VBox fx:id="pannelloRicompensa" alignment="CENTER" spacing="10.0" styleClass="pannello-ricompensa-esito">
+            
+                                     <Label alignment="CENTER" styleClass="titolo-ricompensa-esito" text="SELEZIONA LA TUA RICOMPENSA!" textAlignment="CENTER" />
+            
+                                     <ComboBox fx:id="comboBoxRicompensa" onAction="#selezionaTecnica" prefWidth="320.0" promptText="     Scegli una tecnica da imparare" styleClass="combo-ricompensa-esito" />
+                        <VBox.margin>
+                           <Insets bottom="20.0" />
+                        </VBox.margin>
+                        </VBox>
+            
+                          </VBox>
+               </children>
+            </VBox>
+         </center>
+         <bottom>
+            <StackPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" styleClass="barra-inferiore-esito" BorderPane.alignment="CENTER">
+               <children>
+                  <ButtonBar buttonOrder="" maxWidth="-Infinity" minHeight="-Infinity">
+                    <buttons>
+                        <Button fx:id="pulsanteRiprova" mnemonicParsing="false" onAction="#riprovaMatch" text="RIPROVA" ButtonBar.buttonData="OTHER" />
+                      <Button fx:id="pulsanteTornaMappa" mnemonicParsing="false" onAction="#tornaAllaMappa" styleClass="pulsante-secondario" text="TORNA ALLA MAPPA" ButtonBar.buttonData="OTHER" />
+                    </buttons>
+                     <StackPane.margin>
+                        <Insets bottom="10.0" />
+                     </StackPane.margin>
+                  </ButtonBar>
+               </children>
+            </StackPane>
+         </bottom>
+      </BorderPane>
+
+    </children>
+</StackPane>

@@ -198,11 +198,17 @@
     -fx-background-color: #F3E5AB;
     -fx-border-color: #D6B66A transparent transparent transparent;
     -fx-border-width: 2 0 0 0;
+    -fx-padding: 10;
+}
+
+.button-bar > .container {
+    -fx-spacing: 20;
 }
 
 .button-bar .button {
     -fx-font-size: 14px;
-    -fx-pref-height: 34px;
+    -fx-pref-height: 36px;
+    -fx-min-width: 170px;
 }
 
 /* Match */
@@ -337,4 +343,80 @@
 
 .tooltip {
     -fx-font-size: 12px;
+}
+
+/* Esito Match */
+.riepilogo-esito {
+    -fx-background-color: rgba(109, 59, 7, 0.88);
+    -fx-background-radius: 12;
+    -fx-border-color: #CC5500;
+    -fx-border-width: 2;
+    -fx-border-radius: 12;
+    -fx-padding: 8 20 8 20;
+}
+
+.nome-esito {
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #F3E5AB;
+}
+
+.punteggio-finale-esito {
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.pannello-ricompensa-esito {
+    -fx-background-color: rgba(255, 244, 211, 0.94);
+    -fx-background-radius: 12;
+    -fx-border-color: #D6B66A;
+    -fx-border-width: 2;
+    -fx-border-radius: 12;
+    -fx-padding: 6 22 6 22;
+}
+
+.titolo-ricompensa-esito {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6D3B07;
+}
+
+.combo-ricompensa-esito {
+    -fx-background-color: #FFF9E6;
+    -fx-border-color: #CC5500;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-size: 16px;
+}
+
+.combo-ricompensa-esito .list-cell {
+    -fx-text-fill: #6D3B07;
+}
+
+.combo-ricompensa-esito .arrow-button {
+    -fx-background-color: #CC5500;
+    -fx-background-radius: 0 7 7 0;
+}
+
+.combo-ricompensa-esito .arrow {
+    -fx-background-color: white;
+}
+
+.barra-inferiore-esito {
+    -fx-background-color: #F3E5AB;
+    -fx-border-color: #D6B66A transparent transparent transparent;
+    -fx-border-width: 2 0 0 0;
+    -fx-padding: 10 20 10 20;
+}
+
+.barra-inferiore-esito .button-bar {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.barra-inferiore-esito .button-bar > .container {
+    -fx-spacing: 20;
 }
