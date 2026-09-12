@@ -25,7 +25,6 @@
     -fx-border-color: #7A4300;
     -fx-border-width: 2;
     -fx-border-radius: 8;
-    -fx-background-radius: 8;
 }
 
 .pulsante-secondario:hover {
@@ -44,6 +43,30 @@
 
 .pulsante-menu {
     -fx-font-size: 15px;
+}
+
+.pulsante-tutorial {
+    -fx-min-width: 42px;
+    -fx-min-height: 42px;
+    -fx-pref-width: 42px;
+    -fx-pref-height: 42px;
+    -fx-max-width: 42px;
+    -fx-max-height: 42px;
+
+    -fx-background-color: transparent;
+    -fx-text-fill: #6D3B07;
+    -fx-font-size: 20px;
+
+    -fx-border-color: #6D3B07;
+    -fx-border-width: 2;
+    -fx-border-radius: 21;
+    -fx-background-radius: 21;
+}
+
+.pulsante-tutorial:hover {
+    -fx-background-color: #CC5500;
+    -fx-text-fill: white;
+    -fx-border-color: #CC5500;
 }
 
 /* Scelta protagonista */
@@ -70,7 +93,6 @@
     -fx-border-color: rgba(243, 229, 171, 0.9);
     -fx-border-width: 1.5;
     -fx-border-radius: 8;
-    -fx-background-radius: 8;
 }
 
 .pulsante-card:hover {
@@ -94,12 +116,7 @@
     -fx-padding: 0 1 0 1;
 }
 
-.pannello-mappa {
-    -fx-background-color: #F8EDBE;
-    -fx-background-radius: 10;
-}
-
-.pannello-dettagli-livello {
+.pannello-mappa, .pannello-dettagli-livello {
     -fx-background-color: #F8EDBE;
     -fx-background-radius: 10;
 }
@@ -187,13 +204,6 @@
     -fx-border-width: 3;
 }
 
-.nodo-livello.nodo-livello-completato.nodo-livello-selezionato {
-    -fx-background-color: #CC5500;
-    -fx-text-fill: white;
-    -fx-border-color: #8F3C00;
-    -fx-border-width: 3;
-}
-
 .button-bar {
     -fx-background-color: #F3E5AB;
     -fx-border-color: #D6B66A transparent transparent transparent;
@@ -220,7 +230,6 @@
 .nome-personaggio-testata {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-text-fill: #6D3B07;
 }
 
 .badge-punteggio {
@@ -238,7 +247,6 @@
 
 .dettaglio-match {
     -fx-font-size: 13px;
-    -fx-text-fill: #6D3B07;
 }
 
 .pannello-personaggio-match {
@@ -309,28 +317,24 @@
     -fx-font-weight: bold;
 }
 
-.menu-tecniche-match {
-    -fx-background-color: #CC5500;
+.menu-tecniche > .label {
     -fx-text-fill: white;
-    -fx-background-radius: 8;
-    -fx-font-weight: bold;
-    -fx-cursor: hand;
-}
-
-.menu-tecniche-match:hover {
-    -fx-background-color: #B84C00;
 }
 
 .tecnica-menu {
     -fx-padding: 6 10 6 10;
 }
 
-.nome-tecnica-menu {
+.intestazione-tecniche-menu {
     -fx-font-weight: bold;
-    -fx-text-fill: #6D3B07;
+    -fx-padding: 4 8 4 8;
 }
 
-.tipo-tecnica-menu {
+.nome-tecnica-menu {
+    -fx-font-weight: bold;
+}
+
+.potenza-tecnica-menu {
     -fx-font-size: 11px;
     -fx-text-fill: #8B7658;
 }
@@ -379,7 +383,6 @@
 .titolo-ricompensa-esito {
     -fx-font-size: 17px;
     -fx-font-weight: bold;
-    -fx-text-fill: #6D3B07;
 }
 
 .combo-ricompensa-esito {
@@ -419,4 +422,56 @@
 
 .barra-inferiore-esito .button-bar > .container {
     -fx-spacing: 20;
+}
+
+/* Alert */
+.alert {
+    -fx-background-color: #FFFFFF;
+}
+
+.alert .header-panel {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 12 14 5 14;
+}
+
+.alert .header-panel .label {
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+}
+
+.alert .content {
+    -fx-font-size: 16px;
+    -fx-padding: 5 14 12 14;
+}
+
+.pulsante-alert-uscita {
+    -fx-background-color: #E8D69A;
+    -fx-text-fill: #6D3B07;
+}
+
+/* Tutorial */
+.titolo-tutorial {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+}
+
+.titolo-sezione-tutorial {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #CC5500;
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+}
+
+.testo-tutorial {
+    -fx-font-size: 14px;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+}
+
+.combinazioni-tutorial {
+    -fx-padding: 4 0 0 0;
 }

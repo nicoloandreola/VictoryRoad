@@ -172,7 +172,7 @@
                       <Button fx:id="pulsanteDribbling" onAction="#eseguiDribbling" prefWidth="130.0" text="Dribbling" />
                   <Button fx:id="pulsanteParata" mnemonicParsing="false" onAction="#eseguiParata" prefWidth="130.0" text="Parata" />
                   <Button fx:id="pulsanteContrasto" mnemonicParsing="false" onAction="#eseguiContrasto" prefWidth="130.0" text="Contrasto" />
-                      <MenuButton fx:id="menuTecniche" prefWidth="130.0" styleClass="button" text="Tecnica..." />
+                      <MenuButton fx:id="menuTecniche" prefWidth="130.0" styleClass="button, menu-tecniche" text="Tecnica..." />
                   </HBox>
               </VBox>
           </bottom>

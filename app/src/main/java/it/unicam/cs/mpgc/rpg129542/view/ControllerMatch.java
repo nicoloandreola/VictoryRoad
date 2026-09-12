@@ -276,6 +276,7 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
     // quando difende, invece, fa controllare la compatibilità al controller.
     private void aggiornaMenuTecniche() {
         this.menuTecniche.getItems().clear();
+
         if (this.matchCorrente.isTurnoProtagonista()) {
             this.protagonista.getTecnichePerTipo(TipoTecnica.OFFENSIVA).forEach(this::aggiungiTecnicaAlMenu);
             this.protagonista.getTecnichePerTipo(TipoTecnica.SUPPORTO).forEach(this::aggiungiTecnicaAlMenu);
@@ -286,19 +287,44 @@ public class ControllerMatch implements ControllerSchermata, Initializable {
                     .filter(tecnica -> this.controllerPartita.isDifesaCompatibile((AzioneDifensore) tecnica))
                     .forEach(this::aggiungiTecnicaAlMenu);
         }
+        // L'intestazione del menù viene mostrata solo se c'è almeno una tecnica
+        if (!this.menuTecniche.getItems().isEmpty())
+            this.aggiungiIntestazioneMenuTecniche();
         this.menuTecniche.setDisable(this.menuTecniche.getItems().isEmpty());
     }
 
+    private void aggiungiIntestazioneMenuTecniche() {
+        Label nome = new Label("NOME");
+        Label potenza = new Label("POTENZA");
+        Label costo = new Label("COSTO");
+
+        nome.setPrefWidth(150);
+        potenza.setPrefWidth(70);
+        costo.setPrefWidth(90);
+
+        HBox intestazione = new HBox(12.0, nome, potenza, costo);
+        intestazione.getStyleClass().add("intestazione-tecniche-menu");
+
+        CustomMenuItem item = new CustomMenuItem(intestazione, false);
+        this.menuTecniche.getItems().addFirst(item);
+    }
+
     // Crea una voce personalizzata del CustomMenuItem mostrando
-    // nome, tipo e costo in stamina della tecnica.
+    // nome, potenza e costo in stamina della tecnica.
     private void aggiungiTecnicaAlMenu(TecnicaSpeciale tecnica) {
         Label nomeTecnica = new Label(tecnica.getNome());
-        Label tipoTecnica = new Label(tecnica.getTipo().toString());
-        Label costoStamina = new Label(tecnica.getCostoStamina() + " stamina");
+        Label potenzaTecnica = new Label(tecnica.getPotenza() + "");
+        Label costoStamina = new Label(tecnica.getCostoStamina() + "");
+
+        nomeTecnica.setPrefWidth(150);
+        potenzaTecnica.setPrefWidth(70);
+        costoStamina.setPrefWidth(90);
+
         nomeTecnica.getStyleClass().add("nome-tecnica-menu");
-        tipoTecnica.getStyleClass().add("tipo-tecnica-menu");
+        potenzaTecnica.getStyleClass().add("potenza-tecnica-menu");
         costoStamina.getStyleClass().add("costo-tecnica-menu");
-        HBox contenuto = new HBox(12.0, nomeTecnica, tipoTecnica, costoStamina);
+
+        HBox contenuto = new HBox(12.0, nomeTecnica, potenzaTecnica, costoStamina);
         contenuto.getStyleClass().add("tecnica-menu");
 
         boolean disponibile = tecnica.isDisponibile(this.protagonista);

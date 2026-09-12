@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -24,15 +23,11 @@
                <children>
                   <StackPane prefHeight="540.0" prefWidth="1000.0">
                      <children>
-                        <ImageView fx:id="immagineEsito" fitHeight="540.0" fitWidth="850.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../../../immagini/esitoMatch/sconfitta.png" />
-                           </image>
-                        </ImageView>
+                        <ImageView fx:id="immagineEsito" fitHeight="540.0" fitWidth="850.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </StackPane>
             
-                          <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="700.0" spacing="12.0" styleClass="pannello-esito">
+                          <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="700.0" spacing="12.0">
             
                               <padding>
                             <Insets bottom="5.0" left="28.0" right="28.0" top="5.0" />
@@ -47,7 +42,7 @@
                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                         </rowConstraints>
                         <children>
-                           <Label fx:id="nomeProtagonista" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="nome-esito" text="Protagonista" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                           <Label fx:id="nomeProtagonista" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="nome-esito" text="Protagonista" textAlignment="CENTER" wrapText="true">
                               <font>
                                  <Font size="24.0" />
                               </font>
@@ -55,10 +50,10 @@
                   
                                                          <Label fx:id="punteggioFinale" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="punteggio-finale-esito" text="3  -  1" textAlignment="CENTER" GridPane.columnIndex="1">
                               <font>
-                                 <Font name="System Bold" size="36.0" />
+                                 <Font name="System Bold" size="24.0" />
                               </font>
                            </Label>
-                           <Label fx:id="nomeAvversario" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="nome-esito" text="Avversario" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="2">
+                           <Label fx:id="nomeAvversario" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="nome-esito" text="Avversario" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2">
                               <font>
                                  <Font size="24.0" />
                               </font>
