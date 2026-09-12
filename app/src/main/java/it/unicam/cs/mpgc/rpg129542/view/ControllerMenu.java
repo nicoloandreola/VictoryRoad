@@ -3,7 +3,6 @@ package it.unicam.cs.mpgc.rpg129542.view;
 import it.unicam.cs.mpgc.rpg129542.controller.ControllerGioco;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
@@ -14,8 +13,8 @@ import java.util.ResourceBundle;
 /**
  * Controller associato alla schermata principale del gioco.
  *
- * Permette al giocatore di iniziare una nuova partita, caricare
- * una partita precedentemente salvata oppure chiudere l'applicazione.
+ * Permette al giocatore di iniziare una nuova partita, caricare una partita
+ * precedentemente salvata, consultare il tutorial oppure chiudere l'applicazione.
  *
  * I suoi compiti sono quindi di reagire ai tre pulsanti, interrogare ControllerGioco
  * per il salvataggio e delegare la navigazione a GestoreSchermate.
@@ -79,22 +78,10 @@ public class ControllerMenu implements ControllerSchermata, Initializable {
     @FXML
     private void mostraTutorial() {
         try {
-            DialogPane dialogPane = this.caricaTutorial();
-            Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.setTitle("TUTORIAL");
-            dialog.setDialogPane(dialogPane);
-            dialog.initOwner(this.caricaPartita.getScene().getWindow());
-            dialog.showAndWait();
+            this.gestoreSchermate.mostraDialogo("tutorial", "TUTORIAL");
         }
         catch (IOException e) {
             throw new IllegalStateException("Impossibile mostrare il tutorial", e);
         }
-    }
-
-    private DialogPane caricaTutorial() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("tutorial.fxml"));
-        DialogPane dialogPane = loader.load();
-        dialogPane.getStylesheets().addAll(this.caricaPartita.getScene().getStylesheets());
-        return dialogPane;
     }
 }

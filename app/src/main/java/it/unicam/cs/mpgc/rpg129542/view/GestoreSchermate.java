@@ -4,10 +4,7 @@ import it.unicam.cs.mpgc.rpg129542.controller.ControllerGioco;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import lombok.NonNull;
 
@@ -23,9 +20,10 @@ import java.net.URL;
  * {@link ControllerGioco} condiviso e questo stesso gestore: in questo modo i
  * singoli controller non devono preoccuparsi di come recuperare questi riferimenti.
  *
- * La classe centralizza inoltre il caricamento del foglio di stile
- * dell'applicazione e la creazione degli Alert di conferma, evitando
- * di duplicarne la configurazione nei singoli controller della View.
+ * La classe centralizza inoltre il caricamento del foglio di stile,
+ * la visualizzazione dei dialoghi definiti tramite FXML e la creazione
+ * degli Alert di conferma, evitando di duplicarne la configurazione
+ * nei singoli controller della View.
  *
  * @author Nicolò Andreola
  */
@@ -89,6 +87,28 @@ public class GestoreSchermate {
         if (foglioDiStile == null)
             throw new IllegalStateException("Foglio di stile non trovato!");
         return foglioDiStile.toExternalForm();
+    }
+
+    /**
+     * Carica un {@link DialogPane} da un file FXML e lo mostra
+     * sopra allo stage principale.
+     *
+     * @param nomeFxml nome del file FXML da caricare, senza estensione
+     * @param titolo titolo del dialogo
+     *
+     * @throws IOException se il caricamento del file FXML fallisce
+     */
+    public void mostraDialogo(String nomeFxml, String titolo) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeFxml + ".fxml"));
+        DialogPane dialogPane = loader.load();
+
+        dialogPane.getStylesheets().add(this.caricaFoglioDiStile());
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle(titolo);
+        dialog.setDialogPane(dialogPane);
+        dialog.initOwner(this.stagePrincipale);
+        dialog.showAndWait();
     }
 
     /**
