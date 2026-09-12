@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+
+<DialogPane prefHeight="500.0" prefWidth="560.0" styleClass="dialog-tutorial" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+
+    <content>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="400.0" prefViewportHeight="400.0" prefViewportWidth="500.0" prefWidth="500.0" styleClass="scroll-tutorial" vbarPolicy="AS_NEEDED">
+
+            <content>
+                <VBox spacing="11.0" styleClass="contenuto-tutorial">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+
+                    <Label styleClass="titolo-tutorial" text="Come giocare" wrapText="true" />
+
+                    <Label styleClass="testo-tutorial" text="Gli alieni hanno invaso la Terra e minacciano di distruggerla con dei misteriosi palloni neri. L'unico modo per fermarli: sconfiggerli sul campo. Scegli il tuo protagonista e percorri la Victory Road affrontando gli avversari dei sette livelli: migliora il tuo personaggio, impara nuove tecniche dai nemici e completa tutti i livelli per terminare il gioco e salvare il pianeta!" wrapText="true" />
+
+                    <VBox spacing="5.0" styleClass="sezione-tutorial">
+                        <Label styleClass="titolo-sezione-tutorial" text="Mappa e progressione" />
+                        <Label styleClass="testo-tutorial" text="Dalla mappa puoi selezionare uno dei livelli già disponibili e scegliere quale dei suoi due avversari affrontare: sconfiggine almeno uno per sbloccare il livello successivo, ma fai attenzione perchè solo sconfiggendoli entrambi completerai definitivamente il livello e migliorerai le statistiche del tuo personaggio permanentemente, rendendolo più forte per i livelli successivi. Puoi sempre tornare nei livelli precedenti per affrontare eventuali avversari ancora da sconfiggere" wrapText="true" />
+                    </VBox>
+
+                    <VBox spacing="5.0" styleClass="sezione-tutorial">
+                        <Label styleClass="titolo-sezione-tutorial" text="Stamina e resistenza" />
+                        <Label styleClass="testo-tutorial" text="Durante un match ogni personaggio dispone di stamina e resistenza. La STAMINA è necessaria per utilizzare le tecniche speciali e può essere recuperata attraverso le tecniche di supporto. La RESISTENZA invece rappresenta la capacità del personaggio di rimanere in combattimento: diminuisce quando l'avversario sferra un attacco, e quando raggiunge 0 il personaggio subisce gol.&quot;" wrapText="true" />
+                    </VBox>
+
+                    <VBox spacing="5.0" styleClass="sezione-tutorial">
+                        <Label styleClass="titolo-sezione-tutorial" text="Tecniche speciali" />
+                        <Label styleClass="testo-tutorial" text="Ogni personaggio possiede tecniche speciali che possono essere offensive, difensive o di supporto. All'inizio del gioco il protagonista possiede una sola tecnica speciale, ma dopo ogni vittoria può sceglierne una da imparare tra quelle possedute dall'avversario sconfitto. Il menu Tecniche mostra solamente quelle utilizzabili nel turno corrente. Le tecniche che richiedono più stamina di quella disponibile rimangono visibili ma non possono essere selezionate." wrapText="true" />
+                    </VBox>
+
+                    <VBox spacing="5.0" styleClass="sezione-tutorial">
+                        <Label styleClass="titolo-sezione-tutorial" text="Match" />
+                        <Label styleClass="testo-tutorial" text="Ogni match termina quando uno dei due personaggi raggiunge 3 gol. A ogni turno uno dei personaggi è l'attaccante e l'altro il difensore. Quando possiedi la palla puoi scegliere Tiro, Dribbling oppure una tecnica speciale; quando attacca l'avversario vengono invece rese disponibili solamente le difese compatibili con la sua azione:" wrapText="true" />
+                        <VBox spacing="6.0" styleClass="testo-tutorial">
+
+                            <Label styleClass="testo-tutorial" text="• TIRO = può essere contrastato con PARATA o con una TECNICA DIFENSIVA." wrapText="true" />
+
+                            <Label styleClass="testo-tutorial" text="• DRIBBLING = può essere difeso con CONTRASTO oppure con una TECNICA DI SUPPORTO." wrapText="true" />
+
+                            <Label styleClass="testo-tutorial" text="• TECNICA OFFENSIVA = funziona come un tiro, ma è più potente." wrapText="true" />
+
+                            <Label styleClass="testo-tutorial" text="• TECNICA DI SUPPORTO = recupera stamina. Se usata in attacco non richiede una risposta e il possesso passa all'avversario; può inoltre essere usata in difesa contro un dribbling rinunciando al contrasto e lasciando il possesso all'avversario anche per il turno successivo." wrapText="true" />
+
+                        </VBox>
+                    </VBox>
+
+                    <VBox spacing="5.0" styleClass="sezione-tutorial">
+                        <Label styleClass="titolo-sezione-tutorial" text="Salvataggio" />
+                        <Label styleClass="testo-tutorial" text="Dalla mappa puoi salvare in qualsiasi momento i progressi della partita quando non è in corso un match. Il salvataggio conserva il protagonista scelto, le statistiche migliorate, le tecniche imparate e gli avversari già sconfitti. Dal menu principale puoi utilizzare Carica Partita per riprendere successivamente la tua avventura." wrapText="true" />
+                    </VBox>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </content>
+
+    <buttonTypes>
+        <ButtonType buttonData="CANCEL_CLOSE" text="Chiudi" />
+    </buttonTypes>
+
+</DialogPane>

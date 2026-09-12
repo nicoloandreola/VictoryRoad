@@ -3,8 +3,9 @@ package it.unicam.cs.mpgc.rpg129542.view;
 import it.unicam.cs.mpgc.rpg129542.controller.ControllerGioco;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -73,5 +74,27 @@ public class ControllerMenu implements ControllerSchermata, Initializable {
     @FXML
     private void esci() {
         Platform.exit();
+    }
+
+    @FXML
+    private void mostraTutorial() {
+        try {
+            DialogPane dialogPane = this.caricaTutorial();
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("TUTORIAL");
+            dialog.setDialogPane(dialogPane);
+            dialog.initOwner(this.caricaPartita.getScene().getWindow());
+            dialog.showAndWait();
+        }
+        catch (IOException e) {
+            throw new IllegalStateException("Impossibile mostrare il tutorial", e);
+        }
+    }
+
+    private DialogPane caricaTutorial() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("tutorial.fxml"));
+        DialogPane dialogPane = loader.load();
+        dialogPane.getStylesheets().addAll(this.caricaPartita.getScene().getStylesheets());
+        return dialogPane;
     }
 }
