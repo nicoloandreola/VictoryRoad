@@ -147,10 +147,9 @@ public abstract class TecnicaSpeciale {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        return s.append("Nome: ").append(this.nome).append("\n")
-                .append("Tipo: ").append(this.getTipo()).append("\n")
-                .append("ID: ").append(this.id).append("\n")
-                .append("Potenza = ").append(this.potenza).append("\n")
+        return s.append(this.nome).append(" ").append("[ ")
+                .append(this.getTipo()).append(" ]").append("\n")
+                .append("Potenza = ").append(this.potenza).append(" ")
                 .append("Costo = ").append(this.costoStamina).toString();
     }
 }
