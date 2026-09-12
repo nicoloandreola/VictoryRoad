@@ -23,6 +23,10 @@ import java.net.URL;
  * {@link ControllerGioco} condiviso e questo stesso gestore: in questo modo i
  * singoli controller non devono preoccuparsi di come recuperare questi riferimenti.
  *
+ * La classe centralizza inoltre il caricamento del foglio di stile
+ * dell'applicazione e la creazione degli Alert di conferma, evitando
+ * di duplicarne la configurazione nei singoli controller della View.
+ *
  * @author Nicolò Andreola
  */
 public class GestoreSchermate {

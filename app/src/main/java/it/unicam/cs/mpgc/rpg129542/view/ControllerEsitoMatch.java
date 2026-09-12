@@ -27,7 +27,8 @@ import java.util.Set;
  *
  * Dopo una vittoria, se l'avversario sconfitto possiede tecniche che il
  * protagonista non ha ancora imparato, permette al giocatore di sceglierne
- * una come ricompensa, prima di tornare alla mappa.
+ * una come ricompensa, prima di tornare alla mappa, e segnala anche al
+ * {@link ControllerGioco} che la progressione è stata modificata rispetto all'ultimo salvataggio.
  *
  * Dopo una sconfitta permette invece sia di tornare alla mappa per scegliere un
  * altro avversario da sfidare, che di riiniziare immediatamente un nuovo match
@@ -63,11 +64,10 @@ public class ControllerEsitoMatch implements ControllerSchermata, Initializable 
     /**
      * {@inheritDoc}
      *
-     * In questo caso il metodo è vuoto perché questa schermata non richiede inizializzazioni
-     * che dipendono esclusivamente da JavaFX o da file FXML, ma solo da {@link ControllerGioco}; e
-     * le operazioni che dipendono dalle risorse condivise vengono eseguite successivamente in
-     * {@link #configura(ControllerGioco, GestoreSchermate)}, che viene chiamato dopo questo metodo.
-     *
+     * In questo caso il metodo è vuoto perché questa schermata non richiede
+     * inizializzazioni che dipendono esclusivamente da JavaFX o da file FXML,
+     * ma solo dallo stato della partita corrente, perciò tutto il necessario
+     * viene eseguito successivamente in {@link #configura(ControllerGioco, GestoreSchermate)}.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {

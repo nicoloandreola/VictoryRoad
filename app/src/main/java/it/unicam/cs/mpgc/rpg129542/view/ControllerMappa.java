@@ -32,9 +32,9 @@ import java.util.ResourceBundle;
  * di selezionare un livello e uno dei suoi avversari prima di avviare
  * il relativo match.
  *
- * La schermata utilizza {@link ControllerPartita} per tutte le operazioni
- * che modificano lo stato della partita, limitandosi a rappresentare
- * graficamente i dati e a reagire alle azioni dell'utente.
+ * La schermata utilizza {@link ControllerPartita} per le operazioni
+ * relative a livelli, avversari e match, mentre delega a
+ * {@link ControllerGioco} il salvataggio e la chiusura della partita corrente.
  *
  * @author Nicolò Andreola
  */

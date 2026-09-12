@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
  * La classe carica i dati statici necessari all'applicazione, permette
  * di avviare una nuova partita o ripristinarne una precedentemente
  * salvata e coordina il salvataggio della progressione corrente.
+ * Mantiene inoltre lo stato della sessione rispetto all'ultimo salvataggio,
+ * così da poter determinare se sono presenti progressi non ancora salvati.
+ *
  * La gestione della partita una volta avviata non appartiene direttamente
  * a questa classe, ma viene delegata a {@link ControllerPartita}, che
  * coordina livelli, avversari, match e ricompense.
@@ -121,10 +124,12 @@ public class ControllerGioco {
     }
 
     /**
-     * Avvia una nuova partita utilizzando il protagonista
-     * identificato dall'id ricevuto. Il protagonista selezionato
-     * e i livelli caricati vengono utilizzati per creare un nuovo
-     * {@link ControllerPartita}, che gestirà la sessione di gioco.
+     * Avvia una nuova partita utilizzando il protagonista identificato dall'id
+     * ricevuto. Il protagonista selezionato e i livelli caricati vengono utilizzati
+     * per creare un nuovo {@link ControllerPartita}, che gestirà la sessione di gioco.
+     *
+     * La nuova partita viene considerata non ancora salvata fino al primo salvataggio
+     * della progressione, perciò viene aggiornato il flag {@link #modificheNonSalvate}
      *
      * @param idProtagonista identificativo del protagonista scelto
      *
@@ -151,6 +156,10 @@ public class ControllerGioco {
      *
      * Terminato il ripristino, viene creato un nuovo {@link ControllerPartita}, che
      * individua automaticamente il livello più avanzato attualmente sbloccato.
+     *
+     * Al termine del caricamento la partita viene inoltre considerata sincronizzata
+     * con il salvataggio e non presenta quindi modifiche non salvate, perciò viene
+     * aggiornato il flag {@link #modificheNonSalvate}.
      *
      * @throws IOException se il salvataggio non è disponibile
      *                     o si verifica un errore durante la lettura
@@ -227,6 +236,9 @@ public class ControllerGioco {
      * Non è possibile effettuare un salvataggio durante un match, poiché
      * le informazioni temporanee di una partita non fanno parte dei dati
      * memorizzati nel salvataggio.
+     *
+     * Se il salvataggio termina correttamente, la partita non presenta più modifiche
+     * non salvate, perciò viene aggiornato il flag {@link #modificheNonSalvate}
      *
      * @throws IllegalStateException se non è presente una partita attiva
      *                               oppure è in corso un match
