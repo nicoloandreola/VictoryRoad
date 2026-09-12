@@ -47,7 +47,7 @@ public class ControllerMenu implements ControllerSchermata, Initializable {
      * {@inheritDoc}
      *
      * In questo caso il metodo è vuoto perché questa schermata non richiede inizializzazioni
-     * che dipendono esclusivamente da JavaFX o da file FXML, ma solo da {@link ControllerGioco} e
+     * che dipendono esclusivamente da JavaFX o da file FXML, ma solo da {@link ControllerGioco}; e
      * le operazioni che dipendono dalle risorse condivise vengono eseguite successivamente in
      * {@link #configura(ControllerGioco, GestoreSchermate)}, che viene chiamato dopo questo metodo.
      *

@@ -42,6 +42,7 @@ import java.util.Set;
  */
 public class ControllerEsitoMatch implements ControllerSchermata, Initializable {
 
+    private ControllerGioco controllerGioco;
     private ControllerPartita controllerPartita;
     private GestoreSchermate gestoreSchermate;
     private Match match;
@@ -85,6 +86,7 @@ public class ControllerEsitoMatch implements ControllerSchermata, Initializable 
      */
     @Override
     public void configura(ControllerGioco controllerGioco, GestoreSchermate gestoreSchermate) {
+        this.controllerGioco = controllerGioco;
         this.gestoreSchermate = gestoreSchermate;
         this.controllerPartita = controllerGioco.getPartitaCorrente();
 
@@ -104,6 +106,32 @@ public class ControllerEsitoMatch implements ControllerSchermata, Initializable 
             this.configuraVittoria();
         else
             this.configuraSconfitta();
+    }
+
+    @FXML
+    private void selezionaTecnica() {
+        this.pulsanteTornaMappa.setDisable(this.comboBoxRicompensa.getValue() == null);
+    }
+
+    @FXML
+    private void tornaAllaMappa() throws IOException {
+        boolean vittoria = this.controllerPartita.isVittoriaProtagonista();
+        TecnicaSpeciale tecnicaScelta = this.comboBoxRicompensa.getValue();
+        this.controllerPartita.terminaMatch(tecnicaScelta);
+
+        if (vittoria)
+            this.controllerGioco.segnaModificheNonSalvate();
+        this.gestoreSchermate.mostraSchermata("mappa");
+    }
+
+    @FXML
+    private void riprovaMatch() throws IOException {
+        if (this.controllerPartita.isVittoriaProtagonista())
+            throw new IllegalStateException("È possibile riprovare solamente dopo una sconfitta!");
+
+        this.controllerPartita.terminaMatch(null);
+        this.controllerPartita.iniziaMatch();
+        this.gestoreSchermate.mostraSchermata("match");
     }
 
     private void mostraPunteggioFinale() {
@@ -151,27 +179,5 @@ public class ControllerEsitoMatch implements ControllerSchermata, Initializable 
     private void nascondiPannelloRicompensa() {
         this.pannelloRicompensa.setVisible(false);
         this.pannelloRicompensa.setManaged(false);
-    }
-
-    @FXML
-    private void selezionaTecnica() {
-        this.pulsanteTornaMappa.setDisable(this.comboBoxRicompensa.getValue() == null);
-    }
-
-    @FXML
-    private void tornaAllaMappa() throws IOException {
-        TecnicaSpeciale tecnicaScelta = this.comboBoxRicompensa.getValue();
-        this.controllerPartita.terminaMatch(tecnicaScelta);
-        this.gestoreSchermate.mostraSchermata("mappa");
-    }
-
-    @FXML
-    private void riprovaMatch() throws IOException {
-        if (this.controllerPartita.isVittoriaProtagonista())
-            throw new IllegalStateException("È possibile riprovare solamente dopo una sconfitta!");
-
-        this.controllerPartita.terminaMatch(null);
-        this.controllerPartita.iniziaMatch();
-        this.gestoreSchermate.mostraSchermata("match");
     }
 }

@@ -161,6 +161,14 @@ public class ControllerMappa implements ControllerSchermata, Initializable {
 
     @FXML
     private void tornaAlMenu() throws IOException {
+        if (this.controllerGioco.haModificheNonSalvate()) {
+            boolean conferma = this.gestoreSchermate.chiediConferma("Progressi non salvati",
+                    "Vuoi tornare al menu senza salvare?",  "I progressi non salvati andranno persi.");
+            if (!conferma)
+                return;
+        }
+
+        this.controllerGioco.chiudiPartitaCorrente();
         this.gestoreSchermate.mostraSchermata("menu");
     }
 

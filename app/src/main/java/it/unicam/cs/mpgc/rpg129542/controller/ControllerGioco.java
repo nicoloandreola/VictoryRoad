@@ -53,6 +53,7 @@ public class ControllerGioco {
 
     @Getter
     private ControllerPartita partitaCorrente;
+    private boolean modificheNonSalvate;
 
     /**
      * Crea il controller associandogli il sistema di persistenza, la
@@ -88,6 +89,7 @@ public class ControllerGioco {
         this.protagonisti = this.persistenza.caricaProtagonisti();
         this.livelli = this.persistenza.caricaLivelli();
         this.partitaCorrente = null;
+        this.modificheNonSalvate = false;
     }
 
     /**
@@ -139,6 +141,7 @@ public class ControllerGioco {
         Protagonista protagonista = this.trovaProtagonistaPerId(idProtagonista);
         this.partitaCorrente = new ControllerPartita(protagonista, this.livelli,
                 this.logicaMatch, this.strategiaAvversario);
+        this.segnaModificheNonSalvate();
     }
 
     /**
@@ -159,6 +162,7 @@ public class ControllerGioco {
         this.ripristinaDatiSalvati(protagonista, dati);
         this.partitaCorrente = new ControllerPartita(protagonista, this.livelli,
                 this.logicaMatch, this.strategiaAvversario);
+        this.modificheNonSalvate = false;
     }
 
     // Ricarica protagonisti e livelli dalla configurazione iniziale prima di
@@ -252,5 +256,47 @@ public class ControllerGioco {
                 protagonista.getStatisticheBase(), tecnicheImparate, avversariSconfitti);
 
         this.persistenza.salvaPartita(dati);
+        this.modificheNonSalvate = false;
+    }
+
+    /**
+     * Chiude la partita corrente rimuovendola dal controller.
+     *
+     * L'operazione può essere eseguita solamente quando è presente una
+     * partita attiva e non è in corso alcun match.
+     *
+     * Dopo la chiusura non rimangono modifiche non salvate associate
+     * alla partita appena terminata.
+     *
+     * @throws IllegalStateException se non è presente una partita attiva
+     *                               oppure è in corso un match
+     */
+    public void chiudiPartitaCorrente() {
+        if (this.partitaCorrente == null)
+            throw new IllegalStateException("Nessuna partita attiva!");
+
+        if (this.partitaCorrente.isMatchInCorso())
+            throw new IllegalStateException("Non è possibile chiudere la partita durante un match!");
+
+        this.partitaCorrente = null;
+        this.modificheNonSalvate = false;
+    }
+
+    /**
+     * Verifica se la partita corrente contiene progressi non ancora salvati.
+     *
+     * @return {@code true} se sono presenti modifiche non salvate,
+     *         {@code false} altrimenti
+     */
+    public boolean haModificheNonSalvate() {
+        return this.modificheNonSalvate;
+    }
+
+    /**
+     * Segnala che la progressione della partita è stata modificata
+     * rispetto all'ultimo salvataggio.
+     */
+    public void segnaModificheNonSalvate() {
+        this.modificheNonSalvate = true;
     }
 }

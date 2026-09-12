@@ -403,14 +403,18 @@ public class ControllerPartita {
             throw new IllegalStateException("Il match non è ancora terminato!");
 
         this.gestisciRicompensa(tecnicaRicompensa);
-        Avversario avversario = this.matchCorrente.getAvversario();
 
         if(this.isVittoriaProtagonista()) {
-            this.livelloCorrente.registraVittoria(avversario);
+            this.livelloCorrente.registraVittoria(this.matchCorrente.getAvversario());
             if (this.livelloCorrente.isCompletato())
                 this.miglioraStatisticheFineLivello();
         }
 
+        this.chiudiMatch();
+    }
+
+    private void chiudiMatch() {
+        Avversario avversario = this.matchCorrente.getAvversario();
         this.protagonistaCorrente.getGestoreStatistiche().rimuoviModificatore();
         avversario.getGestoreStatistiche().rimuoviModificatore();
         this.attaccoTurno = null;
@@ -418,7 +422,34 @@ public class ControllerPartita {
         this.matchCorrente = null;
     }
 
-    private boolean isVittoriaProtagonista() {
+    /**
+     * Annulla il match corrente senza modificare la progressione della partita.
+     *
+     * Vengono rimossi solamente gli effetti temporanei del match; l'avversario
+     * rimane selezionato e può quindi essere affrontato nuovamente dalla mappa.
+     *
+     * @throws IllegalStateException se non è presente un match in corso
+     *                               oppure il match è già concluso
+     */
+    public void abbandonaMatch() {
+        if (!this.isMatchInCorso())
+            throw new IllegalStateException("Nessun match in corso!");
+
+        if (this.matchCorrente.isConcluso())
+            throw new IllegalStateException("Non è possibile abbandonare un match già concluso!");
+
+        this.chiudiMatch();
+    }
+
+    /**
+     * Verifica se il protagonista ha vinto il match corrente.
+     *
+     * @return {@code true} se il protagonista è il vincitore,
+     *         {@code false} altrimenti
+     *
+     * @throws IllegalStateException se non è presente un match in corso
+     */
+    public boolean isVittoriaProtagonista() {
         if (!this.isMatchInCorso())
             throw new IllegalStateException("Nessun match in corso!");
         return this.matchCorrente.getVincitore().equals(this.protagonistaCorrente);

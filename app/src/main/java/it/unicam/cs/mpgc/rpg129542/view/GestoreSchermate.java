@@ -4,6 +4,10 @@ import it.unicam.cs.mpgc.rpg129542.controller.ControllerGioco;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import lombok.NonNull;
 
@@ -81,5 +85,42 @@ public class GestoreSchermate {
         if (foglioDiStile == null)
             throw new IllegalStateException("Foglio di stile non trovato!");
         return foglioDiStile.toExternalForm();
+    }
+
+    /**
+     * Mostra un Alert di conferma e attende la scelta dell'utente.
+     *
+     * @param titolo titolo dell'Alert
+     * @param intestazione frase principale dell'Alert
+     * @param messaggio messaggio mostrato all'utente
+     *
+     * @return {@code true} se l'utente conferma, {@code false} altrimenti
+     */
+    public boolean chiediConferma(@NonNull String titolo, @NonNull String intestazione, @NonNull String messaggio) {
+        Alert alert = this.creaAlertConferma(titolo, intestazione, messaggio);
+        ButtonType conferma = new ButtonType("Conferma");
+        ButtonType annulla = new ButtonType("Annulla", ButtonBar.ButtonData.CANCEL_CLOSE);
+        this.configuraPulsantiAlert(alert, conferma, annulla);
+        return alert.showAndWait().orElse(annulla) == conferma;
+    }
+
+    private Alert creaAlertConferma(String titolo, String intestazione, String messaggio) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(titolo);
+        alert.setHeaderText(intestazione);
+        alert.setContentText(messaggio);
+        alert.getDialogPane().getStylesheets().add(this.caricaFoglioDiStile());
+        alert.getDialogPane().getStyleClass().add("alert");
+        return alert;
+    }
+
+    private void configuraPulsantiAlert(Alert alert, ButtonType conferma, ButtonType annulla) {
+        alert.getButtonTypes().setAll(conferma, annulla);
+        Button pulsanteConferma = (Button) alert.getDialogPane().lookupButton(conferma);
+        Button pulsanteAnnulla = (Button) alert.getDialogPane().lookupButton(annulla);
+        pulsanteConferma.setDefaultButton(false);
+        pulsanteAnnulla.setDefaultButton(true);
+        pulsanteConferma.getStyleClass().add("pulsante-alert-uscita");
+        pulsanteAnnulla.getStyleClass().add("pulsante-alert-annulla");
     }
 }
